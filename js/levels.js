@@ -455,5 +455,134 @@ window.LEVELS = [
     ],
     solution: 'seed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print("Угадал: " + str(guess))\n        break\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 7
+  },
+  // ---------- Глава 6. Строки ----------
+  {
+    id: 29, title: "Кавычки", topic: "строки", book: "6.1",
+    briefing: "§6.1: строка живёт в кавычках. Выведи фразу с кавычками внутри и иди.",
+    lore: "Кавычки — как створки шлема: держат слова.",
+    goal: "Выведи фразу и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ['Он сказал "Вперёд!"'],
+    starter: 'print(\'Он сказал "Вперёд!"\')\nmove_right()\n',
+    hints: [
+      "Намёк: фраза уже выводится. Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\nprint('Он сказал \"Вперёд!\"')\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(\'Он сказал "Вперёд!"\')\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 30, title: "Новая строка", topic: "спецсимвол \\n", book: "6.4",
+    briefing: "§6.4: символ \\n переносит строку. Выведи две строки одним print.",
+    lore: "Новая строка — новый коридор.",
+    goal: "Выведи две строки и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Строка1\nСтрока2"],
+    starter: 'print("Строка1\\nСтрока2")\nmove_right()\n',
+    hints: [
+      "Намёк: \\n внутри строки работает сам. Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\nprint(\"Строка1\\nСтрока2\")\nmove_right()\nmove_right()"
+    ],
+    solution: 'print("Строка1\\nСтрока2")\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 31, title: "Символы", topic: "индекс s[i]", book: "6.5.1",
+    briefing: "§6.5.1: символы нумеруются с нуля. Собери слово из 1-го и 4-го символов «Грид».",
+    lore: "Первый символ — как первый шаг: с нуля.",
+    goal: "Выведи «Гд» и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Гд"],
+    starter: 'word = "Грид"\nprint(word[0] + word[3])\nmove_right()\n',
+    hints: [
+      "Намёк: word[0] — «Г», word[3] — «д». Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\nword = \"Грид\"\nprint(word[0] + word[3])\nmove_right()\nmove_right()"
+    ],
+    solution: 'word = "Грид"\nprint(word[0] + word[3])\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 32, title: "Срез", topic: "срез s[a:b]", book: "6.5.2",
+    briefing: "§6.5.2: срез берёт кусок: word[0:5] — первые пять символов. Вырежь «Маяки».",
+    lore: "Срез точен, как лазер.",
+    goal: "Выведи «Маяки» и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Маяки"],
+    starter: 'word = "Маяки горят"\nprint(word[0:5])\nmove_right()\n',
+    hints: [
+      "Намёк: символы 0–4 — это «Маяки». Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\nword = \"Маяки горят\"\nprint(word[0:5])\nmove_right()\nmove_right()"
+    ],
+    solution: 'word = "Маяки горят"\nprint(word[0:5])\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 33, title: "Склейка и повтор", topic: "конкатенация и *", book: "6.5.3/6.5.5",
+    briefing: "§6.5.3 и §6.5.5: строки склеиваются через +, а умножаются — в повтор. Три «Ха» и «Код!».",
+    lore: "Повторяй. Умножай. Побеждай.",
+    goal: "Выведи оба слова и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["ХаХаХа", "Код!"],
+    starter: 'print("Ха" * 3)\nprint("Код" + "!")\nmove_right()\n',
+    hints: [
+      "Намёк: оба слова уже готовы. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nprint(\"Ха\" * 3)\nprint(\"Код\" + \"!\")\nmove_right()\nmove_right()"
+    ],
+    solution: 'print("Ха" * 3)\nprint("Код" + "!")\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 34, title: "Поиск в строке", topic: "in и isalpha()", book: "6.5.4/6.10",
+    briefing: "§6.5.4 и §6.10: проверь, есть ли «я» в слове «маяк», и все ли символы — буквы.",
+    lore: "Ищи знак в строке, как друга в толпе.",
+    goal: "Выведи два True и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["True", "True"],
+    starter: 's = "маяк"\nprint("я" in s)\nprint(s.isalpha())\nmove_right()\n',
+    hints: [
+      "Намёк: обе проверки дают True. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\ns = \"маяк\"\nprint(\"я\" in s)\nprint(s.isalpha())\nmove_right()\nmove_right()"
+    ],
+    solution: 's = "маяк"\nprint("я" in s)\nprint(s.isalpha())\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 35, title: "Регистр", topic: "upper()/lower()", book: "6.7/6.9",
+    briefing: "§6.7 и §6.9: приказы пишут капсом. Подними «маяк» в верхний регистр, опусти «роЙ».",
+    lore: "Большие буквы — для приказов.",
+    goal: "Выведи оба слова и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["МАЯК", "рой"],
+    starter: 's = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\nmove_right()\n',
+    hints: [
+      "Намёк: strip() срезает пробелы, upper() поднимает. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\ns = \"  маяк  \"\nprint(s.strip().upper())\nprint(\"роЙ\".lower())\nmove_right()\nmove_right()"
+    ],
+    solution: 's = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 36, title: "Шифр Владыки", topic: "босс: ord()/chr()", book: "6.11",
+    briefing: "§6.11 из учебника: Владыка шифрует приказы сдвигом на 1 (Цезарь). Расшифруй «Лпе», одолей стражу.",
+    lore: "Шифр Владыки. Ключ — единица. Да пребудет с тобой Код.",
+    goal: "Расшифруй слово, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["Код"], biome: "lava", place: "Пепел Роя",
+    starter: 'coded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\nmove_right()\nattack("right")\n',
+    hints: [
+      "Намёк: цикл уже расшифровывает («Код»). После: шаг, удар, четыре шага.",
+      "Псевдокод: цикл + шаг + удар + 4 шага.",
+      "Решение:\ncoded = \"Лпе\"\nkey = 1\nresult = \"\"\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'coded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 6
   }
 ];

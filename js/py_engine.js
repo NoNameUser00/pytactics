@@ -338,15 +338,41 @@ window.PyEngine = (function () {
       // перевод Python -> JS
       var js = expr
         .replace(/\bTrue\b/g, "true").replace(/\bFalse\b/g, "false").replace(/\bNone\b/g, "null");
+      // прячем строковые литералы, чтобы операторы внутри них не трогать
+      var savedStrs = [];
+      js = js.replace(/"([^"\\]|\\.)*"|'([^'\\]|\\.)*'/g, function (m) { savedStrs.push(m); return "__S" + (savedStrs.length - 1) + "__"; });
+      js = js.replace(/\bnot\s+in\b/g, "__NOTIN__"); // единый оператор, до handleNot
       js = handleNot(js); // not (x > 5), а не (!x) > 5
-      js = js.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||")
-        .replace(/\/\//g, "__FLOORDIV__");
+      js = js.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||");
+      js = js.replace(/\*\*/g, "__POW__").replace(/\/\//g, "__FLOORDIV__");
+      var opnd = "([A-Za-z_]\\w*|\\d+(?:\\.\\d+)?)";
+      var opndCall = "([A-Za-z_]\\w*(?:\\([^()]*\\))?|\\d+(?:\\.\\d+)?)";
+      // умножение (в т.ч. строк: "ab" * 3) — через общий helper
+      var reMul = new RegExp(opnd + "\\s*\\*\\s*" + opnd, "g"), mguard = 0;
+      while (mguard++ < 20) {
+        reMul.lastIndex = 0;
+        if (!reMul.test(js)) break;
+        reMul.lastIndex = 0;
+        js = js.replace(reMul, "__mul($1,$2)");
+      }
+      // вхождение: A in B / A not in B
+      js = js.replace(new RegExp(opndCall + "\\s+(__NOTIN__|in)\\s+" + opndCall, "g"), function (m, a, op, b) {
+        return op === "__NOTIN__" ? "!__contains(" + b + "," + a + ")" : "__contains(" + b + "," + a + ")";
+      });
+      // срез: s[a:b:c]
+      js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\[([^\[\]:]*):([^\[\]:]*)(?::([^\[\]:]*))?\]/g, "__slice($1,\"$2\",\"$3\",\"$4\")");
+      // методы строк
+      js = js.replace(/\.upper\(\)/g, ".toUpperCase()").replace(/\.lower\(\)/g, ".toLowerCase()")
+        .replace(/\.strip\(\)/g, ".trim()").replace(/\.find\(/g, ".indexOf(").replace(/\.startswith\(/g, ".startsWith(");
+      js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isdigit\(\)/g, "__isdigit($1)")
+        .replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isalpha\(\)/g, "__isalpha($1)");
+      js = js.replace(/__POW__/g, "**");
       if (/__FLOORDIV__/.test(js)) {
         // a // b -> Math.floor(a/b): грубая замена через функцию
         js = js.split("__FLOORDIV__").join("/");
         js = "Math.floor(" + js + ")"; // приближение для простых выражений
       }
-      js = js.replace(/\*\*/g, "**"); // степень — как в JS
+      for (var si = 0; si < savedStrs.length; si++) js = js.split("__S" + si + "__").join(savedStrs[si]);
       // контекст
       var ctx = {};
       var s = scope;
@@ -406,6 +432,36 @@ window.PyEngine = (function () {
       };
       ctx["abs"] = Math.abs; ctx["min"] = Math.min; ctx["max"] = Math.max;
       ctx["range"] = function () { return []; };
+      ctx["__mul"] = function (a, b) {
+        if (typeof a === "string") return a.repeat(Math.max(0, Math.floor(Number(b))));
+        if (typeof b === "string") return b.repeat(Math.max(0, Math.floor(Number(a))));
+        return a * b;
+      };
+      ctx["__contains"] = function (c, x) { return String(c).indexOf(String(x)) >= 0; };
+      ctx["__slice"] = function (s, a, b, c) {
+        s = String(s);
+        function idx(v, def) {
+          if (v === "" || v === undefined) return def;
+          v = Math.floor(Number(v));
+          if (v < 0) v = s.length + v;
+          return v;
+        }
+        var step = (c === "" || c === undefined) ? 1 : Math.floor(Number(c));
+        if (step === 0) return "";
+        var out = "";
+        if (step > 0) {
+          var i0 = Math.max(0, idx(a, 0)), i1 = Math.min(s.length, idx(b, s.length));
+          for (var i = i0; i < i1; i += step) out += s[i];
+        } else {
+          var j0 = Math.min(s.length - 1, idx(a, s.length - 1)), j1 = idx(b, -1);
+          for (var j = j0; j > j1; j += step) out += s[j];
+        }
+        return out;
+      };
+      ctx["__isdigit"] = function (x) { return /^[0-9]+$/.test(String(x)); };
+      ctx["__isalpha"] = function (x) { return /^[A-Za-z\u00c0-\u024f\u0400-\u04ff\u0500-\u052f]+$/.test(String(x)); };
+      ctx["ord"] = function (x) { return String(x).codePointAt(0); };
+      ctx["chr"] = function (x) { return String.fromCodePoint(Math.floor(Number(x))); };
       var keys = Object.keys(ctx), vals = keys.map(function (k) { return ctx[k]; });
       var fn;
       try {
