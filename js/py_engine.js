@@ -383,6 +383,40 @@ window.PyEngine = (function () {
       return b;
     }
 
+    // Перевод (a, b) -> __tuple(a, b): только скобки НЕ после имени/]/).
+    // Совместимо со старыми движками: без lookbehind.
+    function rewriteTuples(js) {
+      for (var pass = 0; pass < 20; pass++) {
+        var out = "", i = 0, n = js.length, changed = false;
+        while (i < n) {
+          var c = js[i];
+          if (c === "(") {
+            var prev = i > 0 ? js[i - 1] : "";
+            if (/[\w)\]]/.test(prev)) { out += c; i++; continue; }
+            var depth = 0, j = i, ok = false, comma = false;
+            while (j < n) {
+              if (js[j] === "(") depth++;
+              else if (js[j] === ")") { depth--; if (depth === 0) { ok = true; break; } }
+              else if (js[j] === "," && depth === 1) comma = true;
+              j++;
+            }
+            if (ok) {
+              var inner = js.slice(i + 1, j);
+              if (/^\s*$/.test(inner)) { out += "__tuple()"; }
+              else if (comma) { out += "__tuple(" + inner + ")"; }
+              else { out += c; i++; continue; }
+              i = j + 1; changed = true; continue;
+            }
+            out += c; i++; continue;
+          }
+          out += c; i++;
+        }
+        js = out;
+        if (!changed) break;
+      }
+      return js;
+    }
+
     function truthy(v) {
       if (Array.isArray(v)) return v.length > 0; // пустые [] и () — ложь, как в Python
       return !!v && v !== 0;
@@ -483,14 +517,9 @@ window.PyEngine = (function () {
       js = js.replace(/\bnot\s+in\b/g, "__NOTIN__"); // единый оператор, до handleNot
       js = handleNot(js); // not (x > 5), а не (!x) > 5
       js = js.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||");
-      // кортеж: (a, b) и () — скобки НЕ после имени (вызовы не трогаем)
-      js = js.replace(/(?<![\w)\]])\(\s*\)/g, "__tuple()");
-      var tg = 0;
-      while (tg++ < 20) {
-        var before = js;
-        js = js.replace(/(?<![\w)\]])\(([^()]*,[^()]*)\)/g, "__tuple($1)");
-        if (js === before) break;
-      }
+      // кортеж: (a, b) и () — скобки НЕ после имени (вызовы не трогаем).
+      // Без lookbehind: ручной скан, работает и на старых Safari.
+      js = rewriteTuples(js);
       js = js.replace(/\*\*/g, "__POW__").replace(/\/\//g, "__FLOORDIV__");
       var opnd = "([A-Za-z_]\\w*(?:\\[[^\\[\\]]*\\]|\\((?:[^()]|\\([^()]*\\))*\\))?|\\[[^\\[\\]]*\\]|\\d+(?:\\.\\d+)?)";
       var opndCall = "([A-Za-z_]\\w*(?:\\[[^\\[\\]]*\\]|\\((?:[^()]|\\([^()]*\\))*\\))?|\\[[^\\[\\]]*\\]|\\d+(?:\\.\\d+)?)";
