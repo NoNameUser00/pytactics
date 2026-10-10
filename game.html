@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<canvas id="jump" style="position:fixed;inset:0;z-index:60;pointer-events:none"></canvas>
 <header>
   <div class="logo">🤖⚔️</div>
   <div>
@@ -96,6 +97,7 @@
 <script src="js/config.js"></script>
 <script src="js/supabase.min.js"></script>
 <script src="js/backend.js"></script>
+<script src="js/pages.js"></script>
 <script src="js/ui.js"></script>
 <script>
 if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {

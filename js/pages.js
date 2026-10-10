@@ -86,6 +86,7 @@
   function boot(fn) {
     initTheme();
     starfield();
+    jumpIntro();
     if (window.Backend) window.Backend.init().then(function () { paintAuth(); fn(); }, function () { paintAuth(); fn(); });
     else { paintAuth(); fn(); }
   }
@@ -209,6 +210,39 @@
     if ($("flyBtn")) $("flyBtn").onclick = function () { location.href = "map.html"; };
   }
 
+  // ---------- гиперпрыжок при входе ----------
+  function jumpIntro() {
+    var c = $("jump");
+    var uni = document.querySelector(".uni");
+    if (uni) uni.classList.add("reveal");
+    if (!c) return;
+    var ctx = c.getContext("2d");
+    c.width = window.innerWidth; c.height = window.innerHeight;
+    var cx = c.width / 2, cy = c.height / 2, parts = [];
+    for (var i = 0; i < 130; i++) {
+      parts.push({ a: Math.random() * 6.283, r: Math.random() * 60, sp: 4 + Math.random() * 10 });
+    }
+    var t0 = performance.now();
+    (function frame(t) {
+      var k = (t - t0) / 1100;
+      if (k >= 1) { if (c.parentNode) c.parentNode.removeChild(c); return; }
+      ctx.fillStyle = "rgba(2,4,9," + (0.25 + k * 0.6) + ")";
+      ctx.fillRect(0, 0, c.width, c.height);
+      ctx.strokeStyle = "#cfe4ff";
+      ctx.globalAlpha = 1 - k;
+      ctx.lineWidth = 2;
+      parts.forEach(function (p) {
+        var r1 = p.r + k * 60 * p.sp, r2 = r1 + 20 + k * 130;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(p.a) * r1, cy + Math.sin(p.a) * r1);
+        ctx.lineTo(cx + Math.cos(p.a) * r2, cy + Math.sin(p.a) * r2);
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(frame);
+    })(t0);
+  }
+
   // ---------- карта секторов (map) ----------
   function initMap() {
     var B = window.Backend, st = B ? B.stars() : {};
@@ -221,6 +255,7 @@
     if ($("statStars")) $("statStars").textContent = "★ " + total + "/" + (window.LEVELS.length * 3);
     if ($("statDone")) $("statDone").textContent = "🪐 Пройдено: " + done + "/" + window.LEVELS.length;
     if ($("statMode")) $("statMode").textContent = (B && B.currentUser()) ? "☁️ Облако" : "💾 Локально";
+    renderChart(gals, st);
     var wrap = $("galaxies");
     if (!wrap) return;
     wrap.innerHTML = "";
@@ -243,7 +278,86 @@
     });
   }
 
+  // Звёздная карта: системы-позиции, кольцо прогресса, клик
+  var CHART_POS = [[9, 20], [22, 12], [35, 22], [48, 13], [61, 20], [74, 13], [87, 22], [14, 50], [30, 60], [47, 52], [64, 60], [81, 50], [55, 80]];
+  function renderChart(gals, st) {
+    var chart = $("chart");
+    if (!chart) return;
+    chart.innerHTML = "";
+    gals.forEach(function (g, gi) {
+      var open = galaxyOpen(gi, gals, st);
+      var pos = CHART_POS[gi % CHART_POS.length];
+      var sys = document.createElement("div");
+      sys.className = "system " + g.cls + (open ? "" : " locked");
+      sys.style.left = pos[0] + "%";
+      sys.style.top = pos[1] + "%";
+      sys.style.animationDelay = (gi * 0.08) + "s";
+      var dots = "", n = g.levels.length;
+      for (var k = 0; k < n; k++) {
+        var id = g.levels[k], a = (k / n) * 6.283 - 1.5708;
+        var col = (st[id] || 0) > 0 ? "var(--gold)" : (isOpen(id, st) ? "var(--accent2)" : "#555");
+        dots += "<span class='sys-p' style='left:" + (50 + 44 * Math.cos(a)) + "%;top:" + (50 + 44 * Math.sin(a)) + "%;background:" + col + "'></span>";
+      }
+      var s = 0;
+      g.levels.forEach(function (id) { s += st[id] || 0; });
+      sys.innerHTML = "<div class='sys-ring' style='animation-duration:" + (20 + gi * 4) + "s'>" + dots + "</div>" +
+        "<div class='sys-star'></div>" +
+        "<div class='sys-label'>" + g.icon + " " + esc(shortName(g.name)) + "</div>" +
+        "<div class='sys-sub'>★ " + s + "/" + (n * 3) + "</div>";
+      if (open) {
+        (function (i) { sys.onclick = function () { location.href = "galaxy.html?g=" + (i + 1); }; })(gi);
+      } else {
+        sys.title = "Сначала заверши предыдущую главу";
+      }
+      chart.appendChild(sys);
+    });
+  }
   // ---------- планеты главы (galaxy) ----------
+  function renderSystem(g, st) {
+    var view = $("sysview");
+    if (!view) return;
+    view.className = "sysview " + g.cls;
+    view.innerHTML = "<div class='sys-sun'></div>";
+    var pt = PTYPE(), n = g.levels.length;
+    var step = n > 1 ? 200 / (n - 1) : 0;
+    g.levels.forEach(function (id, idx) {
+      var l = levelById(id);
+      if (!l) return;
+      var open = isOpen(id, st);
+      var dia = n > 1 ? 110 + idx * step : 170;
+      var dur = 24 + idx * 6;
+      var a = idx * 2.4;
+      var orb = document.createElement("div");
+      orb.className = "sys-orbit";
+      orb.style.width = dia + "px";
+      orb.style.height = dia + "px";
+      orb.style.animationDuration = dur + "s";
+      var w = document.createElement("div");
+      var sz = 34;
+      w.className = "sys-world orb pt-" + (pt[id] || "rock") + (open ? "" : " locked");
+      w.style.width = sz + "px";
+      w.style.height = sz + "px";
+      w.style.fontSize = "13px";
+      w.style.left = (50 + 50 * Math.cos(a)) + "%";
+      w.style.top = (50 + 50 * Math.sin(a)) + "%";
+      w.style.transform = "translate(-50%,-50%)";
+      w.style.animation = "spinRev " + dur + "s linear infinite";
+      w.textContent = open ? l.id : "🔒";
+      if (open) {
+        w.title = "Планета " + l.id + ": " + l.title;
+        (function (x) { w.onclick = function (ev) { ev.stopPropagation(); location.href = "game.html?level=" + x; }; })(id);
+      } else {
+        w.title = "Сначала пройди планету " + (id - 1);
+      }
+      orb.appendChild(w);
+      view.appendChild(orb);
+    });
+  }
+  function shortName(name) {
+    var m = String(name).match(/^Глава \d+/);
+    if (m) return m[0];
+    return name.length > 14 ? name.slice(0, 13) + "…" : name;
+  }
   function initGalaxy() {
     var B = window.Backend, st = B ? B.stars() : {};
     var gals = galaxies(), pt = PTYPE();
@@ -253,6 +367,7 @@
     var g = gals[gi];
     if ($("gTitle")) $("gTitle").textContent = g.icon + " " + g.name;
     if ($("gDesc")) $("gDesc").textContent = g.desc;
+    renderSystem(g, st);
     var row = $("planets");
     if (row) {
       row.innerHTML = "";
