@@ -939,5 +939,280 @@ window.LEVELS = [
     ],
     solution: 'cargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 6
+  },
+  // ---------- Глава 10. Словари и множества ----------
+  {
+    id: 59, title: "Картотека", topic: "словарь {}", book: "10.1",
+    briefing: "§10.1: словарь — карточки «ключ: значение». Заведи карточку пилота и прочитай её.",
+    lore: "Каждая вещь — на своей карточке.",
+    goal: "Выведи имя и тип, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Бип", "dict"],
+    starter: 'd = {"пилот": "Бип"}\nprint(d["пилот"])\nprint(type(d))\nmove_right()\n',
+    hints: [
+      "Намёк: карточка уже читается. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nd = {\"пилот\": \"Бип\"}\nprint(d[\"пилот\"])\nprint(type(d))\nmove_right()\nmove_right()"
+    ],
+    solution: 'd = {"пилот": "Бип"}\nprint(d["пилот"])\nprint(type(d))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 60, title: "Новая карточка", topic: "d[k] = v", book: "10.2",
+    briefing: "§10.2: карточки можно добавлять: inv[«щит»] = 1. Доложи количество.",
+    lore: "Картотека растёт.",
+    goal: "Выведи 1 и 2, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["1", "2"],
+    starter: 'inv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\nmove_right()\n',
+    hints: [
+      "Намёк: карточка уже добавлена. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\ninv = {\"ядро\": 2}\ninv[\"щит\"] = 1\nprint(inv[\"щит\"])\nprint(len(inv))\nmove_right()\nmove_right()"
+    ],
+    solution: 'inv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 61, title: "Обход карточек", topic: "for по словарю", book: "10.2",
+    briefing: "§10.2: цикл идёт по ключам. Сложи все значения и проверь ключ «a».",
+    lore: "Пройди все карточки.",
+    goal: "Выведи 3 и True, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["3", "True"],
+    starter: 'data = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\nmove_right()\n',
+    hints: [
+      "Намёк: сумма уже считается (3). Добавь второй шаг.",
+      "Псевдокод: цикл + два print + 2× move_right().",
+      "Решение:\ndata = {\"a\": 1, \"b\": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint(\"a\" in data)\nmove_right()\nmove_right()"
+    ],
+    solution: 'data = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 62, title: "В архив", topic: "del d[k]", book: "10.2",
+    briefing: "§10.2: лишнюю карточку — в архив через del. Убери «x» и измерь остаток.",
+    lore: "Лишнее — в архив.",
+    goal: "Выведи 1 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["1"],
+    starter: 'd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\nmove_right()\n',
+    hints: [
+      "Намёк: карточка уже удалена. Добавь второй шаг.",
+      "Псевдокод: del + print + 2× move_right().",
+      "Решение:\nd = {\"x\": 1, \"y\": 2}\ndel d[\"x\"]\nprint(len(d))\nmove_right()\nmove_right()"
+    ],
+    solution: 'd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 63, title: "Без повторов", topic: "множество set()", book: "10.3/10.5",
+    briefing: "§10.3 и §10.5: множество не терпит повторов. Сожми [1, 2, 2, 3] и добавь 4.",
+    lore: "Повторы — мусор. Множество — порядок.",
+    goal: "Выведи 3 и True, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["3", "True"],
+    starter: 's = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\nmove_right()\n',
+    hints: [
+      "Намёк: повторы уже сжаты. Добавь второй шаг.",
+      "Псевдокод: set + print + add + print + 2× move_right().",
+      "Решение:\ns = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\nmove_right()\nmove_right()"
+    ],
+    solution: 's = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 64, title: "Картотека", topic: "босс: проверка ключа", book: "10.2",
+    briefing: "§10.2 из учебника: на складе всё по карточкам. Проверь «ключи», одолей стражу.",
+    lore: "Всё по карточкам. Стража — по расписанию.",
+    goal: "Проверь ключ, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["Есть"],
+    starter: 'depot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\nmove_right()\nattack("right")\n',
+    hints: [
+      "Намёк: ключ уже проверен. После: шаг, удар, четыре шага.",
+      "Псевдокод: if + print + шаг + удар + 4 шага.",
+      "Решение:\ndepot = {\"ключи\": 1}\nif \"ключи\" in depot:\n    print(\"Есть\")\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'depot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 6
+  },
+  // ---------- Глава 11. Функции ----------
+  {
+    id: 65, title: "Своя команда", topic: "def", book: "11.1",
+    briefing: "§11.1: объяви свою команду greet(name) — она здоровается и возвращает фразу.",
+    lore: "Своя команда — своя сила.",
+    goal: "Выведи приветствие и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Привет, Бип"],
+    starter: 'def greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\nmove_right()\n',
+    hints: [
+      "Намёк: функция уже здоровается. Добавь второй шаг.",
+      "Псевдокод: def + print + 2× move_right().",
+      "Решение:\ndef greet(name):\n    return \"Привет, \" + name\nprint(greet(\"Бип\"))\nmove_right()\nmove_right()"
+    ],
+    solution: 'def greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 66, title: "Умолчания", topic: "параметры по умолчанию", book: "11.2",
+    briefing: "§11.2: степень по умолчанию — квадрат. Вызови power(3) и power(2, 3).",
+    lore: "Умолчание — как автопилот.",
+    goal: "Выведи 9 и 8, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["9", "8"],
+    starter: 'def power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\nmove_right()\n',
+    hints: [
+      "Намёк: оба вызова уже написаны. Добавь второй шаг.",
+      "Псевдокод: def + два print + 2× move_right().",
+      "Решение:\ndef power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\nmove_right()\nmove_right()"
+    ],
+    solution: 'def power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 67, title: "Пара назад", topic: "возврат нескольких", book: "11.10",
+    briefing: "§11.10: return может вернуть пару. Разложи её обратно в имена и сложи.",
+    lore: "Пара туда — пара обратно.",
+    goal: "Выведи 7 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["7"],
+    starter: 'def pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\nmove_right()\n',
+    hints: [
+      "Намёк: пара уже разложена (3+4=7). Добавь второй шаг.",
+      "Псевдокод: def + unpack + print + 2× move_right().",
+      "Решение:\ndef pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\nmove_right()\nmove_right()"
+    ],
+    solution: 'def pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 68, title: "Зеркало", topic: "рекурсия", book: "11.7",
+    briefing: "§11.7: функция зовёт саму себя — рекурсия. Посчитай факториал 5.",
+    lore: "Функция в зеркале. Зеркало в функции.",
+    goal: "Выведи 120 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["120"],
+    starter: 'def fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\nmove_right()\n',
+    hints: [
+      "Намёк: рекурсия уже написана (120). Добавь второй шаг.",
+      "Псевдокод: def + print + 2× move_right().",
+      "Решение:\ndef fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\nmove_right()\nmove_right()"
+    ],
+    solution: 'def fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 69, title: "Общий счёт", topic: "global", book: "11.8",
+    briefing: "§11.8: без global функция пишет в свою тетрадку. Объяви общий счётчик.",
+    lore: "Общее — значит общее.",
+    goal: "Выведи 2 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["2"],
+    starter: 'count = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\nmove_right()\n',
+    hints: [
+      "Намёк: счётчик уже тикает дважды. Добавь второй шаг.",
+      "Псевдокод: def + два вызова + print + 2× move_right().",
+      "Решение:\ncount = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\nmove_right()\nmove_right()"
+    ],
+    solution: 'count = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 70, title: "Паспорт функции", topic: "docstring", book: "11.9",
+    briefing: "§11.9: у приличной функции есть паспорт — строка-документация. Выдай паспорт и посчитай площадь 3×4.",
+    lore: "Без паспорта — не функция.",
+    goal: "Выведи 12 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["12"],
+    starter: 'def area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\nmove_right()\n',
+    hints: [
+      "Намёк: площадь уже считается (12). Добавь второй шаг.",
+      "Псевдокод: def + print + 2× move_right().",
+      "Решение:\ndef area(w, h):\n    \"\"\"Площадь прямоугольника.\"\"\"\n    return w * h\nprint(area(3, 4))\nmove_right()\nmove_right()"
+    ],
+    solution: 'def area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 71, title: "Штурмовая функция", topic: "босс: приём в def", book: "11.1",
+    briefing: "§11.1 в бою: упакуй «удар + шаг» в функцию kill() и зачисти коридор.",
+    lore: "Приём, упакованный в слово, бьёт дважды.",
+    goal: "Зачисти коридор и дойди до 🌀.",
+    map: ["#########", "#P.E.E.X#", "#########"],
+    energy: 30, maxTurns: 20,
+    starter: 'def kill():\n    attack("right")\n    move_right()\nmove_right()\nkill()\n',
+    hints: [
+      "Намёк: приём уже упакован. Схема: шаг, приём, шаг, приём, два шага.",
+      "Псевдокод: move + kill + move + kill + move + move.",
+      "Решение:\ndef kill():\n    attack(\"right\")\n    move_right()\nmove_right()\nkill()\nmove_right()\nkill()\nmove_right()\nmove_right()"
+    ],
+    solution: 'def kill():\n    attack("right")\n    move_right()\nmove_right()\nkill()\nmove_right()\nkill()\nmove_right()\nmove_right()',
+    starTurns: 8
+  },
+  // ---------- Глава 13. Исключения ----------
+  {
+    id: 72, title: "Страховка", topic: "try/except", book: "13.1",
+    briefing: "§13.1: ошибка — не конец света, если есть страховка. Брось сигнал и поймай его.",
+    lore: "Падай — но в страховку.",
+    goal: "Выведи «Поймано» и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Поймано"],
+    starter: 'try:\n    raise("Бум!")\nexcept:\n    print("Поймано")\nmove_right()\n',
+    hints: [
+      "Намёк: страховка уже стоит. Добавь второй шаг.",
+      "Псевдокод: try/except + 2× move_right().",
+      "Решение:\ntry:\n    raise(\"Бум!\")\nexcept:\n    print(\"Поймано\")\nmove_right()\nmove_right()"
+    ],
+    solution: 'try:\n    raise("Бум!")\nexcept:\n    print("Поймано")\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 73, title: "Имя аварии", topic: "except as", book: "13.3",
+    briefing: "§13.3: аварию можно назвать по имени через as. Поймай «Перегрев» и доложи.",
+    lore: "Назови аварию — и она уже меньше.",
+    goal: "Выведи доклад и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Авария: Перегрев"],
+    starter: 'try:\n    raise("Перегрев")\nexcept Ошибка as e:\n    print("Авария: " + e)\nmove_right()\n',
+    hints: [
+      "Намёк: доклад уже пишется. Добавь второй шаг.",
+      "Псевдокод: try/except + 2× move_right().",
+      "Решение:\ntry:\n    raise(\"Перегрев\")\nexcept Ошибка as e:\n    print(\"Авария: \" + e)\nmove_right()\nmove_right()"
+    ],
+    solution: 'try:\n    raise("Перегрев")\nexcept Ошибка as e:\n    print("Авария: " + e)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 74, title: "Чистый полёт", topic: "else/finally", book: "13.3",
+    briefing: "§13.3: else — если всё чисто, finally — в любом случае. Пролети без аварий.",
+    lore: "Чисто. И точка в конце.",
+    goal: "Выведи два слова и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["чисто", "конец"],
+    starter: 'try:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\nmove_right()\n',
+    hints: [
+      "Намёк: аварий нет — сработают else и finally. Добавь второй шаг.",
+      "Псевдокод: try-блок + 2× move_right().",
+      "Решение:\ntry:\n    x = 1\nexcept:\n    print(\"нет\")\nelse:\n    print(\"чисто\")\nfinally:\n    print(\"конец\")\nmove_right()\nmove_right()"
+    ],
+    solution: 'try:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 75, title: "Реактор", topic: "босс: перегрев", book: "13.3",
+    briefing: "§13.3 в бою: реактор греется (15 при норме 10). Поймай аварию и прорвись к маяку.",
+    lore: "Реактор греется. Руки — нет.",
+    goal: "Поймай аварию, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["Перегрев!"], biome: "deathstar", place: "Реактор",
+    starter: 'temp = 15\ntry:\n    if temp > 10:\n        raise("Перегрев!")\nexcept Авария as e:\n    print(e)\nmove_right()\nattack("right")\n',
+    hints: [
+      "Намёк: авария уже ловится. После: шаг, удар, четыре шага.",
+      "Псевдокод: try + шаг + удар + 4 шага.",
+      "Решение:\ntemp = 15\ntry:\n    if temp > 10:\n        raise(\"Перегрев!\")\nexcept Авария as e:\n    print(e)\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'temp = 15\ntry:\n    if temp > 10:\n        raise("Перегрев!")\nexcept Авария as e:\n    print(e)\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 6
   }
 ];

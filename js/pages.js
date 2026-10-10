@@ -20,11 +20,14 @@
       { name: "Глава 6. Строки", desc: "§6.1–6.11: кавычки, срезы, методы, шифр — сектор «Архив»", levels: [29, 30, 31, 32, 33, 34, 35, 36], cls: "g6", icon: "📜" },
       { name: "Глава 7. Шаблоны", desc: "§7.1–7.6: поиск, маски, замена — сектор «Картотека»", levels: [37, 38, 39, 40, 41, 42], cls: "g1", icon: "🔍" },
       { name: "Глава 8. Списки", desc: "§8.1–8.11: шеренги, обход, сортировка — сектор «Склад»", levels: [43, 44, 45, 46, 47, 48, 49, 50], cls: "g2", icon: "🗂️" },
-      { name: "Глава 9. Кортежи", desc: "§9.1–9.10: капсулы, распаковка, неизменность — сектор «Капсула»", levels: [51, 52, 53, 54, 55, 56, 57, 58], cls: "g3", icon: "📦" }
+      { name: "Глава 9. Кортежи", desc: "§9.1–9.10: капсулы, распаковка, неизменность — сектор «Капсула»", levels: [51, 52, 53, 54, 55, 56, 57, 58], cls: "g3", icon: "📦" },
+      { name: "Глава 10. Словари", desc: "§10.1–10.5: карточки, множества — сектор «Картотека-2»", levels: [59, 60, 61, 62, 63, 64], cls: "g4", icon: "🧾" },
+      { name: "Глава 11. Функции", desc: "§11.1–11.10: def, рекурсия, global — сектор «Мастерская»", levels: [65, 66, 67, 68, 69, 70, 71], cls: "g5", icon: "⚙️" },
+      { name: "Глава 13. Исключения", desc: "§13.1–13.5: try, страховка — сектор «Реактор»", levels: [72, 73, 74, 75], cls: "g6", icon: "🚨" }
     ];
   }
   function PTYPE() {
-    return { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "rock", 6: "gas", 7: "city", 8: "ice", 9: "lava", 10: "rock", 11: "gas", 12: "lava", 13: "ice", 14: "city", 15: "rock", 16: "lava", 17: "gas", 18: "rock", 19: "ice", 20: "ring", 21: "ring", 22: "rock", 23: "ice", 24: "gas", 25: "city", 26: "lava", 27: "ice", 28: "ring", 29: "rock", 30: "gas", 31: "city", 32: "ice", 33: "lava", 34: "ring", 35: "gas", 36: "ring", 37: "rock", 38: "gas", 39: "city", 40: "ice", 41: "lava", 42: "ring", 43: "rock", 44: "gas", 45: "city", 46: "ice", 47: "lava", 48: "ring", 49: "gas", 50: "ring", 51: "rock", 52: "gas", 53: "city", 54: "ice", 55: "lava", 56: "ring", 57: "gas", 58: "ring" };
+    return { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "rock", 6: "gas", 7: "city", 8: "ice", 9: "lava", 10: "rock", 11: "gas", 12: "lava", 13: "ice", 14: "city", 15: "rock", 16: "lava", 17: "gas", 18: "rock", 19: "ice", 20: "ring", 21: "ring", 22: "rock", 23: "ice", 24: "gas", 25: "city", 26: "lava", 27: "ice", 28: "ring", 29: "rock", 30: "gas", 31: "city", 32: "ice", 33: "lava", 34: "ring", 35: "gas", 36: "ring", 37: "rock", 38: "gas", 39: "city", 40: "ice", 41: "lava", 42: "ring", 43: "rock", 44: "gas", 45: "city", 46: "ice", 47: "lava", 48: "ring", 49: "gas", 50: "ring", 51: "rock", 52: "gas", 53: "city", 54: "ice", 55: "lava", 56: "ring", 57: "gas", 58: "ring", 59: "rock", 60: "gas", 61: "city", 62: "ice", 63: "lava", 64: "ring", 65: "rock", 66: "gas", 67: "city", 68: "ice", 69: "lava", 70: "ring", 71: "gas", 72: "rock", 73: "city", 74: "ice", 75: "ring" };
   }
   function levelById(id) {
     for (var i = 0; i < window.LEVELS.length; i++) if (window.LEVELS[i].id === id) return window.LEVELS[i];

@@ -81,18 +81,23 @@ window.PyEngine = (function () {
     }
 
     function isBlockOpener(t) {
-      return /^(if\b.*:|elif\b.*:|else:|while\b.*:|for\b.*:|def\b.*:)$/.test(t);
+      return /^(if\b.*:|elif\b.*:|else:|while\b.*:|for\b.*:|def\b.*:|try:|except\b.*:|finally:)$/.test(t);
     }
 
     function makeScope(parent) {
-      return { parent: parent, vars: {} };
+      return { parent: parent, vars: {}, globals: {} };
     }
     function getVar(scope, name) {
       var s = scope;
       while (s) { if (Object.prototype.hasOwnProperty.call(s.vars, name)) return s.vars[name]; s = s.parent; }
       return undefined;
     }
-    function setVar(scope, name, val) { scope.vars[name] = val; }
+    function setVar(scope, name, val) {
+      var s = scope, root = scope;
+      while (root.parent) root = root.parent;
+      while (s) { if (s.globals[name]) { root.vars[name] = val; return; } s = s.parent; }
+      scope.vars[name] = val;
+    }
 
     function tick() {
       state.steps++;
@@ -132,6 +137,38 @@ window.PyEngine = (function () {
           continue;
         }
         if (/^(elif\b|else:)/.test(t)) fail("elif/else без if");
+        if (/^(except\b|finally:)/.test(t)) fail("except/finally без try");
+
+        // --- try / except / else / finally ---
+        if (/^try:$/.test(t)) {
+          var hh = [], j2 = i + 1;
+          while (j2 < children.length && /^(except\b|else:|finally:)/.test(children[j2].text) && children[j2].indent === n.indent) {
+            hh.push(children[j2]); j2++;
+          }
+          i = j2;
+          var caught = null;
+          try {
+            execBlock(n.children, scope, st, failFn, depth + 1);
+          } catch (e) {
+            if (e && (e.__halt || e.__return || e.__sig)) throw e;
+            if (e && e.pyError) caught = e;
+            else throw e;
+          }
+          var exs = hh.filter(function (h) { return /^except\b/.test(h.text); });
+          if (caught) {
+            if (!exs.length) throw caught;
+            var em = exs[0].text.match(/^except(?:\s+[^\s:]+)?(?:\s+as\s+([A-Za-z_]\w*))?\s*:$/);
+            if (!em) fail("Пиши так: except: или except Ошибка as e:");
+            if (em[1]) setVar(scope, em[1], caught.message);
+            execBlock(exs[0].children, scope, st, failFn, depth + 1);
+          } else {
+            var els = hh.filter(function (h) { return /^else:$/.test(h.text); });
+            if (els.length) execBlock(els[0].children, scope, st, failFn, depth + 1);
+          }
+          var fns = hh.filter(function (h) { return /^finally:$/.test(h.text); });
+          if (fns.length) execBlock(fns[0].children, scope, st, failFn, depth + 1);
+          continue;
+        }
 
         // --- while ---
         if (/^while\b/.test(t)) {
@@ -164,7 +201,8 @@ window.PyEngine = (function () {
           if (fl) {
             var arr = evalExpr(fl[2], scope, st);
             if (typeof arr === "string") arr = arr.split("");
-            if (!Array.isArray(arr)) fail("После in нужен список (или строка), а не «" + fl[2] + "»");
+            else if (arr !== null && typeof arr === "object" && !Array.isArray(arr)) arr = Object.keys(arr);
+            if (!Array.isArray(arr)) fail("После in нужен список, словарь или строка, а не «" + fl[2] + "»");
             for (var q = 0; q < arr.length; q++) {
               setVar(scope, fl[1], arr[q]);
               var inner3 = { brk: false, cont: false };
@@ -176,11 +214,21 @@ window.PyEngine = (function () {
           fail("Поддерживается: for i in range(...) или for x in список");
         }
 
-        // --- def ---
+        // --- def (с defaults: def f(x=5)) ---
         var dm = t.match(/^def\s+([A-Za-z_]\w*)\s*\((.*)\):$/);
         if (dm) {
-          var params = dm[2].trim() === "" ? [] : dm[2].split(",").map(function (s) { return s.trim(); });
+          var params = dm[2].trim() === "" ? [] : splitArgs(dm[2]).map(function (s) {
+            var pm = s.match(/^([A-Za-z_]\w*)\s*=\s*(.+)$/);
+            return pm ? { name: pm[1], def: pm[2] } : { name: s };
+          });
           st.funcs[dm[1]] = { params: params, body: n.children, defScope: scope };
+          i++; continue;
+        }
+
+        // --- global x, y ---
+        var gm = t.match(/^global\s+(.+)$/);
+        if (gm) {
+          gm[1].split(",").forEach(function (s) { scope.globals[s.trim()] = true; });
           i++; continue;
         }
 
@@ -189,7 +237,15 @@ window.PyEngine = (function () {
         if (t === "continue") { sig.cont = true; i++; break; }
         var rm = t.match(/^return\b\s*(.*)$/);
         if (rm) {
-          var rv = rm[1] === "" ? null : evalExpr(rm[1], scope, st);
+          var rv;
+          if (rm[1] === "") rv = null;
+          else {
+            var rparts = splitArgs(rm[1]);
+            if (rparts.length > 1) {
+              rv = rparts.map(function (p) { return evalExpr(p, scope, st); });
+              Object.defineProperty(rv, "__tuple__", { value: true });
+            } else rv = evalExpr(rm[1], scope, st);
+          }
           throw { __return: true, value: rv };
         }
 
@@ -197,6 +253,10 @@ window.PyEngine = (function () {
         var dli = t.match(/^del\s+([A-Za-z_]\w*)\[([^\]]+)\]$/);
         if (dli) {
           var arrv = getVar(scope, dli[1]);
+          if (arrv !== null && typeof arrv === "object" && !Array.isArray(arrv)) {
+            delete arrv[evalExpr(dli[2], scope, st)];
+            i++; continue;
+          }
           if (!Array.isArray(arrv)) fail("del [...]: «" + dli[1] + "» — не список");
           if (arrv.__tuple__) fail("Кортеж менять нельзя (del) — создай новый");
           var di = Math.floor(Number(evalExpr(dli[2], scope, st)));
@@ -211,6 +271,16 @@ window.PyEngine = (function () {
             if (Object.prototype.hasOwnProperty.call(ss.vars, dlm[1])) { delete ss.vars[dlm[1]]; break; }
             ss = ss.parent;
           }
+          i++; continue;
+        }
+
+        // --- d["k"] = v (только словари) ---
+        var sm = t.match(/^([A-Za-z_]\w*)\[([^\]]+)\]\s*=\s*(?!=)(.+)$/);
+        if (sm) {
+          var cont = getVar(scope, sm[1]);
+          if (cont === undefined) fail("Словарь «" + sm[1] + "» не найден — создай его сначала");
+          if (cont === null || typeof cont !== "object" || Array.isArray(cont)) fail("Так присваивать можно только в словарь");
+          cont[evalExpr(sm[2], scope, st)] = evalExpr(sm[3], scope, st);
           i++; continue;
         }
 
@@ -318,12 +388,17 @@ window.PyEngine = (function () {
       return !!v && v !== 0;
     }
 
-    // Питоновский вывод: True/False/None, списки как [1, 2, 'a'], кортежи как (1, 2)
+    // Питоновский вывод: True/False/None, списки [1, 2, 'a'], кортежи (1, 2),
+    // множества {1, 2}, словари {'a': 1}
     function fmtPy(v, top) {
       if (Array.isArray(v)) {
         var inner = v.map(function (x) { return fmtPy(x, false); }).join(", ");
+        if (v.__set__) return "{" + inner + "}";
         if (v.__tuple__) return v.length === 1 ? "(" + inner + ",)" : "(" + inner + ")";
         return "[" + inner + "]";
+      }
+      if (v !== null && typeof v === "object") {
+        return "{" + Object.keys(v).map(function (k) { return "'" + k + "': " + fmtPy(v[k], false); }).join(", ") + "}";
       }
       if (v === true) return "True";
       if (v === false) return "False";
@@ -401,7 +476,10 @@ window.PyEngine = (function () {
         .replace(/\bTrue\b/g, "true").replace(/\bFalse\b/g, "false").replace(/\bNone\b/g, "null");
       // прячем строковые литералы, чтобы операторы внутри них не трогать
       var savedStrs = [];
-      js = js.replace(/"([^"\\]|\\.)*"|'([^'\\]|\\.)*'/g, function (m) { savedStrs.push(m); return "__S" + (savedStrs.length - 1) + "__"; });
+      js = js.replace(/"""(?:[^"\\]|"(?!")|\\.)*?"""|"([^"\\]|\\.)*"|'([^'\\]|\\.)*'/g, function (m) {
+        if (m.slice(0, 3) === '"""') m = '"' + m.slice(3, -3).replace(/"/g, '\\"') + '"';
+        savedStrs.push(m); return "__S" + (savedStrs.length - 1) + "__";
+      });
       js = js.replace(/\bnot\s+in\b/g, "__NOTIN__"); // единый оператор, до handleNot
       js = handleNot(js); // not (x > 5), а не (!x) > 5
       js = js.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||");
@@ -447,6 +525,11 @@ window.PyEngine = (function () {
       js = js.replace(/(__S\d+__|[A-Za-z_]\w*(?:\([^()]*\))?)\.join\(([^()]+)\)/g, "__join($1,$2)");
       js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isdigit\(\)/g, "__isdigit($1)")
         .replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isalpha\(\)/g, "__isalpha($1)");
+      js = js.replace(/([A-Za-z_]\w*)\.add\(([^()]+)\)/g, "__sadd($1,$2)");
+      js = js.replace(/([A-Za-z_]\w*)\.keys\(\)/g, "__keys($1)")
+        .replace(/([A-Za-z_]\w*)\.values\(\)/g, "__values($1)")
+        .replace(/([A-Za-z_]\w*)\.items\(\)/g, "__items($1)")
+        .replace(/([A-Za-z_]\w*)\.get\(([^()]+)\)/g, "__get($1,$2)");
       // методы списков
       js = js.replace(/([A-Za-z_]\w*)\.append\(([^()]+)\)/g, "__append($1,$2)");
       js = js.replace(/([A-Za-z_]\w*)\.sort\(\)/g, "__sort($1)");
@@ -469,7 +552,12 @@ window.PyEngine = (function () {
           ctx[fn] = function () {
             var f = st.funcs[fn];
             var callScope = makeScope(f.defScope);
-            for (var i = 0; i < f.params.length; i++) callScope.vars[f.params[i]] = arguments[i];
+            for (var i = 0; i < f.params.length; i++) {
+              var pd = f.params[i];
+              if (i < arguments.length && arguments[i] !== undefined) callScope.vars[pd.name] = arguments[i];
+              else if (pd.def !== undefined) callScope.vars[pd.name] = evalExpr(pd.def, f.defScope, st);
+              else fail("Не хватает аргумента «" + pd.name + "»");
+            }
             try {
               execBlock(f.body, callScope, st, fail, 0);
             } catch (e) {
@@ -488,7 +576,10 @@ window.PyEngine = (function () {
         })(fname);
       }
       for (var an in st.api) if (an !== "__print") ctx[an] = st.api[an];
-      ctx["len"] = function (x) { return x && x.length !== undefined ? x.length : 0; };
+      ctx["len"] = function (x) {
+        if (x && typeof x === "object" && !Array.isArray(x)) return Object.keys(x).length;
+        return x && x.length !== undefined ? x.length : 0;
+      };
       ctx["int"] = function (x) { return Math.trunc(Number(x)); };
       ctx["float"] = function (x) {
         if (x === "inf") return Infinity;
@@ -499,7 +590,8 @@ window.PyEngine = (function () {
       ctx["str"] = function (x) { return String(x); };
       ctx["bool"] = function (x) { return !!x && x !== 0; };
       ctx["type"] = function (x) {
-        if (Array.isArray(x)) return x.__tuple__ ? "tuple" : "list";
+        if (Array.isArray(x)) return x.__tuple__ ? (x.__set__ ? "set" : "tuple") : "list";
+        if (x !== null && typeof x === "object") return "dict";
         if (typeof x === "string") return "str";
         if (typeof x === "boolean") return "bool";
         if (typeof x === "number") return Number.isInteger(x) ? "int" : "float";
@@ -619,7 +711,10 @@ window.PyEngine = (function () {
         if (Array.isArray(a) && a.__tuple__) fail("Кортеж менять нельзя (" + what + ") — создай новый");
       }
       ctx["__append"] = function (a, x) { noMut(a, "append"); a.push(x); return null; };
-      ctx["__contains"] = function (c, x) { return String(c).indexOf(String(x)) >= 0; };
+      ctx["__contains"] = function (c, x) {
+        if (c !== null && typeof c === "object" && !Array.isArray(c)) return String(x) in c;
+        return String(c).indexOf(String(x)) >= 0;
+      };
       ctx["__replace"] = function (s, a, b) { return String(s).split(String(a)).join(String(b)); };
       ctx["__slice"] = function (s, a, b, c) {
         var isArr = Array.isArray(s);
@@ -647,6 +742,23 @@ window.PyEngine = (function () {
       ctx["__isdigit"] = function (x) { return /^[0-9]+$/.test(String(x)); };      ctx["__isalpha"] = function (x) { return /^[A-Za-z\u00c0-\u024f\u0400-\u04ff\u0500-\u052f]+$/.test(String(x)); };
       ctx["ord"] = function (x) { return String(x).codePointAt(0); };
       ctx["chr"] = function (x) { return String.fromCodePoint(Math.floor(Number(x))); };
+      ctx["raise"] = function (m) { fail(String(m)); };
+      ctx["set"] = function (x) {
+        var a = [];
+        var src = typeof x === "string" ? x.split("") : Array.isArray(x) ? x : [x];
+        src.forEach(function (v) { if (a.indexOf(v) < 0) a.push(v); });
+        Object.defineProperty(a, "__set__", { value: true });
+        return a;
+      };
+      ctx["__sadd"] = function (a, x) {
+        if (!Array.isArray(a)) fail("add: нужен список или множество");
+        if (a.indexOf(x) < 0) a.push(x);
+        return null;
+      };
+      ctx["__keys"] = function (d) { return Object.keys(d); };
+      ctx["__values"] = function (d) { return Object.keys(d).map(function (k) { return d[k]; }); };
+      ctx["__items"] = function (d) { return Object.keys(d).map(function (k) { return [k, d[k]]; }); };
+      ctx["__get"] = function (d, k, df) { return Object.prototype.hasOwnProperty.call(d, k) ? d[k] : df; };
       var keys = Object.keys(ctx), vals = keys.map(function (k) { return ctx[k]; });
       var fn;
       try {
