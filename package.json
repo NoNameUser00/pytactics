@@ -1,0 +1,29 @@
+{
+  "name": "game-boy",
+  "version": "1.0.0",
+  "description": "Пошаговая стратегия на карте в стиле **CodeCombat**. Главная — **карта вселенной** (`index.html`): 3 галактики, 8 планет-уровней. Ученик пишет **настоящий Python-подобный код**, герой выполняет его на поле, враги ходят в ответ. Работает **на GitHub Pages без сборки** — только статика. Вход через **Supabase** (проект `informatika`) — прогресс класса в облаке; без входа игра тоже работает (прогресс в браузере).",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NoNameUser00/pytactics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/NoNameUser00/pytactics/issues"
+  },
+  "homepage": "https://github.com/NoNameUser00/pytactics#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5"
+  }
+}

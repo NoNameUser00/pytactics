@@ -1,0 +1,9 @@
+{
+  "appId": "ru.pytactics.app",
+  "appName": "PyTactics",
+  "webDir": "www",
+  "backgroundColor": "#020409",
+  "android": {
+    "allowMixedContent": false
+  }
+}
