@@ -5,3 +5,5 @@ desktop/dist/
 desktop/out/
 www/
 android/
+*.apk
+icons/*.webp
