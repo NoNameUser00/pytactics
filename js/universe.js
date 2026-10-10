@@ -6,6 +6,8 @@
     { name: "Сектор «Пояс Астероидов»", desc: "Завалы Империи Роя: ветвления и циклы", levels: [3, 4, 5], cls: "g2", icon: "☄️" },
     { name: "«Тёмный Сектор»", desc: "Логово Владыки Баг: функции и поиск пути. Финал — Узел Роя.", levels: [6, 7, 8], cls: "g3", icon: "🌑" }
   ];
+  // Тип поверхности планеты: rock=кратеры, gas=полосы, city=огни, ice=лёд, lava=лава, ring=кольца
+  var PTYPE = { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "ice", 6: "lava", 7: "ice", 8: "ring" };
 
   var $ = function (id) { return document.getElementById(id); };
 
@@ -114,7 +116,7 @@
         var s = st[id] || 0;
         var p = document.createElement("div");
         p.className = "planet" + (open ? "" : " locked");
-        p.innerHTML = "<div class='orb'>" + (open ? l.id : "🔒") + "</div>" +
+        p.innerHTML = "<div class='orb pt-" + (PTYPE[id] || "rock") + "'>" + (open ? l.id : "🔒") + "</div>" +
           "<div class='pnum'>Планета " + l.id + "</div>" +
           "<div class='pname'>" + esc(l.title) + "</div>" +
           "<div class='ptopic'>" + esc(l.topic) + "</div>" +

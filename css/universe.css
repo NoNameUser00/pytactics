@@ -66,12 +66,20 @@ body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,Rob
 .planets{display:flex;gap:14px;flex-wrap:wrap;position:relative}
 .planet{width:150px;background:rgba(5,8,15,.7);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;cursor:pointer;transition:transform .12s}
 .planet:hover:not(.locked){transform:translateY(-3px);border-color:var(--accent)}
-.planet .orb{width:64px;height:64px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700}
-.g1 .orb{background:radial-gradient(circle at 30% 30%,var(--o1a),var(--o1b) 70%)}
-.g2 .orb{background:radial-gradient(circle at 30% 30%,var(--o2a),var(--o2b) 70%)}
-.g3 .orb{background:radial-gradient(circle at 30% 30%,var(--o3a),var(--o3b) 70%)}
+.planet .orb{width:64px;height:64px;margin:0 auto 6px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;position:relative;text-shadow:0 1px 4px #000,0 0 8px rgba(0,0,0,.7)}
+/* База планеты: объём + атмосфера. --pl/--pd задают свет/тень галактики */
+.g1 .orb{--pl:var(--o1a);--pd:var(--o1b);background:radial-gradient(circle at 32% 30%,var(--o1a),var(--o1b) 74%);box-shadow:0 0 16px -2px var(--o1b),inset -7px -9px 14px rgba(0,0,0,.5)}
+.g2 .orb{--pl:var(--o2a);--pd:var(--o2b);background:radial-gradient(circle at 32% 30%,var(--o2a),var(--o2b) 74%);box-shadow:0 0 16px -2px var(--o2b),inset -7px -9px 14px rgba(0,0,0,.5)}
+.g3 .orb{--pl:var(--o3a);--pd:var(--o3b);background:radial-gradient(circle at 32% 30%,var(--o3a),var(--o3b) 74%);box-shadow:0 0 16px -2px var(--o3b),inset -7px -9px 14px rgba(0,0,0,.5)}
+/* Типы поверхности (слои поверх базы, цвета — из темы) */
+.orb.pt-rock{background:radial-gradient(circle at 66% 58%,color-mix(in srgb,var(--pd) 55%,black) 0 9%,transparent 10%),radial-gradient(circle at 30% 68%,color-mix(in srgb,var(--pd) 55%,black) 0 6%,transparent 7%),radial-gradient(circle at 52% 28%,color-mix(in srgb,var(--pd) 45%,black) 0 5%,transparent 6%),radial-gradient(circle at 32% 30%,var(--pl),var(--pd) 74%)}
+.orb.pt-gas{background:repeating-linear-gradient(173deg,transparent 0 6px,rgba(0,0,0,.22) 6px 9px,rgba(255,255,255,.13) 9px 11px),radial-gradient(circle at 32% 30%,var(--pl),var(--pd) 74%)}
+.orb.pt-ice{background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.42) 47% 53%,transparent 58%),radial-gradient(circle at 70% 65%,rgba(255,255,255,.5) 0 6%,transparent 7%),radial-gradient(circle at 32% 30%,var(--pl),var(--pd) 74%)}
+.orb.pt-lava{background:radial-gradient(circle at 30% 66%,#ff7a1a 0 9%,transparent 10%),radial-gradient(circle at 68% 40%,#ffb454 0 6%,transparent 7%),radial-gradient(circle at 50% 80%,#ff4d4d 0 5%,transparent 6%),radial-gradient(circle at 32% 30%,color-mix(in srgb,var(--pd) 40%,black),#0a0a0c 78%);box-shadow:0 0 18px -2px rgba(255,122,26,.8),inset -7px -9px 14px rgba(0,0,0,.5)}
+.orb.pt-city{background:radial-gradient(circle,rgba(255,244,200,.95) 1px,transparent 1.7px),radial-gradient(circle at 32% 30%,var(--pl),var(--pd) 74%);background-size:8px 8px,auto}
+.orb.pt-ring::after{content:"";position:absolute;left:-24%;right:-24%;top:50%;height:38%;transform:translateY(-50%) rotate(-16deg);border:3px solid var(--pl);border-radius:50%;opacity:.85;pointer-events:none}
 .planet.locked{opacity:.45;cursor:default}
-.planet.locked .orb{background:radial-gradient(circle at 30% 30%,#444,#111 70%);font-size:22px}
+.planet.locked .orb{filter:grayscale(.85) brightness(.55);font-size:22px}
 .planet .pnum{font-size:12px;color:var(--accent2)}
 .planet .pname{font-size:14px;font-weight:600;margin:2px 0}
 .planet .ptopic{font-size:11px;color:var(--muted);min-height:28px}

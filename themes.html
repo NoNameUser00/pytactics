@@ -40,6 +40,7 @@
   var lv = {};
   window.LEVELS.forEach(function (l) { lv[l.id] = l; });
   var levelIds = { g1: [3, 4], g2: [1, 2, 5], g3: [6, 7, 8] };
+  var PTYPE = { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "ice", 6: "lava", 7: "ice", 8: "ring" };
   var box = document.getElementById("cases");
   THEMES.forEach(function (t) {
     var sec = document.createElement("section");
@@ -58,7 +59,7 @@
       for (var i = 0; i < ids.length; i++) {
         var l = lv[ids[i]], st = g.states[Math.min(i, g.states.length - 1)];
         var open = st !== "locked";
-        html += "<div class='planet" + (open ? "" : " locked") + "'><div class='orb'>"
+        html += "<div class='planet" + (open ? "" : " locked") + "'><div class='orb pt-" + (PTYPE[ids[i]] || "rock") + "'>"
           + (open ? l.id : "🔒") + "</div><div class='pnum'>Планета " + l.id + "</div>"
           + "<div class='pname'>" + l.title + "</div><div class='ptopic'>" + l.topic + "</div>"
           + "<div class='pstars'>" + (st === "done" ? "★★★" : st === "open" ? "— не пройдена —" : "— закрыта —") + "</div></div>";
