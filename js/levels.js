@@ -681,5 +681,134 @@ window.LEVELS = [
     ],
     solution: 'a = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 6
+  },
+  // ---------- Глава 8. Списки ----------
+  {
+    id: 43, title: "Первый список", topic: "литерал []", book: "8.1",
+    briefing: "§8.1: список — шеренга значений в скобках. Построй шеренгу и покажи её.",
+    lore: "Шеренга в скобках. Ровно, как штурмовики. Только наши.",
+    goal: "Выведи список и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["[3, 1, 2]"],
+    starter: 'nums = [3, 1, 2]\nprint(nums)\nmove_right()\n',
+    hints: [
+      "Намёк: список уже выводится. Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\nnums = [3, 1, 2]\nprint(nums)\nmove_right()\nmove_right()"
+    ],
+    solution: 'nums = [3, 1, 2]\nprint(nums)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 44, title: "Обход", topic: "for x in список", book: "8.4",
+    briefing: "§8.4: цикл идёт по элементам сам: for x in [1, 2, 3]. Сложи всё в сумму.",
+    lore: "Обойди всех. Сложи всех.",
+    goal: "Выведи 6 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["6"],
+    starter: 's = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\nmove_right()\n',
+    hints: [
+      "Намёк: сумма уже считается (6). Добавь второй шаг.",
+      "Псевдокод: цикл + print + 2× move_right().",
+      "Решение:\ns = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\nmove_right()\nmove_right()"
+    ],
+    solution: 's = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 45, title: "Досмотр", topic: "in и индекс", book: "8.5",
+    briefing: "§8.5: проверь, есть ли «b» в шеренге, и назови второй элемент.",
+    lore: "Досмотр на входе. Кто в списке?",
+    goal: "Выведи True и b, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["True", "b"],
+    starter: 'lst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\nmove_right()\n',
+    hints: [
+      "Намёк: обе проверки верны. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nlst = [\"a\", \"b\", \"c\"]\nprint(\"b\" in lst)\nprint(lst[1])\nmove_right()\nmove_right()"
+    ],
+    solution: 'lst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 46, title: "Стройся", topic: "append() и del", book: "8.6",
+    briefing: "§8.6: append ставит в конец, del убирает по номеру. Из [1, 2] сделай [2, 3].",
+    lore: "Перестрой шеренгу: в конец — встань, первый — вон.",
+    goal: "Выведи [2, 3] и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["[2, 3]"],
+    starter: 'a = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\nmove_right()\n',
+    hints: [
+      "Намёк: перестроение уже написано. Добавь второй шаг.",
+      "Псевдокод: append + del + print + 2× move_right().",
+      "Решение:\na = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\nmove_right()\nmove_right()"
+    ],
+    solution: 'a = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 47, title: "Сортировка", topic: "sort()", book: "8.8",
+    briefing: "§8.8: sort() ставит по возрастанию — по-настоящему, не как попало. Упорядочи [30, 4, 200].",
+    lore: "Порядок бьёт хаос.",
+    goal: "Выведи [4, 30, 200] и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["[4, 30, 200]"],
+    starter: 'a = [30, 4, 200]\na.sort()\nprint(a)\nmove_right()\n',
+    hints: [
+      "Намёк: сортировка уже вызвана. Добавь второй шаг.",
+      "Псевдокод: sort + print + 2× move_right().",
+      "Решение:\na = [30, 4, 200]\na.sort()\nprint(a)\nmove_right()\nmove_right()"
+    ],
+    solution: 'a = [30, 4, 200]\na.sort()\nprint(a)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 48, title: "В строку", topic: "join()", book: "8.9",
+    briefing: "§8.9: join склеивает шеренгу в строку через разделитель. Собери девиз.",
+    lore: "Шеренга — в слово. Слово — в девиз.",
+    goal: "Выведи девиз и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Да пребудет Код"],
+    starter: 'words = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\nmove_right()\n',
+    hints: [
+      "Намёк: девиз уже склеен. Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\nwords = [\"Да\", \"пребудет\", \"Код\"]\nprint(\" \".join(words))\nmove_right()\nmove_right()"
+    ],
+    solution: 'words = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 49, title: "Тас", topic: "shuffle() с зерном", book: "8.7",
+    briefing: "§8.7: shuffle тасует колоду. С зерном 5 тас всегда одинаковый — узнай первую карту.",
+    lore: "Тас честен, если зерно одно.",
+    goal: "Выведи первую карту и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["2"],
+    starter: 'seed(5)\ndeck = [1, 2, 3, 4]\nshuffle(deck)\nprint(deck[0])\nmove_right()\n',
+    hints: [
+      "Намёк: с зерном 5 первой всегда «2». Добавь второй шаг.",
+      "Псевдокод: seed + shuffle + print + 2× move_right().",
+      "Решение:\nseed(5)\ndeck = [1, 2, 3, 4]\nshuffle(deck)\nprint(deck[0])\nmove_right()\nmove_right()"
+    ],
+    solution: 'seed(5)\ndeck = [1, 2, 3, 4]\nshuffle(deck)\nprint(deck[0])\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 50, title: "Гараж", topic: "босс §8.11", book: "8.11",
+    briefing: "§8.11 из учебника: в гараже среди хлама затерялся ключ. Проверь списком, одолей стражу.",
+    lore: "Ключ в гараже. Стража у маяка. Обычный вторник.",
+    goal: "Найди ключ, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["Ключ на месте"],
+    starter: 'garage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\nmove_right()\nattack("right")\n',
+    hints: [
+      "Намёк: ключ уже найден. После: шаг, удар, четыре шага.",
+      "Псевдокод: if + print + шаг + удар + 4 шага.",
+      "Решение:\ngarage = [\"метла\", \"шина\", \"ключ\"]\nif \"ключ\" in garage:\n    print(\"Ключ на месте\")\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'garage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 6
   }
 ];

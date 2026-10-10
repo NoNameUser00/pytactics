@@ -159,7 +159,22 @@ window.PyEngine = (function () {
           }
           i++; continue;
         }
-        if (/^for\b/.test(t)) fail("Поддерживается только: for i in range(...)");
+        if (/^for\b/.test(t)) {
+          var fl = t.match(/^for\s+([A-Za-z_]\w*)\s+in\s+(.+):$/);
+          if (fl) {
+            var arr = evalExpr(fl[2], scope, st);
+            if (typeof arr === "string") arr = arr.split("");
+            if (!Array.isArray(arr)) fail("После in нужен список (или строка), а не «" + fl[2] + "»");
+            for (var q = 0; q < arr.length; q++) {
+              setVar(scope, fl[1], arr[q]);
+              var inner3 = { brk: false, cont: false };
+              execBlockWithSig(n.children, scope, st, failFn, depth + 1, inner3);
+              if (inner3.brk) break;
+            }
+            i++; continue;
+          }
+          fail("Поддерживается: for i in range(...) или for x in список");
+        }
 
         // --- def ---
         var dm = t.match(/^def\s+([A-Za-z_]\w*)\s*\((.*)\):$/);
@@ -178,7 +193,16 @@ window.PyEngine = (function () {
           throw { __return: true, value: rv };
         }
 
-        // --- del x ---
+        // --- del x / del a[i] ---
+        var dli = t.match(/^del\s+([A-Za-z_]\w*)\[([^\]]+)\]$/);
+        if (dli) {
+          var arrv = getVar(scope, dli[1]);
+          if (!Array.isArray(arrv)) fail("del [...]: «" + dli[1] + "» — не список");
+          var di = Math.floor(Number(evalExpr(dli[2], scope, st)));
+          if (di < 0) di = arrv.length + di;
+          arrv.splice(di, 1);
+          i++; continue;
+        }
         var dlm = t.match(/^del\s+([A-Za-z_]\w*)$/);
         if (dlm) {
           var ss = scope;
@@ -272,6 +296,16 @@ window.PyEngine = (function () {
 
     function truthy(v) { return !!v && v !== 0; }
 
+    // Питоновский вывод: True/False/None, списки как [1, 2, 'a']
+    function fmtPy(v, top) {
+      if (Array.isArray(v)) return "[" + v.map(function (x) { return fmtPy(x, false); }).join(", ") + "]";
+      if (v === true) return "True";
+      if (v === false) return "False";
+      if (v === null || v === undefined) return "None";
+      if (typeof v === "string") return top ? v : "'" + v + "'";
+      return String(v);
+    }
+
     // Детерминированный ГСЧ: seed(n) делает random()/randint() повторяемыми —
     // задачи с «Угадай число» проверяются точным expect.
     function mulberry32(a) {
@@ -326,7 +360,7 @@ window.PyEngine = (function () {
       var pm = expr.match(/^print\s*\((.*)\)$/);
       if (pm) {
         var raw = pm[1].trim() === "" ? "" : evalExpr(pm[1], scope, st);
-        var val = raw === true ? "True" : raw === false ? "False" : (raw === null || raw === undefined) ? "None" : String(raw);
+        var val = fmtPy(raw, true);
         st.logs.push(val);
         if (st.api && st.api.__print) st.api.__print(val);
         return null;
@@ -355,18 +389,28 @@ window.PyEngine = (function () {
         reMul.lastIndex = 0;
         js = js.replace(reMul, "__mul($1,$2)");
       }
-      // вхождение: A in B / A not in B
-      js = js.replace(new RegExp(opndCall + "\\s+(__NOTIN__|in)\\s+" + opndCall, "g"), function (m, a, op, b) {
+      // вхождение: A in B / A not in B (контейнер — имя, вызов или список)
+      var opndCont = "(\\[[^\\[\\]]*\\]|[A-Za-z_]\\w*(?:\\([^()]*\\))?|\\d+(?:\\.\\d+)?)";
+      js = js.replace(new RegExp(opndCall + "\\s+(__NOTIN__|in)\\s+" + opndCont, "g"), function (m, a, op, b) {
         return op === "__NOTIN__" ? "!__contains(" + b + "," + a + ")" : "__contains(" + b + "," + a + ")";
       });
-      // срез: s[a:b:c]
-      js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\[([^\[\]:]*):([^\[\]:]*)(?::([^\[\]:]*))?\]/g, "__slice($1,\"$2\",\"$3\",\"$4\")");
+      // отрицательный индекс: a[-1] (и для строк тоже)
+      js = js.replace(/([A-Za-z_]\w*(?:\[[^\[\]]*\])*)\[(-\d+)\]/g, "__index($1,$2)");
+      // срез: s[a:b:c] (строки и списки; база — имя, вызов или список)
+      js = js.replace(/([A-Za-z_]\w*(?:\[[^\[\]]*\]|\([^()]*\))?|\[[^\[\]]*\])\[([^\[\]:]*):([^\[\]:]*)(?::([^\[\]:]*))?\]/g, "__slice($1,\"$2\",\"$3\",\"$4\")");
       // методы строк
       js = js.replace(/\.upper\(\)/g, ".toUpperCase()").replace(/\.lower\(\)/g, ".toLowerCase()")
         .replace(/\.strip\(\)/g, ".trim()").replace(/\.find\(/g, ".indexOf(").replace(/\.startswith\(/g, ".startsWith(").replace(/\.endswith\(/g, ".endsWith(");
       js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.replace\(([^,()]+),([^()]+)\)/g, "__replace($1,$2,$3)");
+      js = js.replace(/(__S\d+__|[A-Za-z_]\w*(?:\([^()]*\))?)\.join\(([^()]+)\)/g, "__join($1,$2)");
       js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isdigit\(\)/g, "__isdigit($1)")
         .replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isalpha\(\)/g, "__isalpha($1)");
+      // методы списков
+      js = js.replace(/\.append\(/g, ".push(");
+      js = js.replace(/([A-Za-z_]\w*)\.sort\(\)/g, "__sort($1)");
+      js = js.replace(/([A-Za-z_]\w*)\.insert\(([^,()]+),([^()]+)\)/g, "__insert($1,$2,$3)");
+      js = js.replace(/([A-Za-z_]\w*)\.remove\(([^()]+)\)/g, "__remove($1,$2)");
+      js = js.replace(/([A-Za-z_]\w*)\.pop\(([^()]+)\)/g, "__pop($1,$2)");
       js = js.replace(/__POW__/g, "**");
       if (/__FLOORDIV__/.test(js)) {
         // a // b -> Math.floor(a/b): грубая замена через функцию
@@ -431,8 +475,66 @@ window.PyEngine = (function () {
         a = Math.ceil(Number(a)); b = Math.floor(Number(b));
         return a + Math.floor(st.rng() * (b - a + 1));
       };
-      ctx["abs"] = Math.abs; ctx["min"] = Math.min; ctx["max"] = Math.max;
-      ctx["range"] = function () { return []; };
+      ctx["abs"] = Math.abs;
+      ctx["min"] = function () {
+        var a = Array.prototype.slice.call(arguments);
+        if (a.length === 1 && Array.isArray(a[0])) a = a[0];
+        return Math.min.apply(null, a);
+      };
+      ctx["max"] = function () {
+        var a = Array.prototype.slice.call(arguments);
+        if (a.length === 1 && Array.isArray(a[0])) a = a[0];
+        return Math.max.apply(null, a);
+      };
+      ctx["sum"] = function (a) { return a.reduce(function (s, x) { return s + x; }, 0); };
+      function numCmp(x, y) {
+        if (typeof x === "number" && typeof y === "number") return x - y;
+        x = String(x); y = String(y);
+        return x < y ? -1 : x > y ? 1 : 0;
+      }
+      ctx["sorted"] = function (a) { return a.slice().sort(numCmp); };
+      ctx["reversed"] = function (a) { return a.slice().reverse(); };
+      ctx["list"] = function (x) {
+        if (typeof x === "string") return x.split("");
+        if (Array.isArray(x)) return x.slice();
+        return [x];
+      };
+      ctx["range"] = function (a, b, c) {
+        var lo, hi, step = 1;
+        if (b === undefined) { lo = 0; hi = Math.floor(Number(a)); }
+        else if (c === undefined) { lo = Math.floor(Number(a)); hi = Math.floor(Number(b)); }
+        else { lo = Math.floor(Number(a)); hi = Math.floor(Number(b)); step = Math.floor(Number(c)) || 1; }
+        var out = [];
+        if (step > 0) for (var i = lo; i < hi && out.length < 500; i += step) out.push(i);
+        else for (var j = lo; j > hi && out.length < 500; j += step) out.push(j);
+        return out;
+      };
+      ctx["shuffle"] = function (a) {
+        for (var i = a.length - 1; i > 0; i--) {
+          var j = Math.floor(st.rng() * (i + 1)), t = a[i];
+          a[i] = a[j]; a[j] = t;
+        }
+        return null;
+      };
+      ctx["choice"] = function (a) { return a[Math.floor(st.rng() * a.length)]; };
+      ctx["__index"] = function (s, i) {
+        i = Math.floor(Number(i));
+        var n = (typeof s === "string" || Array.isArray(s)) ? s.length : 0;
+        if (i < 0) i = n + i;
+        return s[i];
+      };
+      ctx["__remove"] = function (a, x) {
+        for (var i = 0; i < a.length; i++) if (a[i] == x) { a.splice(i, 1); break; }
+        return null;
+      };
+      ctx["__insert"] = function (a, i, x) { a.splice(Math.floor(Number(i)), 0, x); return null; };
+      ctx["__pop"] = function (a, i) { return a.splice(Math.floor(Number(i)), 1)[0]; };
+      ctx["__sort"] = function (a) {
+        var nums = a.every(function (x) { return typeof x === "number"; });
+        a.sort(nums ? function (x, y) { return x - y; } : undefined);
+        return null;
+      };
+      ctx["__join"] = function (sep, a) { return a.join(String(sep)); };
       ctx["__mul"] = function (a, b) {
         if (typeof a === "string") return a.repeat(Math.max(0, Math.floor(Number(b))));
         if (typeof b === "string") return b.repeat(Math.max(0, Math.floor(Number(a))));
@@ -441,24 +543,26 @@ window.PyEngine = (function () {
       ctx["__contains"] = function (c, x) { return String(c).indexOf(String(x)) >= 0; };
       ctx["__replace"] = function (s, a, b) { return String(s).split(String(a)).join(String(b)); };
       ctx["__slice"] = function (s, a, b, c) {
-        s = String(s);
+        var isArr = Array.isArray(s);
+        if (!isArr) s = String(s);
+        var n = s.length;
         function idx(v, def) {
           if (v === "" || v === undefined) return def;
           v = Math.floor(Number(v));
-          if (v < 0) v = s.length + v;
+          if (v < 0) v = n + v;
           return v;
         }
         var step = (c === "" || c === undefined) ? 1 : Math.floor(Number(c));
-        if (step === 0) return "";
-        var out = "";
+        if (step === 0) return isArr ? [] : "";
+        var out = [];
         if (step > 0) {
-          var i0 = Math.max(0, idx(a, 0)), i1 = Math.min(s.length, idx(b, s.length));
-          for (var i = i0; i < i1; i += step) out += s[i];
+          var i0 = Math.max(0, idx(a, 0)), i1 = Math.min(n, idx(b, n));
+          for (var i = i0; i < i1; i += step) out.push(s[i]);
         } else {
-          var j0 = Math.min(s.length - 1, idx(a, s.length - 1)), j1 = idx(b, -1);
-          for (var j = j0; j > j1; j += step) out += s[j];
+          var j0 = Math.min(n - 1, idx(a, n - 1)), j1 = idx(b, -1);
+          for (var j = j0; j > j1; j += step) out.push(s[j]);
         }
-        return out;
+        return isArr ? out : out.join("");
       };
       ctx["__isdigit"] = function (x) { return /^[0-9]+$/.test(String(x)); };      ctx["__isalpha"] = function (x) { return /^[A-Za-z\u00c0-\u024f\u0400-\u04ff\u0500-\u052f]+$/.test(String(x)); };
       ctx["ord"] = function (x) { return String(x).codePointAt(0); };
