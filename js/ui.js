@@ -84,7 +84,7 @@
     stopAnim();
     var l = cur();
     $("lvlTitle").textContent = "Уровень " + l.id + ": " + l.title;
-    $("lvlTopic").textContent = l.topic;
+    $("lvlTopic").textContent = (l.book ? "§" + l.book + " · " : "") + l.topic;
     var pl = $("place");
     if (pl) pl.textContent = l.place ? "📍 " + l.place : "";
     $("brief").textContent = l.briefing;

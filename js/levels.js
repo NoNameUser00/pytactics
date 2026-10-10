@@ -1,64 +1,278 @@
-/* Уровни PyTactics: карта, брифинг, стартовый код, подсказки, решения.
-   Карта: строки символов: # стена, . пол, P игрок, E враг, C кристалл, X выход */
+/* Уровни PyTactics = учебник: глава → галактика, параграф → планета.
+   Поля: book (§ учебника), expect (точные строки print для победы),
+   biome/place (окружение), остальное как раньше.
+   Карта: # стена, . пол, P игрок, E/R/D/B враги, C кристалл, H ячейка, X выход */
 window.LEVELS = [
+  // ---------- Глава 1. Первые программы ----------
   {
-    id: 1, title: "Первый шаг", topic: "Команды · линейный алгоритм",
-    briefing: "Станция «ГРИД» в темноте. Твой робот 🤖 стоит слева, портал 🌀 — справа. Пока просто иди: каждая команда move_* — это один ход. Дойди до портала.",
+    id: 1, title: "Первая программа", topic: "print()", book: "1.1",
+    briefing: "§1.1 из учебника: первая программа просто выводит текст. Твой маяк ждёт справа, а консоль — твой первый отчёт.",
     lore: "Да пребудет с тобой Код. Маяк ждёт справа.",
-    goal: "Дойди до 🌀 за ≤ 8 ходов.",
-    map: ["#######", "#P...X#", "#.....#", "#######"],
-    energy: 20, maxTurns: 20,
-    starter: '# Твой первый код!\n# Каждая строка — приказ роботу.\nmove_right()\nmove_right()\n',
+    goal: "Выведи «Привет, Грид!» и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Привет, Грид!"],
+    starter: 'print("Привет, Грид!")\nmove_right()\n',
     hints: [
-      "Намёк: от P до X — 4 клетки вправо. Нужно 4 раза move_right().",
-      "Псевдокод:\nmove_right()\nmove_right()\nmove_right()\nmove_right()",
-      "Решение:\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+      "Намёк: print уже есть. Добавь второй move_right() — до портала 2 клетки.",
+      "Псевдокод:\nprint(\"Привет, Грид!\")\nmove_right()\nmove_right()",
+      "Решение:\nprint(\"Привет, Грид!\")\nmove_right()\nmove_right()"
     ],
-    solution: 'move_right()\nmove_right()\nmove_right()\nmove_right()',
+    solution: 'print("Привет, Грид!")\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 2, title: "Структура программы", topic: "последовательность команд", book: "1.4",
+    briefing: "§1.4: программа выполняется сверху вниз, строка за строкой. Проведи робота по коридору — 5 приказов подряд.",
+    lore: "Код идёт сверху вниз, как corridor. Шаг за шагом.",
+    goal: "Пройди коридор из 5 клеток.",
+    map: ["########", "#P....X#", "########"],
+    energy: 20, maxTurns: 15,
+    starter: '# Команды выполняются по порядку\nmove_right()\nmove_right()\n',
+    hints: [
+      "Намёк: клеток 5 — нужно 5 одинаковых строк.",
+      "Псевдокод: пять раз move_right().",
+      "Решение:\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'move_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 5
+  },
+  {
+    id: 3, title: "Комментарии", topic: "# комментарии", book: "1.5",
+    briefing: "§1.5: строки с # робот-читатель пропускает, а человек понимает. Забери ядро, подписав каждый шаг.",
+    lore: "Мудрый оператор подписывает путь. Решётка # — чернила.",
+    goal: "Собери 💎 и дойди до 🌀.",
+    map: ["#######", "#P.C.X#", "#######"],
+    energy: 20, maxTurns: 15,
+    starter: '# Иди и забери кристалл\nmove_right()\nmove_right()\ncollect()\n',
+    hints: [
+      "Намёк: ядро на 3-й клетке. Схема: шаг, шаг, взять, шаг, шаг.",
+      "Псевдокод:\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()",
+      "Решение:\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()"
+    ],
+    solution: 'move_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()',
+    starTurns: 5
+  },
+  {
+    id: 4, title: "Вывод данных", topic: "print() и переменные", book: "1.6",
+    briefing: "§1.6: сохрани число шагов в переменную, выведи её и только потом иди. Консоль должна показать 4.",
+    lore: "Сначала посчитай, потом шагай.",
+    goal: "Выведи число шагов и дойди до 🌀.",
+    map: ["#######", "#P...X#", "#######"],
+    energy: 20, maxTurns: 14, expect: ["4"],
+    starter: 'steps = 4\nprint(steps)\nmove_right()\n',
+    hints: [
+      "Намёк: print уже выводит 4. Добавь ещё три move_right().",
+      "Псевдокод:\nsteps = 4\nprint(steps)\nmove_right()\nmove_right()\nmove_right()\nmove_right()",
+      "Решение:\nsteps = 4\nprint(steps)\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'steps = 4\nprint(steps)\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 4
+  },
+  // ---------- Глава 2. Переменные и типы ----------
+  {
+    id: 5, title: "Имена", topic: "переменные", book: "2.1",
+    briefing: "§2.1: у каждой переменной — имя. Назови своего робота и представь его консоли.",
+    lore: "Безымянный робот — просто железо. Назови его.",
+    goal: "Выведи имя и дойди до 🌀.",
+    map: ["#######", "#P...X#", "#######"],
+    energy: 20, maxTurns: 13, expect: ["Бип"],
+    starter: 'name = "Бип"\nprint(name)\nmove_right()\n',
+    hints: [
+      "Намёк: имя уже выводится. Доведи робота: ещё три шага.",
+      "Псевдокод:\nname = \"Бип\"\nprint(name)\nmove_right() x4",
+      "Решение:\nname = \"Бип\"\nprint(name)\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'name = "Бип"\nprint(name)\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 4
   },
   {
-    id: 2, title: "Кристаллы", topic: "Переменные · print()",
-    briefing: "Энергокристаллы 💎 питают станцию. Встань на кристалл и вызови collect(). Попробуй переменную: energy = get_energy() и print(energy). Собери 2 кристалла и иди на выход.",
-    lore: "Ядра — сердце маяков. Без них сектор погрузится во тьму.",
-    goal: "Собери 2 💎 и дойди до 🌀.",
-    map: ["########", "#P.C.CX.#", "#......#", "########"],
-    energy: 20, maxTurns: 20,
-    starter: '# Встань на кристалл и забери его\nmove_right()\nmove_right()\ncollect()\n',
+    id: 6, title: "Присваивание", topic: "= и счётчик", book: "2.3",
+    briefing: "§2.3: переменную можно менять: crystals = crystals + 1. Считай ядра в переменную.",
+    lore: "Считай ядра — Орден любит порядок.",
+    goal: "Собери 2 💎, посчитай их, дойди до 🌀.",
+    map: ["#########", "#P.C.C.X#", "#########"],
+    energy: 20, maxTurns: 18, expect: ["2"],
+    starter: 'crystals = 0\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\n',
     hints: [
-      "Намёк: кристаллы на 3-й и 5-й клетках. Схема: иди → забери → иди → забери → иди.",
-      "Псевдокод:\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()\ncollect()\nmove_right()",
-      "Решение:\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()\ncollect()\nmove_right()"
+      "Намёк: после каждого collect() прибавляй 1, в конце выведи и сделай 2 финальных шага.",
+      "Псевдокод: collect → +1 … collect → +1 … print(crystals) … иди.",
+      "Решение:\ncrystals = 0\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nprint(crystals)\nmove_right()\nmove_right()"
     ],
-    solution: 'move_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()\ncollect()\nmove_right()',
-    starTurns: 7
+    solution: 'crystals = 0\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nprint(crystals)\nmove_right()\nmove_right()',
+    starTurns: 8
   },
   {
-    id: 3, title: "Стена", topic: "if / else · ветвление",
-    briefing: "Впереди завал. Сенсор is_wall(\"up\"/\"down\"/\"left\"/\"right\") говорит True/False. Научи робота решать: если справа стена — иди вниз, иначе — вправо. Это ветвление!",
-    lore: "Империя Роя обрушила переборку. Чувствуй ветвление, юный падаван.",
+    id: 7, title: "Типы", topic: "bool и сенсоры", book: "2.2",
+    briefing: "§2.2: сенсор is_wall() возвращает логическое True/False. Сохрани ответ в переменную и реши, куда идти.",
+    lore: "Стена отвечает честно: True. Слушай её.",
+    goal: "Обойди стену, выведи ответ сенсора.",
+    map: ["#######", "#P.#.X#", "#.....#", "#######"],
+    energy: 20, maxTurns: 16, expect: ["True"],
+    starter: 'move_right()\nwall = is_wall("right")\nprint(wall)\nif wall:\n    move_down()\nelse:\n    move_right()\n',
+    hints: [
+      "Намёк: скелет верный. После спуска: два шага вправо, вверх, шаг к выходу.",
+      "Псевдокод: … move_down() … move_right() x2 … move_up() … move_right().",
+      "Решение:\nmove_right()\nwall = is_wall(\"right\")\nprint(wall)\nif wall:\n    move_down()\nelse:\n    move_right()\nmove_right()\nmove_right()\nmove_up()\nmove_right()"
+    ],
+    solution: 'move_right()\nwall = is_wall("right")\nprint(wall)\nif wall:\n    move_down()\nelse:\n    move_right()\nmove_right()\nmove_right()\nmove_up()\nmove_right()',
+    starTurns: 6
+  },
+  {
+    id: 8, title: "Приведение типов", topic: "int() и type()", book: "2.4",
+    briefing: "§2.4: строка \"4\" — не число. Преврати её в int(), проверь type() и пройди 4 клетки.",
+    lore: "Слова — в числа. Магия приведения.",
+    goal: "Выведи тип и дойди до 🌀.",
+    map: ["#######", "#P...X#", "#######"],
+    energy: 20, maxTurns: 14, expect: ["int"],
+    starter: 'n = "4"\nn = int(n)\nprint(type(n))\nmove_right()\n',
+    hints: [
+      "Намёк: тип уже выводится. Добавь ещё три шага — всего 4.",
+      "Псевдокод: int + print + 4× move_right().",
+      "Решение:\nn = \"4\"\nn = int(n)\nprint(type(n))\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'n = "4"\nn = int(n)\nprint(type(n))\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 4
+  },
+  {
+    id: 9, title: "Удаление", topic: "del", book: "2.5",
+    briefing: "§2.5: временная переменная больше не нужна — удали её через del. Сначала выведи энергию.",
+    lore: "Чистый код — чистый коридор.",
+    goal: "Выведи энергию, удали переменную, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["20"],
+    starter: 'temp = get_energy()\nprint(temp)\ndel temp\nmove_right()\n',
+    hints: [
+      "Намёк: всё уже написано, кроме последнего шага.",
+      "Псевдокод: print → del → 2× move_right().",
+      "Решение:\ntemp = get_energy()\nprint(temp)\ndel temp\nmove_right()\nmove_right()"
+    ],
+    solution: 'temp = get_energy()\nprint(temp)\ndel temp\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  // ---------- Глава 3. Операторы ----------
+  {
+    id: 10, title: "Математика", topic: "+ - * /", book: "3.1",
+    briefing: "§3.1: бортовой компьютер считает сам. Выведи 7 + 3 * 2 и иди к маяку.",
+    lore: "Компьютер считает — оператор приказывает.",
+    goal: "Выведи результат и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["13"],
+    starter: 'print(7 + 3 * 2)\nmove_right()\n',
+    hints: [
+      "Намёк: умножение раньше сложения: 13. Добавь второй шаг.",
+      "Псевдокод:\nprint(7 + 3 * 2)\nmove_right()\nmove_right()",
+      "Решение:\nprint(7 + 3 * 2)\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(7 + 3 * 2)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 11, title: "Время в пути", topic: "деление", book: "3.1.2",
+    briefing: "§3.1.2 из учебника: время = путь / скорость. Путь 120, скорость 60 — выведи время и иди.",
+    lore: "Сто двадцать парсеков? Нет — сто двадцать шагов пополам.",
+    goal: "Выведи время и дойди до 🌀.",
+    map: ["#######", "#P...X#", "#######"],
+    energy: 20, maxTurns: 13, expect: ["2"],
+    starter: 's = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\n',
+    hints: [
+      "Намёк: время уже посчитано (2). Добавь ещё три шага.",
+      "Псевдокод: s, v, t, print + 4× move_right().",
+      "Решение:\ns = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 's = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 4
+  },
+  {
+    id: 12, title: "Топливо", topic: "// и %", book: "3.1.3",
+    briefing: "§3.1.3: бак 10, расход 3. Сколько полных баков и остаток? Выведи оба числа.",
+    lore: "Считай баки, падаван.",
+    goal: "Выведи 3 и 1, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["3", "1"],
+    starter: 'fuel = 10\nper = 3\nprint(fuel // per)\nprint(fuel % per)\nmove_right()\n',
+    hints: [
+      "Намёк: оба print уже есть. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nfuel = 10\nper = 3\nprint(fuel // per)\nprint(fuel % per)\nmove_right()\nmove_right()"
+    ],
+    solution: 'fuel = 10\nper = 3\nprint(fuel // per)\nprint(fuel % per)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 13, title: "Калькулятор", topic: "приоритет операций", book: "3.5/3.6",
+    briefing: "§3.5–3.6: собери калькулятор — посчитай 2 + 3 * 4 − 1, забери ядро по пути.",
+    lore: "Приоритет — как приказы: сначала важные.",
+    goal: "Выведи 13, забери 💎, дойди до 🌀.",
+    map: ["#######", "#P.C.X#", "#######"],
+    energy: 20, maxTurns: 15, expect: ["13"],
+    starter: 'print(2 + 3 * 4 - 1)\nmove_right()\nmove_right()\ncollect()\n',
+    hints: [
+      "Намёк: 2+12−1=13. После ядра — ещё два шага.",
+      "Псевдокод: print + шаги + collect + 2 шага.",
+      "Решение:\nprint(2 + 3 * 4 - 1)\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(2 + 3 * 4 - 1)\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()',
+    starTurns: 5
+  },
+  {
+    id: 14, title: "Строки", topic: "str и len()", book: "3.2",
+    briefing: "§3.2: строки склеиваются через +. Собери слово «Грид» и измерь его длину.",
+    lore: "Слова — тоже детали. Склеивай аккуратно.",
+    goal: "Выведи слово и длину, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Грид", "3"],
+    starter: 'word = "Гри"\nprint(word + "д")\nprint(len(word))\nmove_right()\n',
+    hints: [
+      "Намёк: длина «Гри» — 3. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nword = \"Гри\"\nprint(word + \"д\")\nprint(len(word))\nmove_right()\nmove_right()"
+    ],
+    solution: 'word = "Гри"\nprint(word + "д")\nprint(len(word))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 15, title: "Хитрые присваивания", topic: "+= *= //=", book: "3.3/3.4",
+    briefing: "§3.3–3.4: x += 3 короче, чем x = x + 3. Разгони x с 5 до 16.",
+    lore: "Короткий код — быстрый клинок.",
+    goal: "Выведи 16 и дойди до 🌀.",
+    map: ["#######", "#P...X#", "#######"],
+    energy: 20, maxTurns: 13, expect: ["16"],
+    starter: 'x = 5\nx += 3\nx *= 2\nprint(x)\nmove_right()\n',
+    hints: [
+      "Намёк: 5+3=8, 8×2=16. Добавь ещё три шага.",
+      "Псевдокод: три строки математики + print + 4 шага.",
+      "Решение:\nx = 5\nx += 3\nx *= 2\nprint(x)\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'x = 5\nx += 3\nx *= 2\nprint(x)\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 4
+  },
+  // ---------- Глава 4. Циклы и условные операторы ----------
+  {
+    id: 16, title: "Ветвление", topic: "if / else", book: "4.1",
+    briefing: "§4.1: впереди завал. Сенсор is_wall() говорит True/False. Если стена — вниз, иначе — вправо.",
+    lore: "Думай, как стена, — и обойдёшь её.",
     goal: "Обойди стену и собери 💎.",
     map: ["########", "#P.#..X#", "#..#.C.#", "#.....##", "########"],
-    energy: 30, maxTurns: 30,
+    energy: 30, maxTurns: 22,
     starter: '# Используй if / else\nif is_wall("right"):\n    move_down()\nelse:\n    move_right()\n',
     hints: [
-      "Намёк: повторяй связку «проверь → шаг». Сначала спустись вниз, потом иди вправо вдоль низа.",
-      "Псевдокод:\nmove_down()\nmove_down()\nmove_right()\nmove_right()\nmove_right()\nmove_up()\ncollect()\n…",
-      "Решение: спустись на 2 вниз, иди вправо 4 раза, поднимись, забери кристалл, иди к выходу. Собери из move_down/move_right/move_up/collect."
+      "Намёк: скелет верный, но стену надо обойти: сначала дважды вниз.",
+      "Псевдокод: вниз ×2, вправо ×4, вверх, взять, вверх, вправо.",
+      "Решение:\nmove_down()\nmove_down()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_up()\ncollect()\nmove_up()\nmove_right()"
     ],
     solution: 'move_down()\nmove_down()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_up()\ncollect()\nmove_up()\nmove_right()',
-    starTurns: 12
+    starTurns: 10
   },
   {
-    id: 4, title: "Длинный коридор", topic: "for i in range()",
-    briefing: "Коридор длиной 6 клеток. Писать 6 раз move_right() — скучно. Цикл for повторит команду: for i in range(6): + отступ 4 пробела. Компьютер любит циклы!",
-    lore: "Длинный коридор. Операторы не повторяют — они циклуют.",
-    goal: "Пройди коридор циклом for.",
+    id: 17, title: "Цикл for", topic: "for i in range()", book: "4.2.1",
+    briefing: "§4.2.1: коридор из 7 клеток. Писать 7 строк скучно — пусть повторит цикл.",
+    lore: "Операторы не повторяют — они циклуют.",
+    goal: "Пройди коридор циклом.",
     map: ["##########", "#P......X#", "##########"],
-    energy: 20, maxTurns: 20,
-    starter: '# Цикл повторяет тело N раз\nfor i in range(7):\n    move_right()\n',
+    energy: 20, maxTurns: 17,
+    starter: '# Цикл повторяет тело 7 раз\nfor i in range(7):\n    move_right()\n',
     hints: [
-      "Намёк: посчитай клетки от P до X — их 7. range(7) даёт 0..6, то есть 7 повторов.",
+      "Намёк: стартовый код уже решает уровень. Жми запуск!",
       "Псевдокод:\nfor i in range(7):\n    move_right()",
       "Решение:\nfor i in range(7):\n    move_right()"
     ],
@@ -66,70 +280,67 @@ window.LEVELS = [
     starTurns: 7
   },
   {
-    id: 5, title: "Лабиринт", topic: "while · and/or/not",
-    briefing: "Выход далеко, число шагов неизвестно — нужен цикл while: «пока не у выхода — иди». Сенсор is_exit(\"right\") подскажет. Комбинируй: while not is_exit(\"right\"): ... Это цикл с условием!",
-    lore: "Пояс астероидов шепчет: считай ходы, или блуждать вечно.",
-    goal: "Дойди до 🌀 циклом while, собери 💎.",
-    biome: "desert", place: "Барханы",
+    id: 18, title: "Цикл while", topic: "while и сенсоры", book: "4.2.2",
+    briefing: "§4.2.2: выход далеко. Сначала забери ядро, потом обойди колонну низом через Барханы.",
+    lore: "Считай ходы, или блуждать вечно.",
+    goal: "Собери 💎 и дойди до 🌀.",
     map: ["#########", "#P..#..X#", "#.C.#.#.#", "#.......#", "#########"],
-    energy: 40, maxTurns: 40,
+    energy: 40, maxTurns: 25, biome: "desert", place: "Барханы",
     starter: '# Спустись за кристаллом, потом обойди стену низом\nmove_down()\nmove_right()\ncollect()\n',
     hints: [
-      "Намёк: кристалл рядом — спустись и шагни вправо. Затем спустись ещё ниже и обойди стену-колонну низом.",
-      "Псевдокод:\nmove_down()\nmove_right()\ncollect()\nmove_down()\nfor i in range(5):\n    move_right()\nmove_up()\nmove_up()",
+      "Намёк: после ядра — ещё вниз и пять шагов вправо, потом дважды вверх.",
+      "Псевдокод: вниз, вправо, взять, вниз, вправо ×5, вверх ×2.",
       "Решение:\nmove_down()\nmove_right()\ncollect()\nmove_down()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_up()\nmove_up()"
     ],
     solution: 'move_down()\nmove_right()\ncollect()\nmove_down()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_up()\nmove_up()',
     starTurns: 11
   },
   {
-    id: 6, title: "Вирусы", topic: "def · функции · attack",
-    briefing: "Вирусы 👾! Подойди вплотную и бей: attack(\"right\"). Чтобы не повторяться, упакуй приём в функцию: def бей_справа(): + вызов. Функция = твой собственный приказ! По полу разбросаны энергоячейки 🔋: встань на такую — получишь +6 энергии.",
-    lore: "Баг-штурмовики! Рррх уже рычит от нетерпения.",
-    goal: "Уничтожь 2 вирусов и дойди до 🌀.",
-    map: ["#########", "#PHE.EHX#", "#.......#", "#########"],
-    energy: 30, maxTurns: 30,
-    starter: '# Определи функцию и вызови её\ndef strike():\n    move_right()\n    attack("right")\n\nstrike()\n',
+    id: 19, title: "Прерви цикл", topic: "break", book: "4.2.3",
+    briefing: "§4.2.3: иди, пока впереди нет ядра. Увидел — break, забери и иди к выходу.",
+    lore: "Умей останавливаться. Даже циклу нужен конец.",
+    goal: "Остановись у 💎 и дойди до 🌀.",
+    map: ["#########", "#P...C.X#", "#########"],
+    energy: 20, maxTurns: 17, biome: "ice", place: "Ледяной пояс",
+    starter: 'while True:\n    if is_crystal("right"):\n        break\n    move_right()\nmove_right()\ncollect()\n',
     hints: [
-      "Намёк: схема на каждого вируса: подойди (move_right) → удар attack(\"right\") → шаг вперёд на его клетку.",
-      "Псевдокод:\ndef kill():\n    attack(\"right\")\n    move_right()\nmove_right()\nkill()\nmove_right()\nkill()\nmove_right()\nmove_right()",
-      "Решение:\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()"
+      "Намёк: цикл останавливается у ядра. Шагни на него, забери и сделай два финальных шага.",
+      "Псевдокод: цикл + шаг + collect() + 2× move_right().",
+      "Решение:\nwhile True:\n    if is_crystal(\"right\"):\n        break\n    move_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()"
     ],
-    solution: 'move_right()\nattack("right")\nmove_right()\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()',
-    starTurns: 8
+    solution: 'while True:\n    if is_crystal("right"):\n        break\n    move_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()',
+    starTurns: 7
   },
   {
-    id: 7, title: "Жадный сбор", topic: "Вложенные циклы · жадный алгоритм",
-    briefing: "Кристаллов много! Жадный алгоритм: «всегда иди к ближайшему 💎». Используй вложенные проверки is_crystal(направление) и цикл while crystals_left() > 0: внутри — if-лесенка. Это уже настоящая стратегия!",
-    lore: "Ядра разметало взрывом. Бери ближайшее — жадность тут светлая.",
-    goal: "Собери 3 💎 и дойди до 🌀.",
-    biome: "ice", place: "Ледяной пояс",
-    map: ["##########", "#P..C...X#", "#.##.##..#", "#C.....C.#", "##########"],
-    energy: 40, maxTurns: 40,
-    starter: '# Пока есть кристаллы — ищи и собирай\nwhile crystals_left() > 0:\n    move_right()\n    if is_crystal("right"):\n        move_right()\n        collect()\n',
+    id: 20, title: "Шаг диапазона", topic: "range(a, b)", book: "4.2.4",
+    briefing: "§4.2.4: range умеет начинать не с нуля: range(1, 6) даёт 1, 2, 3, 4, 5. Выведи их и пройди.",
+    lore: "Диапазон — как маршрут: начало и конец.",
+    goal: "Выведи 1–5 и дойди до 🌀.",
+    map: ["########", "#P....X#", "########"],
+    energy: 20, maxTurns: 15, expect: ["1", "2", "3", "4", "5"],
+    starter: 'for i in range(1, 6):\n    print(i)\n    move_right()\n',
     hints: [
-      "Намёк: иди «змейкой»: верхняя строка вправо до 💎, спустись на 2, вернись влево за вторым 💎, потом вправо по низу за третьим.",
-      "Псевдокод:\nfor i in range(3):\n    move_right()\ncollect()\nmove_down()\nmove_down()\nfor i in range(3):\n    move_left()\ncollect()\n…",
-      "Решение:\nmove_right()\nmove_right()\nmove_right()\ncollect()\nmove_down()\nmove_down()\nmove_left()\nmove_left()\nmove_left()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\ncollect()\nmove_up()\nmove_up()\nmove_right()"
+      "Намёк: стартовый код уже решает уровень. Жми запуск!",
+      "Псевдокод:\nfor i in range(1, 6):\n    print(i)\n    move_right()",
+      "Решение:\nfor i in range(1, 6):\n    print(i)\n    move_right()"
     ],
-    solution: 'move_right()\nmove_right()\nmove_right()\ncollect()\nmove_down()\nmove_down()\nmove_left()\nmove_left()\nmove_left()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\ncollect()\nmove_up()\nmove_up()\nmove_right()',
-    starTurns: 20
+    solution: 'for i in range(1, 6):\n    print(i)\n    move_right()',
+    starTurns: 5
   },
   {
-    id: 8, title: "Босс: Рой", topic: "Поиск пути · BFS-идея",
-    briefing: "ФИНАЛ. Рой 👾👾👾 патрулирует, кристаллы за стенами. Лучшие операторы ищут кратчайший путь волной (BFS): «разойдись от старта во все стороны, первое касание выхода — кратчайший путь». Здесь пройди аккуратно: бей только вплотную, считай энергию. Удачи, оператор!",
-    lore: "Узел Роя. ВЛАДЫКА БАГ ждёт за стеной. Зажги последний маяк.",
-    goal: "Собери 2 💎, уничтожь рой, дойди до 🌀.",
-    biome: "deathstar", place: "Недра Звезды",
-    map: ["##########", "#P.#..B.X#", "#..#.##..#", "#C.#.....#", "#..###R..#", "#C.H..E..#", "##########"],
-    energy: 50, maxTurns: 60,
-    starter: '# Финальная стратегия\n# 1. вниз за кристаллами  2. низом вправо  3. вверх с боем\nmove_down()\nmove_down()\ncollect()\n',
+    id: 21, title: "Уровень доступа", topic: "сравнение строк", book: "4.4/4.5",
+    briefing: "§4.4–4.5 из учебника: программа «Уровень доступа» пускает только с верным паролем. Пароль «py12», а маяк охраняет штурмовик.",
+    lore: "Доступ есть. Но маяк охраняют. Да пребудет с тобой Код.",
+    goal: "Назови пароль, одолей стражу, дойди до 🌀.",
+    map: ["#######", "#P.E.X#", "#######"],
+    energy: 20, maxTurns: 14, expect: ["Доступ разрешён"],
+    starter: 'code = "py12"\nif code == "py12":\n    print("Доступ разрешён")\nmove_right()\nattack("right")\nmove_right()\n',
     hints: [
-      "Намёк: два кристалла слева внизу (вниз-вниз-collect, вниз-вниз-collect). Потом низом вправо, убей двух охранников (attack вплотную) и поднимись справа к порталу.",
-      "Псевдокод (идея BFS — иди волной без возвратов):\n# этап 1: кристаллы\nmove_down()...\n# этап 2: коридор\nfor ...: move_right() + attack при is_enemy",
-      "Решение: вниз×2, collect, вниз×2, collect, вправо×4, attack+шаг (×2), вправо, вверх×3, attack влево, вправо к выходу."
+      "Намёк: скелет верный: подойди, ударь, пройди три клетки до маяка.",
+      "Псевдокод: if + print + шаг + удар + 3 шага.",
+      "Решение:\ncode = \"py12\"\nif code == \"py12\":\n    print(\"Доступ разрешён\")\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()"
     ],
-    solution: 'move_down()\nmove_down()\ncollect()\nmove_down()\nmove_down()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nattack("right")\nmove_right()\nattack("up")\nmove_up()\nmove_right()\nmove_up()\nmove_up()\nmove_up()\nattack("left")\nmove_right()',
-    starTurns: 22
+    solution: 'code = "py12"\nif code == "py12":\n    print("Доступ разрешён")\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 5
   }
 ];

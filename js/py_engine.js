@@ -177,6 +177,17 @@ window.PyEngine = (function () {
           throw { __return: true, value: rv };
         }
 
+        // --- del x ---
+        var dlm = t.match(/^del\s+([A-Za-z_]\w*)$/);
+        if (dlm) {
+          var ss = scope;
+          while (ss) {
+            if (Object.prototype.hasOwnProperty.call(ss.vars, dlm[1])) { delete ss.vars[dlm[1]]; break; }
+            ss = ss.parent;
+          }
+          i++; continue;
+        }
+
         // --- присваивание ---
         var am = t.match(/^([A-Za-z_]\w*)\s*(\+=|-=|\*=|\/\/=|\/=|%=|\*\*=|=)(?!=)\s*(.+)$/);
         if (am && am[3] !== undefined) {
@@ -302,9 +313,10 @@ window.PyEngine = (function () {
       // print(...)
       var pm = expr.match(/^print\s*\((.*)\)$/);
       if (pm) {
-        var val = pm[1].trim() === "" ? "" : evalExpr(pm[1], scope, st);
-        st.logs.push(String(val));
-        if (st.api && st.api.__print) st.api.__print(String(val));
+        var raw = pm[1].trim() === "" ? "" : evalExpr(pm[1], scope, st);
+        var val = raw === true ? "True" : raw === false ? "False" : (raw === null || raw === undefined) ? "None" : String(raw);
+        st.logs.push(val);
+        if (st.api && st.api.__print) st.api.__print(val);
         return null;
       }
       // запрет опасных слов
@@ -352,6 +364,17 @@ window.PyEngine = (function () {
       }
       for (var an in st.api) if (an !== "__print") ctx[an] = st.api[an];
       ctx["len"] = function (x) { return x && x.length !== undefined ? x.length : 0; };
+      ctx["int"] = function (x) { return Math.trunc(Number(x)); };
+      ctx["float"] = function (x) { return Number(x); };
+      ctx["str"] = function (x) { return String(x); };
+      ctx["bool"] = function (x) { return !!x && x !== 0; };
+      ctx["type"] = function (x) {
+        if (typeof x === "string") return "str";
+        if (typeof x === "boolean") return "bool";
+        if (typeof x === "number") return Number.isInteger(x) ? "int" : "float";
+        if (x === null || x === undefined) return "NoneType";
+        return "unknown";
+      };
       ctx["abs"] = Math.abs; ctx["min"] = Math.min; ctx["max"] = Math.max;
       ctx["range"] = function () { return []; };
       var keys = Object.keys(ctx), vals = keys.map(function (k) { return ctx[k]; });

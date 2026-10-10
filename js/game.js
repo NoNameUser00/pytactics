@@ -51,6 +51,16 @@ window.Game = (function () {
       events.push({ type: "error", message: res.error, snap: snap() });
       return { events: events, logs: logs, win: false, error: res.error, turns: st.turns, collected: st.collected, total: st.total, energy: st.energy };
     }
+    // проверка print()-задач учебника (поле expect уровня)
+    if (!res.error && level.expect) {
+      var missing = level.expect.filter(function (want) { return logs.indexOf(want) < 0; });
+      if (missing.length) {
+        var m2 = "Нужно вывести через print(): " + missing.map(function (s) { return "«" + s + "»"; }).join(", ");
+        events = events.filter(function (e) { return e.type !== "win"; });
+        events.push({ type: "error", message: m2, snap: snap() });
+        return { events: events, logs: logs, win: false, error: m2, turns: st.turns, collected: st.collected, total: st.total, energy: st.energy };
+      }
+    }
     if (!st.over) {
       // код кончился, а победа не достигнута
       var msg = st.collected < st.total
