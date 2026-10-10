@@ -24,7 +24,12 @@
     $("btnReset").onclick = onReset;
     $("btnHint").onclick = onHint;
     $("btnSolution").onclick = onSolution;
-    $("btnNext").onclick = function () { if (levelIdx < window.LEVELS.length - 1) loadLevel(levelIdx + 1); };
+    $("btnNext").onclick = function () {
+      if (levelIdx >= window.LEVELS.length - 1) return;
+      var nl = window.LEVELS[levelIdx + 1];
+      if (!isOpenLevel(nl.id)) { setStatus("🔒 Дальше — закрытая планета. Пройди текущую хоть на 1 ★.", "err"); return; }
+      loadLevel(levelIdx + 1);
+    };
     $("btnPrev").onclick = function () { if (levelIdx > 0) loadLevel(levelIdx - 1); };
     $("btnClearSave").onclick = function () {
       localStorage.removeItem("pytactics_stars");
@@ -66,15 +71,24 @@
 
   function cur() { return window.LEVELS[levelIdx]; }
 
+  function isOpenLevel(id) {
+    if (id === 1) return true;
+    return (stars()[id - 1] || 0) > 0;
+  }
+
   function buildLevelTabs() {
     var bar = $("levelTabs"); bar.innerHTML = "";
     var st = stars();
     window.LEVELS.forEach(function (l, i) {
       var b = document.createElement("button");
-      b.className = "tab" + (st[l.id] ? " done" : "");
-      b.innerHTML = l.id + ". " + l.title + (st[l.id] ? " " + "★".repeat(st[l.id]) : "");
-      b.title = l.topic;
-      b.onclick = function () { loadLevel(i); };
+      var open = isOpenLevel(l.id);
+      b.className = "tab" + (st[l.id] ? " done" : "") + (open ? "" : " locked");
+      b.innerHTML = (open ? l.id + ". " + l.title : "🔒 " + l.id) + (st[l.id] ? " " + "★".repeat(st[l.id]) : "");
+      b.title = open ? l.topic : "Сначала пройди планету " + (l.id - 1);
+      b.onclick = function () {
+        if (!isOpenLevel(l.id)) { setStatus("🔒 Планета закрыта. Сначала пройди планету " + (l.id - 1) + ".", "err"); return; }
+        loadLevel(i);
+      };
       bar.appendChild(b);
     });
   }
@@ -250,6 +264,10 @@
         logConsole(rbw.emoji + " <b>" + rbw.name + ":</b> «" + rbw.win + "»", "win");
       }
       if (levelIdx < window.LEVELS.length - 1) setStatus($("status").textContent + " Жми «Далее →».", "win");
+      if (l.id === 76) {
+        setStatus("👑 ВЛАДЫКА БАГ ПОВЕРЖЕН! Маяки горят, ядра дома. Ты — Хранитель Грида. Да пребудет с тобой Код!", "win");
+        logConsole("👑 <b>ХРОНИКИ ГРИДА ЗАВЕРШЕНЫ.</b> 76 планет · Орден гордится тобой.", "win");
+      }
     } else {
       setStatus("⛔ Не вышло: " + (trace.error || "попробуй ещё") + " Подсказка — кнопка 💡.", "err");
       if (trace.error) logConsole("⛔ " + esc(trace.error), "err");

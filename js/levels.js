@@ -1214,5 +1214,22 @@ window.LEVELS = [
     ],
     solution: 'temp = 15\ntry:\n    if temp > 10:\n        raise("Перегрев!")\nexcept Авария as e:\n    print(e)\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 6
+  },
+  // ---------- Финал: Владыка Баг ----------
+  {
+    id: 76, title: "Владыка Баг", topic: "финал: всё вместе", book: "Финал",
+    briefing: "Всё, чему учил Орден: функция-приём, цикл не нужен — иди точно, ядра, стража и сам ВЛАДЫКА 👹. Зажги последний маяк.",
+    lore: "Последний маяк. Последний бой. Да пребудет с тобой Код.",
+    goal: "Собери 2 💎, одолей всех, дойди до 🌀.",
+    map: ["##########", "#P..C.EB.#", "#........#", "#.######.#", "#C..H..EX#", "##########"],
+    energy: 60, maxTurns: 50, biome: "deathstar", place: "Тронный зал",
+    starter: '# Финальный бой. Приём take() уже заряжен.\ndef take():\n    attack("right")\n    move_right()\n\nmove_right()\nmove_right()\nmove_right()\ncollect()\n',
+    hints: [
+      "Намёк: верх — три шага, ядро, шаг, take(), take(), два шага. Низ — спустись справа, убей, иди влево за ядром и вернись.",
+      "Псевдокод: верх → вниз справа → влево до ядра → вправо к выходу.",
+      "Решение:\ndef take():\n    attack(\"right\")\n    move_right()\nmove_right()\nmove_right()\nmove_right()\ncollect()\nmove_right()\ntake()\ntake()\nmove_right()\nmove_right()\nmove_down()\nmove_down()\nmove_down()\nattack(\"left\")\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'def take():\n    attack("right")\n    move_right()\nmove_right()\nmove_right()\nmove_right()\ncollect()\nmove_right()\ntake()\ntake()\nmove_right()\nmove_right()\nmove_down()\nmove_down()\nmove_down()\nattack("left")\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 30
   }
 ];

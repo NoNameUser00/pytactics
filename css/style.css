@@ -31,10 +31,12 @@ header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:lin
 h1{font-size:20px;margin:0} h1 span{color:var(--accent)}
 .sub{color:var(--muted);font-size:12px}
 .wrap{max-width:1240px;margin:0 auto;padding:12px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.tabs{display:flex;gap:6px;flex-wrap:nowrap;margin:10px 0;overflow-x:auto;padding-bottom:6px}
+.tab{flex:0 0 auto}
 .tab{background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:6px 10px;cursor:pointer;font-size:13px}
 .tab.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
 .tab.done{border-color:var(--green)}
+.tab.locked{opacity:.45}
 .main{display:grid;grid-template-columns:minmax(340px,460px) 1fr;gap:12px}
 @media(max-width:900px){.main{grid-template-columns:1fr}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
