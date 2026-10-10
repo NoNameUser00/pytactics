@@ -16,3 +16,57 @@ window.SHIPS = {
 window.ship = function (id) {
   return window.SHIPS[id] || window.SHIPS.bolt || "";
 };
+/* Верфь: корабли на выбор (вид с хвоста, нос вверх). Без выбора — корабль пилота. */
+window.SHIPYARD = [
+  {
+    id: "strela", name: "Стрела", title: "лёгкий перехватчик", color: "#e63946",
+    desc: "Самый быстрый корпус Грида. Тормозит только об сюжет.",
+    svg: '<svg viewBox="0 0 64 96"><ellipse class="engine" cx="32" cy="88" rx="4" ry="7" fill="#ffd60a"/><polygon points="32,2 37,62 32,78 27,62" fill="#e8edf3" stroke="#e63946" stroke-width="2" stroke-linejoin="round"/><line x1="32" y1="8" x2="32" y2="70" stroke="#e63946" stroke-width="2"/><polygon points="27,58 16,76 27,72" fill="#9fb3c8"/><polygon points="37,58 48,76 37,72" fill="#9fb3c8"/><circle cx="32" cy="36" r="3.5" fill="#1c1007" stroke="#ffd60a" stroke-width="1.5"/></svg>'
+  },
+  {
+    id: "bliznetsy", name: "Близнецы", title: "двухкорпусный паром", color: "#39c5cf",
+    desc: "Два корпуса, ноль споров, кто моет иллюминаторы.",
+    svg: '<svg viewBox="0 0 64 96"><ellipse class="engine" cx="17" cy="86" rx="4" ry="6" fill="#39e6ff"/><ellipse class="engine" cx="47" cy="86" rx="4" ry="6" fill="#39e6ff"/><rect x="12" y="30" width="10" height="48" rx="5" fill="#2b6cb0" stroke="#9fd8ff" stroke-width="2"/><rect x="42" y="30" width="10" height="48" rx="5" fill="#2b6cb0" stroke="#9fd8ff" stroke-width="2"/><rect x="12" y="44" width="40" height="9" rx="3" fill="#1f6feb" stroke="#9fd8ff" stroke-width="1.5"/><circle cx="32" cy="48" r="3.5" fill="#bfe9ff"/><polygon points="12,30 17,14 22,30" fill="#9fd8ff"/><polygon points="42,30 47,14 52,30" fill="#9fd8ff"/></svg>'
+  },
+  {
+    id: "blyudtse", name: "Блюдце", title: "дисковый разведчик", color: "#a371f7",
+    desc: "Его путают с НЛО. Он не против — так проще пролететь посты.",
+    svg: '<svg viewBox="0 0 64 96"><ellipse class="engine" cx="22" cy="70" rx="3.5" ry="5" fill="#f778ba"/><ellipse class="engine" cx="32" cy="73" rx="3.5" ry="5" fill="#f778ba"/><ellipse class="engine" cx="42" cy="70" rx="3.5" ry="5" fill="#f778ba"/><ellipse cx="32" cy="52" rx="24" ry="12" fill="#8ab4ff" stroke="#d2a8ff" stroke-width="2"/><ellipse cx="32" cy="46" rx="10" ry="7" fill="#5b21b6" stroke="#d2a8ff" stroke-width="1.5"/><circle cx="14" cy="52" r="2" fill="#ffe16a"/><circle cx="50" cy="52" r="2" fill="#ffe16a"/><circle cx="32" cy="60" r="2" fill="#ffe16a"/></svg>'
+  },
+  {
+    id: "molot", name: "Молот", title: "таранный фрегат", color: "#ff7a3d",
+    desc: "Переговоры ведёт носом. Нос широкий, аргументы весомые.",
+    svg: '<svg viewBox="0 0 64 96"><ellipse class="engine" cx="24" cy="87" rx="6" ry="7" fill="#ff9e3d"/><ellipse class="engine" cx="40" cy="87" rx="6" ry="7" fill="#ff9e3d"/><rect x="8" y="16" width="48" height="13" rx="6" fill="#9a3412" stroke="#ffb454" stroke-width="2"/><rect x="26" y="29" width="12" height="16" fill="#7c2d12"/><polygon points="22,45 42,45 38,74 26,74" fill="#c2410c" stroke="#ffb454" stroke-width="2"/><rect x="29" y="56" width="6" height="10" rx="2" fill="#3b0a0a"/></svg>'
+  },
+  {
+    id: "osa", name: "Оса", title: "патрульный жальщик", color: "#ffd60a",
+    desc: "Жалит вирусы с двух рук. Полосатая — значит, быстрая.",
+    svg: '<svg viewBox="0 0 64 96"><ellipse class="engine" cx="32" cy="88" rx="4" ry="7" fill="#ff4d4d"/><rect x="28" y="10" width="8" height="66" rx="4" fill="#3a3a1a" stroke="#ffd60a" stroke-width="2"/><rect x="28" y="22" width="8" height="5" fill="#ffd60a"/><rect x="28" y="36" width="8" height="5" fill="#ffd60a"/><rect x="28" y="50" width="8" height="5" fill="#ffd60a"/><line x1="28" y1="30" x2="10" y2="58" stroke="#3a3a1a" stroke-width="5"/><line x1="36" y1="30" x2="54" y2="58" stroke="#3a3a1a" stroke-width="5"/><circle cx="10" cy="60" r="3.5" fill="#ff4d4d"/><circle cx="54" cy="60" r="3.5" fill="#ff4d4d"/><circle cx="32" cy="16" r="3" fill="#bfe9ff"/></svg>'
+  },
+  {
+    id: "kovcheg", name: "Ковчег", title: "тяжёлый транспорт", color: "#4de3c2",
+    desc: "Везёт всё: ядра, дроидов и твои несобранные звёзды.",
+    svg: '<svg viewBox="0 0 64 96"><ellipse class="engine" cx="16" cy="85" rx="4" ry="6" fill="#4de3c2"/><ellipse class="engine" cx="27" cy="88" rx="4" ry="6" fill="#4de3c2"/><ellipse class="engine" cx="37" cy="88" rx="4" ry="6" fill="#4de3c2"/><ellipse class="engine" cx="48" cy="85" rx="4" ry="6" fill="#4de3c2"/><rect x="12" y="26" width="40" height="50" rx="9" fill="#0f766e" stroke="#4de3c2" stroke-width="2"/><rect x="17" y="34" width="30" height="7" rx="2" fill="#134e4a"/><rect x="17" y="45" width="30" height="7" rx="2" fill="#134e4a"/><rect x="17" y="56" width="30" height="7" rx="2" fill="#134e4a"/><polygon points="32,6 42,26 22,26" fill="#0f766e" stroke="#4de3c2" stroke-width="1.5"/></svg>'
+  }
+];
+window.shipById = function (id) {
+  for (var i = 0; i < window.SHIPYARD.length; i++) {
+    if (window.SHIPYARD[i].id === id) return window.SHIPYARD[i].svg;
+  }
+  return "";
+};
+/* Корабль для прыжка: выбранный на верфи, иначе — корабль пилота */
+window.currentShip = function () {
+  var id = null;
+  try { id = localStorage.getItem("pytactics_ship"); } catch (e) {}
+  if (id) {
+    var s = window.shipById(id);
+    if (s) return s;
+  }
+  var rid = "bolt";
+  try {
+    rid = localStorage.getItem("pytactics_robot") || "bolt";
+    if (window.currentRobot) rid = window.currentRobot().id;
+  } catch (e) {}
+  return window.ship(rid);
+};

@@ -195,8 +195,48 @@
     var b = $("flyBtn");
     if (b) b.textContent = "🚀 Лететь далее: " + robotById(robotId()).name + " →";
   }
+  // ---------- верфь (выбор корабля) ----------
+  function shipId() {
+    try { return localStorage.getItem("pytactics_ship") || ""; }
+    catch (e) { return ""; }
+  }
+  function buildShipyard() {
+    var box = $("ships");
+    if (!box || !window.SHIPYARD) return;
+    box.innerHTML = "";
+    window.SHIPYARD.forEach(function (r) {
+      var cur = shipId() || "hero";
+      var d = document.createElement("div");
+      d.className = "robot" + (cur === r.id ? " sel" : "");
+      d.innerHTML = "<div class='shipprev' style='border-color:" + r.color + "'>" + r.svg + "</div>" +
+        "<div class='rname'>" + r.name + "</div><div class='rtitle'>" + r.title + "</div>" +
+        "<div class='rdesc'>" + r.desc + "</div>";
+      d.onclick = function () {
+        try {
+          if (shipId() === r.id) localStorage.removeItem("pytactics_ship");
+          else localStorage.setItem("pytactics_ship", r.id);
+        } catch (e) {}
+        paintShipyard();
+      };
+      box.appendChild(d);
+    });
+    var note = document.createElement("div");
+    note.className = "rdesc";
+    note.style.cssText = "width:100%;text-align:center";
+    note.textContent = "Без выбора летишь на корабле своего пилота.";
+    box.appendChild(note);
+  }
+  function paintShipyard() {
+    var box = $("ships");
+    if (!box || !window.SHIPYARD) return;
+    var cur = shipId() || "hero";
+    for (var i = 0; i < window.SHIPYARD.length && i < box.children.length; i++) {
+      box.children[i].classList.toggle("sel", window.SHIPYARD[i].id === cur);
+    }
+  }
   function initHome() {
     buildHangar();
+    buildShipyard();
     paintFly();
     wireAuthModal();
     var seen = null;
@@ -219,12 +259,7 @@
     // корабль текущего пилота — только на время прыжка
     var shipBox = document.createElement("div");
     shipBox.id = "shipwrap";
-    var rid = "bolt";
-    try {
-      rid = localStorage.getItem("pytactics_robot") || "bolt";
-      if (window.currentRobot) rid = window.currentRobot().id;
-    } catch (e) {}
-    shipBox.innerHTML = (window.ship && window.ship(rid)) || "";
+    shipBox.innerHTML = (window.currentShip && window.currentShip()) || "";
     document.body.appendChild(shipBox);
     var ctx = c.getContext("2d");
     c.width = window.innerWidth; c.height = window.innerHeight;
