@@ -342,5 +342,118 @@ window.LEVELS = [
     ],
     solution: 'code = "py12"\nif code == "py12":\n    print("Доступ разрешён")\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 5
+  },
+  // ---------- Глава 5. Математические функции ----------
+  {
+    id: 22, title: "Типы чисел", topic: "int и float", book: "5.1",
+    briefing: "§5.1: числа бывают целые (int) и дробные (float). Выведи оба типа и иди.",
+    lore: "Числа — тоже Сила. Целые и дробные.",
+    goal: "Выведи типы и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["int", "float"],
+    starter: 'print(type(5))\nprint(type(3.5))\nmove_right()\n',
+    hints: [
+      "Намёк: оба типа уже выводятся. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nprint(type(5))\nprint(type(3.5))\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(type(5))\nprint(type(3.5))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 23, title: "Округление", topic: "round()", book: "5.2.1",
+    briefing: "§5.2.1: число пи бесконечно, а экран — нет. Округли 3.14159 до сотых.",
+    lore: "Округляй точно, как прицел.",
+    goal: "Выведи 3.14 и 3, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["3.14", "3"],
+    starter: 'print(round(3.14159, 2))\nprint(round(2.5))\nmove_right()\n',
+    hints: [
+      "Намёк: round(x, 2) — два знака после точки. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nprint(round(3.14159, 2))\nprint(round(2.5))\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(round(3.14159, 2))\nprint(round(2.5))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 24, title: "Красивый вывод", topic: "форматирование чисел", book: "5.2.2",
+    briefing: "§5.2.2: числа для вывода готовят заранее. Выведи 7/2 и 10/3 в двух знаках.",
+    lore: "Красивый вывод — вежливость оператора.",
+    goal: "Выведи 3.5 и 3.33, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["3.5", "3.33"],
+    starter: 'a = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\nmove_right()\n',
+    hints: [
+      "Намёк: оба числа уже готовы. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\na = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\nmove_right()\nmove_right()"
+    ],
+    solution: 'a = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 25, title: "Арсенал", topic: "abs/max/степень", book: "5.3",
+    briefing: "§5.3: модуль, максимум и степень — штатный арсенал. Выведи 7, 9 и 1024.",
+    lore: "Модуль, максимум, степень. Арсенал растёт.",
+    goal: "Выведи три числа и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["7", "9", "1024"],
+    starter: 'print(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\nmove_right()\n',
+    hints: [
+      "Намёк: все три уже посчитаны. Добавь второй шаг.",
+      "Псевдокод: три print + 2× move_right().",
+      "Решение:\nprint(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 26, title: "Генератор", topic: "seed() и randint()", book: "5.4",
+    briefing: "§5.4: случайность приручается зерном: seed(7) — и кубик всегда честен. Брось кубик 1–6.",
+    lore: "Случайность можно приручить. Зерно решает.",
+    goal: "Выведи выпавшее число и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["1"],
+    starter: 'seed(7)\nn = randint(1, 6)\nprint(n)\nmove_right()\n',
+    hints: [
+      "Намёк: с зерном 7 всегда выпадает 1. Добавь второй шаг.",
+      "Псевдокод: seed + randint + print + 2× move_right().",
+      "Решение:\nseed(7)\nn = randint(1, 6)\nprint(n)\nmove_right()\nmove_right()"
+    ],
+    solution: 'seed(7)\nn = randint(1, 6)\nprint(n)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 27, title: "За гранью", topic: "Infinity и NaN", book: "5.5",
+    briefing: "§5.5: что будет, если разделить на ноль? В Гриде — бесконечность. Проверь сам.",
+    lore: "Делить на ноль? В Гриде бывает и такое.",
+    goal: "Выведи оба чуда и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Infinity", "NaN"],
+    starter: 'print(1 / 0)\nprint(0 / 0)\nmove_right()\n',
+    hints: [
+      "Намёк: оба чуда уже выводятся. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nprint(1 / 0)\nprint(0 / 0)\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(1 / 0)\nprint(0 / 0)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 28, title: "Угадай число", topic: "мини-босс §5.7", book: "5.7",
+    briefing: "§5.7 из учебника: Владыка задумал число от 1 до 10 (зерно 3). Перебери по порядку, угадай, одолей стражу и зажги маяк.",
+    lore: "Угадай число Владыки. Десять попыток — и ни одной лишней.",
+    goal: "Угадай число, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["Угадал: 8"], biome: "deathstar", place: "Узел Роя",
+    starter: 'seed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print("Угадал: " + str(guess))\n        break\nmove_right()\nattack("right")\nmove_right()\n',
+    hints: [
+      "Намёк: цикл уже угадывает (ответ — 8). После цикла: шаг, удар, четыре шага.",
+      "Псевдокод: цикл + шаг + удар + 4 шага.",
+      "Решение:\nseed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print(\"Угадал: \" + str(guess))\n        break\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'seed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print("Угадал: " + str(guess))\n        break\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 7
   }
 ];

@@ -5,36 +5,36 @@
   --bg:#05070f; --panel:rgba(16,22,38,.92); --line:#2b3648;
   --accent:#f778ba; --accent2:#58a6ff; --gold:#ffd60a; --green:#3fb950;
   --text:#e6edf3; --muted:#8b949e; --star:#cfe4ff;
-  --g1a:#58a6ff; --g1b:#f778ba; --g2a:#a371f7; --g2b:#39c5cf; --g3a:#ffd60a; --g3b:#f778ba; --g4a:#ff4d6d; --g4b:#ff9e3d;
-  --o1a:#79c0ff; --o1b:#1f6feb; --o2a:#d2a8ff; --o2b:#8957e5; --o3a:#ffe16a; --o3b:#b35900; --o4a:#ff8fa3; --o4b:#9d0208;
+  --g1a:#58a6ff; --g1b:#f778ba; --g2a:#a371f7; --g2b:#39c5cf; --g3a:#ffd60a; --g3b:#f778ba; --g4a:#ff4d6d; --g4b:#ff9e3d; --g5a:#22d3ee; --g5b:#f0abfc;
+  --o1a:#79c0ff; --o1b:#1f6feb; --o2a:#d2a8ff; --o2b:#8957e5; --o3a:#ffe16a; --o3b:#b35900; --o4a:#ff8fa3; --o4b:#9d0208; --o5a:#a5f3fc; --o5b:#0e7490;
 }
 [data-theme="abyss"]{
   --bg:#020409; --panel:rgba(10,18,32,.94); --line:#1e3a52;
   --accent:#39c5cf; --accent2:#79c0ff; --gold:#ffd60a; --green:#3fb950;
   --text:#dbe7f3; --muted:#7d8fa3; --star:#bfe9ff;
-  --g1a:#1f6feb; --g1b:#39c5cf; --g2a:#0ea5e9; --g2b:#9fd8ff; --g3a:#14b8a6; --g3b:#1f6feb; --g4a:#5e60ce; --g4b:#64dfdf;
-  --o1a:#9fd8ff; --o1b:#155e9e; --o2a:#6cc7e8; --o2b:#0b5fa5; --o3a:#4de3c2; --o3b:#0a6e5c; --o4a:#9bb8ff; --o4b:#3a3fa0;
+  --g1a:#1f6feb; --g1b:#39c5cf; --g2a:#0ea5e9; --g2b:#9fd8ff; --g3a:#14b8a6; --g3b:#1f6feb; --g4a:#5e60ce; --g4b:#64dfdf; --g5a:#e0aaff; --g5b:#64dfdf;
+  --o1a:#9fd8ff; --o1b:#155e9e; --o2a:#6cc7e8; --o2b:#0b5fa5; --o3a:#4de3c2; --o3b:#0a6e5c; --o4a:#9bb8ff; --o4b:#3a3fa0; --o5a:#e6ccff; --o5b:#5e35b1;
 }
 [data-theme="nova"]{
   --bg:#0e0703; --panel:rgba(34,20,10,.93); --line:#5a3a22;
   --accent:#ff7a3d; --accent2:#ffd60a; --gold:#ffd60a; --green:#3fb950;
   --text:#f5e9dc; --muted:#a89c8c; --star:#ffe6c4;
-  --g1a:#ff9e3d; --g1b:#ff4d4d; --g2a:#ffb454; --g2b:#ff7a3d; --g3a:#ffd60a; --g3b:#ff7a3d; --g4a:#ff4d4d; --g4b:#ffb454;
-  --o1a:#ffc46b; --o1b:#c2410c; --o2a:#ff9e6b; --o2b:#9a3412; --o3a:#ffe16a; --o3b:#b45309; --o4a:#ff8a7a; --o4b:#8f1d1d;
+  --g1a:#ff9e3d; --g1b:#ff4d4d; --g2a:#ffb454; --g2b:#ff7a3d; --g3a:#ffd60a; --g3b:#ff7a3d; --g4a:#ff4d4d; --g4b:#ffb454; --g5a:#fef08a; --g5b:#fb7185;
+  --o1a:#ffc46b; --o1b:#c2410c; --o2a:#ff9e6b; --o2b:#9a3412; --o3a:#ffe16a; --o3b:#b45309; --o4a:#ff8a7a; --o4b:#8f1d1d; --o5a:#fef9c3; --o5b:#a16207;
 }
 [data-theme="emerald"]{
   --bg:#030d08; --panel:rgba(8,26,19,.93); --line:#1d4a38;
   --accent:#3fb950; --accent2:#39c5cf; --gold:#ffd60a; --green:#3fb950;
   --text:#dcf2e5; --muted:#7fa393; --star:#d3f9e3;
-  --g1a:#22c55e; --g1b:#14b8a6; --g2a:#4ade80; --g2b:#22d3ee; --g3a:#a3e635; --g3b:#34d399; --g4a:#c4b5fd; --g4b:#34d399;
-  --o1a:#86efac; --o1b:#15803d; --o2a:#5eead4; --o2b:#0f766e; --o3a:#bef264; --o3b:#4d7c0f; --o4a:#d8ccff; --o4b:#5b4a8a;
+  --g1a:#22c55e; --g1b:#14b8a6; --g2a:#4ade80; --g2b:#22d3ee; --g3a:#a3e635; --g3b:#34d399; --g4a:#c4b5fd; --g4b:#34d399; --g5a:#f9a8d4; --g5b:#6ee7b7;
+  --o1a:#86efac; --o1b:#15803d; --o2a:#5eead4; --o2b:#0f766e; --o3a:#bef264; --o3b:#4d7c0f; --o4a:#d8ccff; --o4b:#5b4a8a; --o5a:#fbcfe8; --o5b:#9d2463;
 }
 [data-theme="royal"]{
   --bg:#0a0616; --panel:rgba(24,15,45,.93); --line:#443366;
   --accent:#c084fc; --accent2:#f778ba; --gold:#ffd60a; --green:#3fb950;
   --text:#ece5f7; --muted:#9a8fb5; --star:#e9dcff;
-  --g1a:#a371f7; --g1b:#f778ba; --g2a:#7c3aed; --g2b:#c084fc; --g3a:#f778ba; --g3b:#a371f7; --g4a:#ffd166; --g4b:#ef476f;
-  --o1a:#d2a8ff; --o1b:#6d28d9; --o2a:#e9a8f5; --o2b:#a21caf; --o3a:#c4b5fd; --o3b:#5b21b6; --o4a:#ffe29a; --o4b:#8a5a00;
+  --g1a:#a371f7; --g1b:#f778ba; --g2a:#7c3aed; --g2b:#c084fc; --g3a:#f778ba; --g3b:#a371f7; --g4a:#ffd166; --g4b:#ef476f; --g5a:#7dd3fc; --g5b:#f0abfc;
+  --o1a:#d2a8ff; --o1b:#6d28d9; --o2a:#e9a8f5; --o2b:#a21caf; --o3a:#c4b5fd; --o3b:#5b21b6; --o4a:#ffe29a; --o4b:#8a5a00; --o5a:#bae6fd; --o5b:#075985;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
@@ -63,6 +63,7 @@ button,.tdot,.planet,.robot,.gcard{touch-action:manipulation}
 .galaxy.g2::before{background:radial-gradient(400px 160px at 80% 20%,var(--g2a),transparent),radial-gradient(300px 140px at 20% 80%,var(--g2b),transparent)}
 .galaxy.g3::before{background:radial-gradient(420px 170px at 50% 20%,var(--g3a),transparent),radial-gradient(320px 150px at 50% 90%,var(--g3b),transparent)}
 .galaxy.g4::before{background:radial-gradient(420px 170px at 30% 30%,var(--g4a),transparent),radial-gradient(320px 150px at 70% 80%,var(--g4b),transparent)}
+.galaxy.g5::before{background:radial-gradient(420px 170px at 70% 30%,var(--g5a),transparent),radial-gradient(320px 150px at 30% 80%,var(--g5b),transparent)}
 .galaxy h3{margin:0 0 2px;font-size:18px;position:relative}
 .galaxy .gdesc{color:var(--muted);font-size:13px;margin-bottom:10px;position:relative}
 .planets{display:flex;gap:14px;flex-wrap:wrap;position:relative}
@@ -74,6 +75,7 @@ button,.tdot,.planet,.robot,.gcard{touch-action:manipulation}
 .g2 .orb{--pl:var(--o2a);--pd:var(--o2b);background:radial-gradient(circle at 32% 30%,var(--o2a),var(--o2b) 74%);box-shadow:0 0 16px -2px var(--o2b),inset -7px -9px 14px rgba(0,0,0,.5)}
 .g3 .orb{--pl:var(--o3a);--pd:var(--o3b);background:radial-gradient(circle at 32% 30%,var(--o3a),var(--o3b) 74%);box-shadow:0 0 16px -2px var(--o3b),inset -7px -9px 14px rgba(0,0,0,.5)}
 .g4 .orb{--pl:var(--o4a);--pd:var(--o4b);background:radial-gradient(circle at 32% 30%,var(--o4a),var(--o4b) 74%);box-shadow:0 0 16px -2px var(--o4b),inset -7px -9px 14px rgba(0,0,0,.5)}
+.g5 .orb{--pl:var(--o5a);--pd:var(--o5b);background:radial-gradient(circle at 32% 30%,var(--o5a),var(--o5b) 74%);box-shadow:0 0 16px -2px var(--o5b),inset -7px -9px 14px rgba(0,0,0,.5)}
 /* Типы поверхности (слои поверх базы, цвета — из темы) */
 .orb.pt-rock{background:radial-gradient(circle at 66% 58%,color-mix(in srgb,var(--pd) 55%,black) 0 9%,transparent 10%),radial-gradient(circle at 30% 68%,color-mix(in srgb,var(--pd) 55%,black) 0 6%,transparent 7%),radial-gradient(circle at 52% 28%,color-mix(in srgb,var(--pd) 45%,black) 0 5%,transparent 6%),radial-gradient(circle at 32% 30%,var(--pl),var(--pd) 74%)}
 .orb.pt-gas{background:repeating-linear-gradient(173deg,transparent 0 6px,rgba(0,0,0,.22) 6px 9px,rgba(255,255,255,.13) 9px 11px),radial-gradient(circle at 32% 30%,var(--pl),var(--pd) 74%)}

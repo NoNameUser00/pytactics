@@ -15,11 +15,12 @@
       { name: "Глава 1. Первые программы", desc: "§1.1–1.6: вывод, комментарии, структура — сектор «Рассвет»", levels: [1, 2, 3, 4], cls: "g1", icon: "🌅" },
       { name: "Глава 2. Переменные", desc: "§2.1–2.5: имена, типы, del — сектор «Хранилище»", levels: [5, 6, 7, 8, 9], cls: "g2", icon: "🌌" },
       { name: "Глава 3. Операторы", desc: "§3.1–3.5: математика, строки, калькулятор — сектор «Кузница»", levels: [10, 11, 12, 13, 14, 15], cls: "g3", icon: "☄️" },
-      { name: "Глава 4. Циклы и условия", desc: "§4.1–4.5: if, for, while, break — сектор «Лабиринт»", levels: [16, 17, 18, 19, 20, 21], cls: "g4", icon: "🌑" }
+      { name: "Глава 4. Циклы и условия", desc: "§4.1–4.5: if, for, while, break — сектор «Лабиринт»", levels: [16, 17, 18, 19, 20, 21], cls: "g4", icon: "🌑" },
+      { name: "Глава 5. Математика", desc: "§5.1–5.7: числа, round, random, «Угадай число» — сектор «Обсерватория»", levels: [22, 23, 24, 25, 26, 27, 28], cls: "g5", icon: "🔭" }
     ];
   }
   function PTYPE() {
-    return { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "rock", 6: "gas", 7: "city", 8: "ice", 9: "lava", 10: "rock", 11: "gas", 12: "lava", 13: "ice", 14: "city", 15: "rock", 16: "lava", 17: "gas", 18: "rock", 19: "ice", 20: "ring", 21: "ring" };
+    return { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "rock", 6: "gas", 7: "city", 8: "ice", 9: "lava", 10: "rock", 11: "gas", 12: "lava", 13: "ice", 14: "city", 15: "rock", 16: "lava", 17: "gas", 18: "rock", 19: "ice", 20: "ring", 21: "ring", 22: "rock", 23: "ice", 24: "gas", 25: "city", 26: "lava", 27: "ice", 28: "ring" };
   }
   function levelById(id) {
     for (var i = 0; i < window.LEVELS.length; i++) if (window.LEVELS[i].id === id) return window.LEVELS[i];

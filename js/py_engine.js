@@ -14,6 +14,7 @@ window.PyEngine = (function () {
       api: api,
       logs: [],
       currentLine: 0,
+      rng: mulberry32(1),
       onLine: opts.onLine || null,
       traceLines: []
     };
@@ -271,6 +272,17 @@ window.PyEngine = (function () {
 
     function truthy(v) { return !!v && v !== 0; }
 
+    // Детерминированный ГСЧ: seed(n) делает random()/randint() повторяемыми —
+    // задачи с «Угадай число» проверяются точным expect.
+    function mulberry32(a) {
+      return function () {
+        a |= 0; a = (a + 0x6D2B79F5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
     // Python-not связывается слабее сравнений, но сильнее and/or:
     // «not x > 5» = «not (x > 5)», «not a and b» = «(not a) and b».
     // Поэтому оборачиваем операнд not в скобки до замены and/or.
@@ -365,7 +377,12 @@ window.PyEngine = (function () {
       for (var an in st.api) if (an !== "__print") ctx[an] = st.api[an];
       ctx["len"] = function (x) { return x && x.length !== undefined ? x.length : 0; };
       ctx["int"] = function (x) { return Math.trunc(Number(x)); };
-      ctx["float"] = function (x) { return Number(x); };
+      ctx["float"] = function (x) {
+        if (x === "inf") return Infinity;
+        if (x === "-inf") return -Infinity;
+        if (x === "nan") return NaN;
+        return Number(x);
+      };
       ctx["str"] = function (x) { return String(x); };
       ctx["bool"] = function (x) { return !!x && x !== 0; };
       ctx["type"] = function (x) {
@@ -374,6 +391,18 @@ window.PyEngine = (function () {
         if (typeof x === "number") return Number.isInteger(x) ? "int" : "float";
         if (x === null || x === undefined) return "NoneType";
         return "unknown";
+      };
+      ctx["round"] = function (x, n) {
+        x = Number(x);
+        if (n === undefined) return Math.round(x);
+        var p = Math.pow(10, Math.floor(Number(n)));
+        return Math.round(x * p) / p;
+      };
+      ctx["seed"] = function (x) { st.rng = mulberry32(Math.floor(Number(x)) || 0); return null; };
+      ctx["random"] = function () { return st.rng(); };
+      ctx["randint"] = function (a, b) {
+        a = Math.ceil(Number(a)); b = Math.floor(Number(b));
+        return a + Math.floor(st.rng() * (b - a + 1));
       };
       ctx["abs"] = Math.abs; ctx["min"] = Math.min; ctx["max"] = Math.max;
       ctx["range"] = function () { return []; };
