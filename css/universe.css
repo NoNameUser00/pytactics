@@ -106,6 +106,12 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
 .sheet button.primary{background:linear-gradient(180deg,#2ea043,#1f7a33);border-color:#2ea043;font-weight:700}
 .sheet .err{color:#f85149;font-size:13px;min-height:20px;margin-top:8px}
 #jump{position:fixed;inset:0;z-index:60;pointer-events:none}
+/* Корабль в прыжке: только на время анимации, вид с хвоста */
+#shipwrap{position:fixed;left:50%;bottom:5%;width:130px;z-index:61;pointer-events:none;transform:translateX(-50%);animation:shipfly 2.2s ease-in-out both}
+#shipwrap svg{width:100%;height:auto;filter:drop-shadow(0 0 14px rgba(140,190,255,.55))}
+#shipwrap .engine{animation:eng .16s ease-in-out infinite alternate}
+@keyframes eng{from{opacity:.5}to{opacity:1}}
+@keyframes shipfly{from{transform:translateX(-50%) translateY(26px) scale(.9)}to{transform:translateX(-50%) translateY(-14px) scale(1.05)}}
 .uni.reveal{animation:reveal .9s ease both}
 @keyframes reveal{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:none}}
 /* Звёздная карта секторов */

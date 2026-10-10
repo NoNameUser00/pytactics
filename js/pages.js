@@ -210,36 +210,50 @@
     if ($("flyBtn")) $("flyBtn").onclick = function () { location.href = "map.html"; };
   }
 
-  // ---------- гиперпрыжок при входе: разгон -> тоннель -> вспышка ----------
+  // ---------- гиперпрыжок: мягкий разгон, тоннель, выход. Корабль пилота летит хвостом к нам ----------
   function jumpIntro() {
     var c = $("jump");
     var uni = document.querySelector(".uni");
     if (uni) uni.classList.add("reveal");
     if (!c) return;
+    // корабль текущего пилота — только на время прыжка
+    var shipBox = document.createElement("div");
+    shipBox.id = "shipwrap";
+    var rid = "bolt";
+    try {
+      rid = localStorage.getItem("pytactics_robot") || "bolt";
+      if (window.currentRobot) rid = window.currentRobot().id;
+    } catch (e) {}
+    shipBox.innerHTML = (window.ship && window.ship(rid)) || "";
+    document.body.appendChild(shipBox);
     var ctx = c.getContext("2d");
     c.width = window.innerWidth; c.height = window.innerHeight;
     var cx = c.width / 2, cy = c.height / 2;
     var maxR = Math.sqrt(cx * cx + cy * cy);
     var parts = [];
-    for (var i = 0; i < 170; i++) {
-      parts.push({ a: Math.random() * 6.283, r: Math.random() * maxR, sp: 0.5 + Math.random(), w: 1 + Math.random() * 2 });
+    for (var i = 0; i < 120; i++) {
+      parts.push({ a: Math.random() * 6.283, r: Math.random() * maxR, sp: 0.5 + Math.random(), w: 0.8 + Math.random() });
     }
-    var T = 1500, t0 = performance.now();
+    var T = 2200, t0 = performance.now();
+    function cleanup() {
+      if (c.parentNode) c.parentNode.removeChild(c);
+      if (shipBox.parentNode) shipBox.parentNode.removeChild(shipBox);
+    }
     (function frame(t) {
       var k = Math.min(1, (t - t0) / T);
-      if (k >= 1) { if (c.parentNode) c.parentNode.removeChild(c); return; }
-      ctx.fillStyle = "rgb(2,4,12)";
+      if (k >= 1) { cleanup(); return; }
+      var ke = k * k * (3 - 2 * k); // smoothstep: мягкий старт и финиш
+      ctx.fillStyle = "rgba(4,6,18,0.42)"; // шлейф вместо резкой заливки
       ctx.fillRect(0, 0, c.width, c.height);
-      var acc = k * k; // ускорение
-      var flash = k < 0.82 ? 0 : (k - 0.82) / 0.18;
-      ctx.globalAlpha = Math.min(1, 0.35 + k);
+      var flash = k < 0.75 ? 0 : (k - 0.75) / 0.25;
+      ctx.globalAlpha = Math.min(1, 0.25 + ke * 0.6);
       parts.forEach(function (p) {
-        var a = p.a + acc * 0.9 * p.sp; // лёгкая закрутка в спираль
-        var r1 = p.r + acc * maxR * 1.6 * p.sp;
-        if (r1 > maxR * 2.2) { p.r = Math.random() * 40; return; }
-        var len = 8 + acc * 260 * p.sp;
-        var g = Math.floor(207 + k * 48);
-        ctx.strokeStyle = "rgb(160," + g + ",255)";
+        var a = p.a + ke * 0.55 * p.sp;
+        var r1 = p.r + ke * maxR * 1.1 * p.sp;
+        if (r1 > maxR * 2.1) { p.r = Math.random() * 40; return; }
+        var len = 6 + ke * 180 * p.sp;
+        var g = Math.floor(200 + ke * 40);
+        ctx.strokeStyle = "rgb(170," + g + ",255)";
         ctx.lineWidth = p.w;
         ctx.beginPath();
         ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
@@ -247,16 +261,16 @@
         ctx.stroke();
       });
       ctx.globalAlpha = 1;
-      // ядро тоннеля разгорается
-      var core = 30 + acc * 190;
+      // мягкое ядро тоннеля
+      var core = 24 + ke * 130;
       var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, core);
-      grad.addColorStop(0, "rgba(190,230,255," + (0.25 + acc * 0.65) + ")");
-      grad.addColorStop(1, "rgba(190,230,255,0)");
+      grad.addColorStop(0, "rgba(170,210,255," + (0.18 + ke * 0.4) + ")");
+      grad.addColorStop(1, "rgba(170,210,255,0)");
       ctx.fillStyle = grad;
       ctx.fillRect(cx - core, cy - core, core * 2, core * 2);
-      // финальная вспышка выхода
+      // мягкая вуаль выхода вместо вспышки
       if (flash > 0) {
-        ctx.fillStyle = "rgba(235,245,255," + flash + ")";
+        ctx.fillStyle = "rgba(200,225,255," + (flash * 0.8) + ")";
         ctx.fillRect(0, 0, c.width, c.height);
       }
       requestAnimationFrame(frame);

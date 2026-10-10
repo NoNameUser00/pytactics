@@ -90,3 +90,9 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:14px}
   .brief{font-size:13px}
 }
 .kbd{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:0 6px;font-size:12px}
+/* Корабль в гиперпрыжке (только на время анимации) */
+#shipwrap{position:fixed;left:50%;bottom:5%;width:130px;z-index:61;pointer-events:none;transform:translateX(-50%);animation:shipfly 2.2s ease-in-out both}
+#shipwrap svg{width:100%;height:auto;filter:drop-shadow(0 0 14px rgba(140,190,255,.55))}
+#shipwrap .engine{animation:eng .16s ease-in-out infinite alternate}
+@keyframes eng{from{opacity:.5}to{opacity:1}}
+@keyframes shipfly{from{transform:translateX(-50%) translateY(26px) scale(.9)}to{transform:translateX(-50%) translateY(-14px) scale(1.05)}}
