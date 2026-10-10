@@ -1,6 +1,6 @@
 /* sw.js — офлайн для десктопа/школы: после первой загрузки игра работает без сети.
    Облако Supabase без сети недоступно — прогресс пишется локально (см. backend.js). */
-var CACHE = "pytactics-v1";
+var CACHE = "pytactics-v2";
 var SHELL = [
   "./", "./index.html", "./game.html", "./themes.html",
   "./manifest.webmanifest",

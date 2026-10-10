@@ -101,6 +101,26 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
 .sheet button.primary{background:linear-gradient(180deg,#2ea043,#1f7a33);border-color:#2ea043;font-weight:700}
 .sheet .err{color:#f85149;font-size:13px;min-height:20px;margin-top:8px}
 .sheet .tip{font-size:12px;color:var(--muted);margin-top:6px}
+/* Мобильный адаптив */
+@media(max-width:640px){
+  .topbar{flex-wrap:wrap;gap:8px;padding:8px 10px}
+  .topbar h1{font-size:16px}
+  .sub{font-size:11px}
+  .hero{padding:16px 6px 4px}
+  .hero h2{font-size:20px}
+  .stat{padding:6px 10px;font-size:13px}
+  .robots{gap:10px}
+  .robot{width:calc(50% - 6px);padding:8px}
+  .remoji{width:48px;height:48px}
+  .remoji svg{width:40px;height:40px}
+  .rdesc{font-size:11px}
+  .planets{gap:10px}
+  .planet{width:calc(50% - 6px)}
+  .planets.big .planet{width:100%}
+  .planet .orb{width:56px;height:56px;font-size:22px}
+  .sheet{padding:14px}
+  .galaxy{padding:10px}
+}
 /* Карточки секторов и крупные планеты */
 .gcard{cursor:pointer;transition:transform .12s}
 .gcard:hover:not(.locked){transform:translateY(-3px);border-color:var(--accent)}
