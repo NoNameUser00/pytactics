@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="abyss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyTactics — сектор</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#020409">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/universe.css">
+</head>
+<body data-page="galaxy">
+<canvas id="stars"></canvas>
+<div class="uni">
+  <div class="topbar">
+    <div class="logo">🪐</div>
+    <div>
+      <h1 id="gTitle">Сектор</h1>
+      <div class="sub" id="gDesc"></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="dots" id="themeDots" title="Цветовая тема"></div>
+    <a class="backlink" href="map.html">← Карта</a>
+    <div id="authArea" style="display:flex;gap:8px;align-items:center"></div>
+  </div>
+
+  <div class="hero">
+    <div class="statbar">
+      <div class="stat" id="gStats">★ 0/0</div>
+    </div>
+    <p>Планеты открываются по порядку. Клик — на планету.</p>
+  </div>
+
+  <div class="planets big" id="planets"></div>
+
+  <footer>PyTactics · статика для GitHub Pages · сделано для уроков информатики 🐍</footer>
+</div>
+
+<script src="js/levels.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.min.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/pages.js"></script>
+</body>
+</html>

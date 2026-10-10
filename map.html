@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="abyss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyTactics — карта секторов</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#020409">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/universe.css">
+</head>
+<body data-page="map">
+<canvas id="stars"></canvas>
+<div class="uni">
+  <div class="topbar">
+    <div class="logo">🗺️</div>
+    <div>
+      <h1>PyTactics <span>/ Карта секторов</span></h1>
+      <div class="sub">Каждая глава учебника — отдельный сектор. Главы открываются по порядку.</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="dots" id="themeDots" title="Цветовая тема"></div>
+    <a class="backlink" href="index.html">← Ангар</a>
+    <div id="authArea" style="display:flex;gap:8px;align-items:center"></div>
+  </div>
+
+  <div class="hero">
+    <h2>🗺 Куда летим, пилот?</h2>
+    <div class="statbar">
+      <div class="stat" id="statStars">★ 0/63</div>
+      <div class="stat" id="statDone">🪐 Пройдено: 0/21</div>
+      <div class="stat" id="statMode">💾 Локально</div>
+    </div>
+  </div>
+
+  <div id="galaxies"></div>
+
+  <section class="howto">
+    <b>📜 Как играть:</b><br>
+    1. Открой сектор → выбери планету → прочитай брифинг → напиши код → <b>▶ Запустить</b>.<br>
+    2. Каждый <code>move_*/attack/collect/wait</code> = 1 ход, баг-штурмовики 👾 бьют в ответ.<br>
+    3. Победа = все 💎 + портал 🌀. До 3 ★ за короткое решение.<br>
+    4. Без входа прогресс хранится в этом браузере. Вошёл — прогресс в облаке и виден учителю.
+  </section>
+
+  <footer>PyTactics · статика для GitHub Pages · сделано для уроков информатики 🐍</footer>
+</div>
+
+<script src="js/levels.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase.min.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/pages.js"></script>
+</body>
+</html>

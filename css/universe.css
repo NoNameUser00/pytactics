@@ -101,6 +101,14 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
 .sheet button.primary{background:linear-gradient(180deg,#2ea043,#1f7a33);border-color:#2ea043;font-weight:700}
 .sheet .err{color:#f85149;font-size:13px;min-height:20px;margin-top:8px}
 .sheet .tip{font-size:12px;color:var(--muted);margin-top:6px}
+/* Карточки секторов и крупные планеты */
+.gcard{cursor:pointer;transition:transform .12s}
+.gcard:hover:not(.locked){transform:translateY(-3px);border-color:var(--accent)}
+.gcard.locked{opacity:.55;cursor:default}
+.planets.big .planet{width:220px}
+.planet .pgoal{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45;min-height:32px}
+a.backlink{color:var(--accent2);font-size:14px;text-decoration:none;white-space:nowrap}
+a.backlink:hover{text-decoration:underline}
 /* Ангар */
 .hangar{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin:14px 0}
 .hangar h3{margin:0 0 10px;font-size:18px}
