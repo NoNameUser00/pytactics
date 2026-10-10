@@ -198,6 +198,7 @@ window.PyEngine = (function () {
         if (dli) {
           var arrv = getVar(scope, dli[1]);
           if (!Array.isArray(arrv)) fail("del [...]: «" + dli[1] + "» — не список");
+          if (arrv.__tuple__) fail("Кортеж менять нельзя (del) — создай новый");
           var di = Math.floor(Number(evalExpr(dli[2], scope, st)));
           if (di < 0) di = arrv.length + di;
           arrv.splice(di, 1);
@@ -210,6 +211,16 @@ window.PyEngine = (function () {
             if (Object.prototype.hasOwnProperty.call(ss.vars, dlm[1])) { delete ss.vars[dlm[1]]; break; }
             ss = ss.parent;
           }
+          i++; continue;
+        }
+
+        // --- распаковка: x, y = пара ---
+        var um = t.match(/^([A-Za-z_]\w*(?:\s*,\s*[A-Za-z_]\w*)+)\s*=\s*(.+)$/);
+        if (um) {
+          var names = um[1].split(",").map(function (s) { return s.trim(); });
+          var uval = evalExpr(um[2], scope, st);
+          if (!Array.isArray(uval) || uval.length !== names.length) fail("Нужно " + names.length + " значений через запятую");
+          names.forEach(function (nm, k) { setVar(scope, nm, uval[k]); });
           i++; continue;
         }
 
@@ -283,8 +294,16 @@ window.PyEngine = (function () {
     }
 
     function applyAug(a, b, op) {
+      if (op === "+=") {
+        if (Array.isArray(a) && a.__tuple__) fail("Кортеж менять нельзя (+=) — создай новый");
+        if (Array.isArray(a) || Array.isArray(b)) {
+          return (Array.isArray(a) ? a : [a]).concat(Array.isArray(b) ? b : [b]);
+        }
+        if (typeof a === "string" || typeof b === "string") return String(a) + String(b);
+        a = Number(a); b = Number(b);
+        return a + b;
+      }
       a = Number(a); b = Number(b);
-      if (op === "+=") return a + b;
       if (op === "-=") return a - b;
       if (op === "*=") return a * b;
       if (op === "/=") return a / b;
@@ -294,11 +313,18 @@ window.PyEngine = (function () {
       return b;
     }
 
-    function truthy(v) { return !!v && v !== 0; }
+    function truthy(v) {
+      if (Array.isArray(v)) return v.length > 0; // пустые [] и () — ложь, как в Python
+      return !!v && v !== 0;
+    }
 
-    // Питоновский вывод: True/False/None, списки как [1, 2, 'a']
+    // Питоновский вывод: True/False/None, списки как [1, 2, 'a'], кортежи как (1, 2)
     function fmtPy(v, top) {
-      if (Array.isArray(v)) return "[" + v.map(function (x) { return fmtPy(x, false); }).join(", ") + "]";
+      if (Array.isArray(v)) {
+        var inner = v.map(function (x) { return fmtPy(x, false); }).join(", ");
+        if (v.__tuple__) return v.length === 1 ? "(" + inner + ",)" : "(" + inner + ")";
+        return "[" + inner + "]";
+      }
       if (v === true) return "True";
       if (v === false) return "False";
       if (v === null || v === undefined) return "None";
@@ -369,6 +395,7 @@ window.PyEngine = (function () {
       if (/(^|\W)(import|exec|eval|Function|window|document|localStorage|fetch|XMLHttpRequest|process|require)(\W|$)/.test(expr))
         fail("Запрещённое слово. Можно только hero-API, переменные и print().");
       if (/__/.test(expr)) fail("Символы «__» запрещены.");
+      if (/^[A-Za-z_]\w*\s*\[.*\]\s*=[^=]/.test(expr)) fail("Присваивание элементу: для списков используй методы, кортежи менять нельзя");
       // перевод Python -> JS
       var js = expr
         .replace(/\bTrue\b/g, "true").replace(/\bFalse\b/g, "false").replace(/\bNone\b/g, "null");
@@ -378,9 +405,17 @@ window.PyEngine = (function () {
       js = js.replace(/\bnot\s+in\b/g, "__NOTIN__"); // единый оператор, до handleNot
       js = handleNot(js); // not (x > 5), а не (!x) > 5
       js = js.replace(/\band\b/g, "&&").replace(/\bor\b/g, "||");
+      // кортеж: (a, b) и () — скобки НЕ после имени (вызовы не трогаем)
+      js = js.replace(/(?<![\w)\]])\(\s*\)/g, "__tuple()");
+      var tg = 0;
+      while (tg++ < 20) {
+        var before = js;
+        js = js.replace(/(?<![\w)\]])\(([^()]*,[^()]*)\)/g, "__tuple($1)");
+        if (js === before) break;
+      }
       js = js.replace(/\*\*/g, "__POW__").replace(/\/\//g, "__FLOORDIV__");
-      var opnd = "([A-Za-z_]\\w*|\\d+(?:\\.\\d+)?)";
-      var opndCall = "([A-Za-z_]\\w*(?:\\([^()]*\\))?|\\d+(?:\\.\\d+)?)";
+      var opnd = "([A-Za-z_]\\w*(?:\\[[^\\[\\]]*\\]|\\((?:[^()]|\\([^()]*\\))*\\))?|\\[[^\\[\\]]*\\]|\\d+(?:\\.\\d+)?)";
+      var opndCall = "([A-Za-z_]\\w*(?:\\[[^\\[\\]]*\\]|\\((?:[^()]|\\([^()]*\\))*\\))?|\\[[^\\[\\]]*\\]|\\d+(?:\\.\\d+)?)";
       // умножение (в т.ч. строк: "ab" * 3) — через общий helper
       var reMul = new RegExp(opnd + "\\s*\\*\\s*" + opnd, "g"), mguard = 0;
       while (mguard++ < 20) {
@@ -389,7 +424,14 @@ window.PyEngine = (function () {
         reMul.lastIndex = 0;
         js = js.replace(reMul, "__mul($1,$2)");
       }
-      // вхождение: A in B / A not in B (контейнер — имя, вызов или список)
+      // сложение (в т.ч. списков и кортежей — через общий helper)
+      var reAdd = new RegExp(opnd + "\\s*\\+\\s*" + opnd, "g"), aguard = 0;
+      while (aguard++ < 20) {
+        reAdd.lastIndex = 0;
+        if (!reAdd.test(js)) break;
+        reAdd.lastIndex = 0;
+        js = js.replace(reAdd, "__add($1,$2)");
+      }
       var opndCont = "(\\[[^\\[\\]]*\\]|[A-Za-z_]\\w*(?:\\([^()]*\\))?|\\d+(?:\\.\\d+)?)";
       js = js.replace(new RegExp(opndCall + "\\s+(__NOTIN__|in)\\s+" + opndCont, "g"), function (m, a, op, b) {
         return op === "__NOTIN__" ? "!__contains(" + b + "," + a + ")" : "__contains(" + b + "," + a + ")";
@@ -406,7 +448,7 @@ window.PyEngine = (function () {
       js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isdigit\(\)/g, "__isdigit($1)")
         .replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isalpha\(\)/g, "__isalpha($1)");
       // методы списков
-      js = js.replace(/\.append\(/g, ".push(");
+      js = js.replace(/([A-Za-z_]\w*)\.append\(([^()]+)\)/g, "__append($1,$2)");
       js = js.replace(/([A-Za-z_]\w*)\.sort\(\)/g, "__sort($1)");
       js = js.replace(/([A-Za-z_]\w*)\.insert\(([^,()]+),([^()]+)\)/g, "__insert($1,$2,$3)");
       js = js.replace(/([A-Za-z_]\w*)\.remove\(([^()]+)\)/g, "__remove($1,$2)");
@@ -457,6 +499,7 @@ window.PyEngine = (function () {
       ctx["str"] = function (x) { return String(x); };
       ctx["bool"] = function (x) { return !!x && x !== 0; };
       ctx["type"] = function (x) {
+        if (Array.isArray(x)) return x.__tuple__ ? "tuple" : "list";
         if (typeof x === "string") return "str";
         if (typeof x === "boolean") return "bool";
         if (typeof x === "number") return Number.isInteger(x) ? "int" : "float";
@@ -510,6 +553,7 @@ window.PyEngine = (function () {
         return out;
       };
       ctx["shuffle"] = function (a) {
+        noMut(a, "shuffle");
         for (var i = a.length - 1; i > 0; i--) {
           var j = Math.floor(st.rng() * (i + 1)), t = a[i];
           a[i] = a[j]; a[j] = t;
@@ -524,22 +568,57 @@ window.PyEngine = (function () {
         return s[i];
       };
       ctx["__remove"] = function (a, x) {
+        noMut(a, "remove");
         for (var i = 0; i < a.length; i++) if (a[i] == x) { a.splice(i, 1); break; }
         return null;
       };
-      ctx["__insert"] = function (a, i, x) { a.splice(Math.floor(Number(i)), 0, x); return null; };
-      ctx["__pop"] = function (a, i) { return a.splice(Math.floor(Number(i)), 1)[0]; };
+      ctx["__insert"] = function (a, i, x) { noMut(a, "insert"); a.splice(Math.floor(Number(i)), 0, x); return null; };
+      ctx["__pop"] = function (a, i) { noMut(a, "pop"); return a.splice(Math.floor(Number(i)), 1)[0]; };
       ctx["__sort"] = function (a) {
+        noMut(a, "sort");
         var nums = a.every(function (x) { return typeof x === "number"; });
         a.sort(nums ? function (x, y) { return x - y; } : undefined);
         return null;
       };
       ctx["__join"] = function (sep, a) { return a.join(String(sep)); };
       ctx["__mul"] = function (a, b) {
+        if (Array.isArray(a) || Array.isArray(b)) {
+          var arr = Array.isArray(a) ? a : b, n = Math.floor(Number(Array.isArray(a) ? b : a));
+          var out = [];
+          for (var i = 0; i < Math.max(0, n); i++) out = out.concat(arr);
+          if (arr.__tuple__) Object.defineProperty(out, "__tuple__", { value: true });
+          return out;
+        }
         if (typeof a === "string") return a.repeat(Math.max(0, Math.floor(Number(b))));
         if (typeof b === "string") return b.repeat(Math.max(0, Math.floor(Number(a))));
         return a * b;
       };
+      ctx["__add"] = function (a, b) {
+        if (Array.isArray(a) || Array.isArray(b)) {
+          var la = Array.isArray(a) ? a : [a], lb = Array.isArray(b) ? b : [b];
+          var c = la.concat(lb);
+          if ((Array.isArray(a) && a.__tuple__) || (Array.isArray(b) && b.__tuple__)) {
+            Object.defineProperty(c, "__tuple__", { value: true });
+          }
+          return c;
+        }
+        if (typeof a === "string" || typeof b === "string") return String(a) + String(b);
+        return a + b;
+      };
+      ctx["__tuple"] = function () {
+        var a = Array.prototype.slice.call(arguments);
+        Object.defineProperty(a, "__tuple__", { value: true });
+        return a;
+      };
+      ctx["tuple"] = function (x) {
+        var a = typeof x === "string" ? x.split("") : Array.isArray(x) ? x.slice() : [x];
+        Object.defineProperty(a, "__tuple__", { value: true });
+        return a;
+      };
+      function noMut(a, what) {
+        if (Array.isArray(a) && a.__tuple__) fail("Кортеж менять нельзя (" + what + ") — создай новый");
+      }
+      ctx["__append"] = function (a, x) { noMut(a, "append"); a.push(x); return null; };
       ctx["__contains"] = function (c, x) { return String(c).indexOf(String(x)) >= 0; };
       ctx["__replace"] = function (s, a, b) { return String(s).split(String(a)).join(String(b)); };
       ctx["__slice"] = function (s, a, b, c) {
@@ -562,6 +641,7 @@ window.PyEngine = (function () {
           var j0 = Math.min(n - 1, idx(a, n - 1)), j1 = idx(b, -1);
           for (var j = j0; j > j1; j += step) out.push(s[j]);
         }
+        if (isArr && s.__tuple__) Object.defineProperty(out, "__tuple__", { value: true });
         return isArr ? out : out.join("");
       };
       ctx["__isdigit"] = function (x) { return /^[0-9]+$/.test(String(x)); };      ctx["__isalpha"] = function (x) { return /^[A-Za-z\u00c0-\u024f\u0400-\u04ff\u0500-\u052f]+$/.test(String(x)); };

@@ -810,5 +810,134 @@ window.LEVELS = [
     ],
     solution: 'garage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 6
+  },
+  // ---------- Глава 9. Кортежи ----------
+  {
+    id: 51, title: "Капсула", topic: "кортеж ()", book: "9.1/9.2",
+    briefing: "§9.1–9.2: кортеж — как список, только в круглых скобках. Собери капсулу и назови первый элемент.",
+    lore: "Круглые скобки. Крепкая вещь.",
+    goal: "Выведи капсулу и 10, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["(10, 20)", "10"],
+    starter: 't = (10, 20)\nprint(t)\nprint(t[0])\nmove_right()\n',
+    hints: [
+      "Намёк: капсула уже собрана. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nt = (10, 20)\nprint(t)\nprint(t[0])\nmove_right()\nmove_right()"
+    ],
+    solution: 't = (10, 20)\nprint(t)\nprint(t[0])\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 52, title: "Обход капсулы", topic: "for по кортежу", book: "9.4",
+    briefing: "§9.4: цикл идёт и по кортежу. Сложи (1, 2, 3) в сумму.",
+    lore: "Обойди всех. Даже запечатанных.",
+    goal: "Выведи 6 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["6"],
+    starter: 's = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\nmove_right()\n',
+    hints: [
+      "Намёк: сумма уже считается (6). Добавь второй шаг.",
+      "Псевдокод: цикл + print + 2× move_right().",
+      "Решение:\ns = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\nmove_right()\nmove_right()"
+    ],
+    solution: 's = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 53, title: "Длина и поиск", topic: "len() и in", book: "9.6",
+    briefing: "§9.6: длина и вхождение работают и здесь. Измерь («a», «b») и найди «b».",
+    lore: "Измерь. Найди. Иди.",
+    goal: "Выведи 2 и True, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["2", "True"],
+    starter: 't = ("a", "b")\nprint(len(t))\nprint("b" in t)\nmove_right()\n',
+    hints: [
+      "Намёк: обе проверки верны. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nt = (\"a\", \"b\")\nprint(len(t))\nprint(\"b\" in t)\nmove_right()\nmove_right()"
+    ],
+    solution: 't = ("a", "b")\nprint(len(t))\nprint("b" in t)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 54, title: "Распаковка", topic: "x, y = ...", book: "9.9",
+    briefing: "§9.9: координаты (3, 4) можно разложить в два имени одним махом. Сложи их.",
+    lore: "Одна капсула — два имени.",
+    goal: "Выведи 7 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["7"],
+    starter: 'coords = (3, 4)\nx, y = coords\nprint(x + y)\nmove_right()\n',
+    hints: [
+      "Намёк: распаковка уже написана (3+4=7). Добавь второй шаг.",
+      "Псевдокод: unpack + print + 2× move_right().",
+      "Решение:\ncoords = (3, 4)\nx, y = coords\nprint(x + y)\nmove_right()\nmove_right()"
+    ],
+    solution: 'coords = (3, 4)\nx, y = coords\nprint(x + y)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 55, title: "Слияние", topic: "склейка кортежей", book: "9.7",
+    briefing: "§9.7: плюс склеивает капсулы в новую: (1, 2) + (3,) — и вот уже (1, 2, 3).",
+    lore: "Склеивай. Новое — не запрет.",
+    goal: "Выведи (1, 2, 3) и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["(1, 2, 3)"],
+    starter: 'a = (1, 2)\nb = a + (3,)\nprint(b)\nmove_right()\n',
+    hints: [
+      "Намёк: склейка уже написана. Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\na = (1, 2)\nb = a + (3,)\nprint(b)\nmove_right()\nmove_right()"
+    ],
+    solution: 'a = (1, 2)\nb = a + (3,)\nprint(b)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 56, title: "Кто есть кто", topic: "type()", book: "9.10",
+    briefing: "§9.10: список и кортеж похожи, но type() их различает. Спроси у обоих.",
+    lore: "Похожи — не значит одинаковы.",
+    goal: "Выведи tuple и list, дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["tuple", "list"],
+    starter: 'print(type((1,)))\nprint(type([1]))\nmove_right()\n',
+    hints: [
+      "Намёк: оба типа уже спрашиваются. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nprint(type((1,)))\nprint(type([1]))\nmove_right()\nmove_right()"
+    ],
+    solution: 'print(type((1,)))\nprint(type([1]))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 57, title: "Пустая капсула", topic: "кортеж как условие", book: "9.5",
+    briefing: "§9.5: пустая капсула — ложь, полная — правда. Проверь пустую.",
+    lore: "Пустота тоже ответ.",
+    goal: "Выведи «пуст» и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["пуст"],
+    starter: 't = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\nmove_right()\n',
+    hints: [
+      "Намёк: пустой кортеж — ложь, сработает else. Добавь второй шаг.",
+      "Псевдокод: if/else + 2× move_right().",
+      "Решение:\nt = ()\nif t:\n    print(\"полон\")\nelse:\n    print(\"пуст\")\nmove_right()\nmove_right()"
+    ],
+    solution: 't = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 58, title: "Сейф", topic: "босс: списки vs кортежи", book: "9.10",
+    briefing: "§9.10 из учебника: в сейфе груз двух видов. Посчитай всё вместе и вскрой маяк.",
+    lore: "Списки и капсулы. Считай всё.",
+    goal: "Выведи 3, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["3"],
+    starter: 'cargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\nmove_right()\nattack("right")\n',
+    hints: [
+      "Намёк: 1+2=3 уже посчитано. После: шаг, удар, четыре шага.",
+      "Псевдокод: print + шаг + удар + 4 шага.",
+      "Решение:\ncargo = [\"ключ\"]\nbox = (\"болт\", \"гайка\")\nprint(len(cargo) + len(box))\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'cargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 6
   }
 ];
