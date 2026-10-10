@@ -38,7 +38,8 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;min-height:100vh}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+button,.tdot,.planet,.robot,.gcard{touch-action:manipulation}
 #stars{position:fixed;inset:0;z-index:0}
 .uni{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:12px}
 .topbar{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
@@ -120,6 +121,8 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:16px}
   .planet .orb{width:56px;height:56px;font-size:22px}
   .sheet{padding:14px}
   .galaxy{padding:10px}
+  .authbtn{min-height:44px}
+  .sheet input{font-size:16px}
 }
 /* Карточки секторов и крупные планеты */
 .gcard{cursor:pointer;transition:transform .12s}

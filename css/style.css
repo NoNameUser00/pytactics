@@ -24,7 +24,8 @@
   --text:#ece5f7; --muted:#9a8fb5; --deep:#100a24; --cell:#1d1533; --exit:#3b1d5e;
 }
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,var(--panel2) 0%,var(--bg) 55%) fixed,var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif}
+body{margin:0;background:radial-gradient(1200px 600px at 20% -10%,var(--panel2) 0%,var(--bg) 55%) fixed,var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;overflow-x:hidden}
+button,.tab{touch-action:manipulation}
 header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(90deg,var(--panel),var(--panel2));border-bottom:2px solid var(--accent)}
 .logo{font-size:26px}
 h1{font-size:20px;margin:0} h1 span{color:var(--accent)}
@@ -81,7 +82,9 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:14px}
   .sub{font-size:11px}
   .wrap{padding:8px}
   .toolbar button{padding:7px 9px;font-size:13px}
-  #editor{font-size:13px;min-height:220px}
+  .toolbar button{min-height:44px}
+  .tab{min-height:44px}
+  #editor{font-size:16px;min-height:220px}
   .brief{font-size:13px}
 }
 .kbd{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:0 6px;font-size:12px}
