@@ -1,6 +1,6 @@
 /* sw.js — офлайн для десктопа/школы: после первой загрузки игра работает без сети.
    Облако Supabase без сети недоступно — прогресс пишется локально (см. backend.js). */
-var CACHE = "pytactics-v4";
+var CACHE = "pytactics-v5";
 var SHELL = [
   "./", "./index.html", "./map.html", "./galaxy.html", "./game.html", "./themes.html",
   "./manifest.webmanifest",
@@ -31,12 +31,13 @@ self.addEventListener("fetch", function (e) {
     }));
     return;
   }
-  // статика (js/css): сначала кэш, потом сеть
+  // статика (js/css): сразу из кэша + тихое обновление из сети
   e.respondWith(caches.match(e.request).then(function (hit) {
-    return hit || fetch(e.request).then(function (res) {
+    var net = fetch(e.request).then(function (res) {
       var copy = res.clone();
       caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
       return res;
-    }).catch(function () { return caches.match("./index.html"); });
+    }).catch(function () { return hit; });
+    return hit || net;
   }));
 });
