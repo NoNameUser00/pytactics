@@ -124,6 +124,23 @@
   }
 
   // ---------- карта ----------
+  // Иконка сущности: SVG-арт, fallback — эмодзи
+  function entIcon(ch, heroId, heroEmoji) {
+    var EMOJI = { "#": "⬛", "P": heroEmoji, "E": "👾", "R": "👺", "D": "💀", "B": "👹", "H": "🔋", "C": "💎", "X": "🌀" };
+    if (window.sprite) {
+      var id = ch === "P" ? "hero_" + heroId
+        : ch === "X" ? "tile_portal" : ch === "C" ? "tile_crystal" : ch === "H" ? "tile_cell"
+        : (ch === "E" || ch === "R" || ch === "D" || ch === "B") ? "foe_" + ch : null;
+      if (id) {
+        var s = window.sprite(id);
+        if (s) return s;
+      }
+      if (ch === "#") return "⬛";
+      return "";
+    }
+    return EMOJI[ch] || "";
+  }
+
   function cellChar(l, x, y, snap) {
     var row = l.map[y];
     var base = row[x];
@@ -143,8 +160,8 @@
   function renderBoard(l, snap) {
     var board = $("board"); board.innerHTML = "";
     board.className = l.biome ? "biome-" + l.biome : "";
-    var rbE = "🤖", rbN = "";
-    if (window.currentRobot) { var rb = window.currentRobot(); rbE = rb.emoji; rbN = rb.name; }
+    var rbE = "🤖", rbN = "", rbId = "bolt";
+    if (window.currentRobot) { var rb = window.currentRobot(); rbE = rb.emoji; rbN = rb.name; rbId = rb.id; }
     var par = window.Game.parseMap(l.map);
     board.style.gridTemplateColumns = "repeat(" + par.w + ", 1fr)";
     for (var y = 0; y < par.h; y++) {
@@ -152,13 +169,15 @@
         var ch = cellChar(l, x, y, snap);
         var d = document.createElement("div");
         d.className = "cell t" + ch;
-        d.textContent = ch === "#" ? "⬛" : ch === "P" ? rbE : ch === "E" ? "👾" : ch === "R" ? "👺" : ch === "D" ? "💀" : ch === "B" ? "👹" : ch === "H" ? "🔋" : ch === "C" ? "💎" : ch === "X" ? "🌀" : "";
+        d.innerHTML = entIcon(ch, rbId, rbE);
         if (snap && snap.px === x && snap.py === y) d.classList.add("hero");
         board.appendChild(d);
       }
     }
     var s = snap || { energy: l.energy, turns: 0, collected: 0, total: par.crystals.length };
-    $("hud").innerHTML = rbE + " " + rbN + " &nbsp;·&nbsp; ⚡ " + s.energy + " &nbsp;·&nbsp; 🚶 ходов: " + s.turns + "/" + l.maxTurns + " &nbsp;·&nbsp; 💎 " + s.collected + "/" + s.total;
+    var rbIcon = (window.sprite && window.sprite("hero_" + rbId)) || rbE;
+    var rbHtml = rbIcon.indexOf("<svg") === 0 ? '<span class="hudhero">' + rbIcon + "</span>" : rbIcon;
+    $("hud").innerHTML = rbHtml + " " + rbN + " &nbsp;·&nbsp; ⚡ " + s.energy + " &nbsp;·&nbsp; 🚶 ходов: " + s.turns + "/" + l.maxTurns + " &nbsp;·&nbsp; 💎 " + s.collected + "/" + s.total;
   }
 
   function renderStatic() { renderBoard(cur(), null); }

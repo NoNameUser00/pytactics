@@ -142,7 +142,8 @@
     window.ROBOTS.forEach(function (r) {
       var d = document.createElement("div");
       d.className = "robot" + (robotId() === r.id ? " sel" : "");
-      d.innerHTML = "<div class='remoji' style='border-color:" + r.color + "'>" + r.emoji + "</div>" +
+      var face = ((window.sprite && window.sprite("hero_" + r.id)) || r.emoji);
+      d.innerHTML = "<div class='remoji' style='border-color:" + r.color + "'>" + face + "</div>" +
         "<div class='rname'>" + r.name + "</div><div class='rtitle'>" + r.title + "</div>" +
         "<div class='rdesc'>" + r.desc + "</div>";
       d.onclick = function () {
