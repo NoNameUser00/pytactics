@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="abyss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyTactics — карта вселенной</title>
+<link rel="stylesheet" href="css/universe.css">
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div class="uni">
+  <div class="topbar">
+    <div class="logo">🤖⚔️</div>
+    <div>
+      <h1>PyTactics <span>/ Карта вселенной</span></h1>
+      <div class="sub">Пошаговая Python-стратегия в духе звёздной саги · 3 сектора · 8 планет</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="dots" id="themeDots" title="Цветовая тема"></div>
+    <div id="authArea" style="display:flex;gap:8px;align-items:center"></div>
+  </div>
+
+  <div class="hero">
+    <h2>🌌 Выбери планету, оператор</h2>
+    <p>Пиши Python-код → робот воюет → учишь алгоритмы. Планеты открываются по порядку.</p>
+    <div class="statbar">
+      <div class="stat" id="statStars">★ 0/24</div>
+      <div class="stat" id="statDone">🪐 Пройдено: 0/8</div>
+      <div class="stat" id="statMode">💾 Локально</div>
+    </div>
+    <button class="authbtn" id="continueBtn" style="font-size:16px;padding:10px 22px">▶ Начать</button>
+    <button class="authbtn" id="storyBtn" title="История мира">📕</button>
+    <div style="display:none"><button id="authBtn"></button></div>
+  </div>
+
+  <section class="hangar">
+    <h3>🔧 Ангар: выбери робота</h3>
+    <div class="robots" id="robots"></div>
+  </section>
+
+  <div id="universe"></div>
+
+  <section class="howto story">
+    <b>📕 Хроники Грида</b>
+    <p>Сеть станций-маяков <b>ГРИД</b> несла свет по торговым путям, пока из старого кода
+    не выползла <b>Империя Роя</b> — баги-штурмовики 👾 во главе с <b>ВЛАДЫКОЙ БАГ</b>.
+    Рой гасит маяки и крадёт энергоядра 💎.</p>
+    <p>Ты — <b>падаван-оператор</b> Ордена. Испытание: пройти три сектора, зажечь маяки 🌀,
+    вернуть ядра и дойти до Узла Роя. <b>Да пребудет с тобой Код.</b></p>
+    <p class="rule">Правила мира: один приказ кода = один ход, после тебя ходит Рой.
+    Вирус рядом бьёт. Ядро нужно поднять (<code>collect()</code>). Маяк зажигается,
+    когда все ядра собраны и робот на портале.</p>
+  </section>
+
+  <section class="howto">
+    <b>📜 Как играть:</b><br>
+    1. Открой планету → прочитай брифинг → напиши код → <b>▶ Запустить</b>.<br>
+    2. Каждый <code>move_*/attack/collect/wait</code> = 1 ход, вирусы 👾 бьют в ответ.<br>
+    3. Победа = все 💎 + портал 🌀. До 3 ★ за короткое решение.<br>
+    4. Без входа прогресс хранится в этом браузере. Вошёл через Supabase — прогресс в облаке и виден учителю.
+  </section>
+
+  <footer>PyTactics · статика для GitHub Pages · <a href="game.html" style="color:#58a6ff">арена</a> · сделано для уроков информатики 🐍</footer>
+</div>
+
+<div class="modal hidden" id="modal">
+  <div class="sheet">
+    <h3>👩‍🚀 Вход ученика</h3>
+    <label>Никнейм (для регистрации)</label>
+    <input id="mnick" placeholder="Например: alex_7b" autocomplete="username">
+    <label>Email</label>
+    <input id="memail" type="email" placeholder="ученик@школа.ru" autocomplete="email">
+    <label>Пароль (мин. 6 символов)</label>
+    <input id="mpass" type="password" placeholder="••••••" autocomplete="current-password">
+    <div class="row">
+      <button class="primary" id="doLogin">Войти</button>
+      <button id="doRegister">Регистрация</button>
+      <button id="modalClose">✕</button>
+    </div>
+    <div class="err" id="merr"></div>
+    <div class="tip">Прогресс привяжется к аккаунту и попадёт в облако (Supabase). Без входа игра тоже работает — локально.</div>
+    <div class="row"><button id="doLogout" style="flex:1">Выйти из аккаунта</button></div>
+  </div>
+</div>
+
+<div class="modal hidden" id="storyModal">
+  <div class="sheet">
+    <h3>📕 Система ГРИД зовёт</h3>
+    <div style="font-size:14px;line-height:1.65">
+      Маяки гаснут один за другим: <b>Империя Роя</b> во главе с <b>ВЛАДЫКОЙ БАГ</b>
+      крадёт энергоядра 💎.<br><br>
+      Ты — падаван-оператор. Выбери дроида в ангаре, пройди три сектора,
+      зажги маяки 🌀 и дойди до Узла Роя. Писать код — твоё оружие.
+      Да пребудет с тобой Код.
+    </div>
+    <div class="row"><button class="primary" id="storyGo">В бой! 🤖</button></div>
+  </div>
+</div>
+
+<script src="js/levels.js"></script>
+<script src="js/robots.js"></script>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/universe.js"></script>
+</body>
+</html>

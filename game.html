@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="abyss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyTactics — арена</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <div class="logo">🤖⚔️</div>
+  <div>
+    <h1>PyTactics <span>/ Арена</span></h1>
+    <div class="sub">Пиши код → робот воюет → учишь алгоритмы</div>
+  </div>
+  <div style="flex:1"></div>
+  <a href="index.html" style="color:#58a6ff;font-size:14px">← Карта вселенной</a>
+</header>
+
+<div class="wrap">
+  <div class="tabs" id="levelTabs"></div>
+
+  <div class="main">
+    <!-- ЛЕВАЯ ПАНЕЛЬ: карта -->
+    <section class="card">
+      <h2 id="lvlTitle">Уровень</h2>
+      <div class="topic" id="lvlTopic"></div>
+      <div class="brief" id="brief"></div>
+      <div class="goal" id="goal"></div>
+      <div class="lore" id="lore"></div>
+      <div id="hud"></div>
+      <div id="board"></div>
+      <div class="toolbar">
+        <button id="btnPrev">← Назад</button>
+        <button id="btnNext">Далее →</button>
+        <button id="btnClearSave" title="Стереть звёзды и код">🗑 Сброс прогресса</button>
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ ПАНЕЛЬ: код -->
+    <section class="card">
+      <div class="toolbar">
+        <button id="btnRun" class="primary">▶ Запустить</button>
+        <button id="btnStep">🐢 По шагам</button>
+        <button id="btnReset">↺ Сброс поля</button>
+        <button id="btnHint">💡 Подсказка</button>
+        <button id="btnSolution">🔑 Решение</button>
+      </div>
+      <div class="meta"><span>🐍 editor.py — пиши Python (отступ 4 пробела, <span class="kbd">Tab</span> работает, запуск: <span class="kbd">Ctrl+Enter</span>)</span><span id="statLines"></span></div>
+      <textarea id="editor" spellcheck="false"></textarea>
+      <div class="meta"><span>📟 Консоль робота:</span><span id="cloudState"></span></div>
+      <div id="console"></div>
+      <div class="status" id="status"></div>
+      <div class="hint" id="hintBox"></div>
+      <div class="api">
+        <b>API героя:</b>
+        <code>move_up()</code> <code>move_down()</code> <code>move_left()</code> <code>move_right()</code>
+        <code>attack("up"|"down"|"left"|"right")</code> <code>collect()</code> <code>wait()</code><br>
+        <b>Сенсоры:</b> <code>is_wall(dir)</code> <code>is_enemy(dir)</code> <code>is_crystal(dir)</code> <code>is_exit(dir)</code>
+        <code>get_x()</code> <code>get_y()</code> <code>get_energy()</code> <code>crystals_left()</code> <code>print(x)</code><br>
+        <b>Python:</b> переменные, <code>if/elif/else:</code>, <code>for i in range(n):</code>, <code>while cond:</code>, <code>def f():</code>, <code>return</code>, <code>break</code>, <code>and/or/not</code>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:12px">
+    <h2>📜 Как играть (пошаговость обучения)</h2>
+    <div style="font-size:14px;line-height:1.6">
+      <b>1.</b> Прочитай брифинг слева — там новая тема.<br>
+      <b>2.</b> Напиши код справа. Каждый <code>move_*/attack/collect/wait</code> = <b>1 ход</b>; после твоего хода бьют вирусы 👾.<br>
+      <b>3.</b> Жми <b>▶ Запустить</b> — смотри бой на карте и консоль.<br>
+      <b>4.</b> Ошибка? Читай красное сообщение + жми <b>💡 Подсказка</b> (намёк → псевдокод → решение).<br>
+      <b>5.</b> Победа = все 💎 + встать на 🌀. Три ⭐ — за короткое и красивое решение. Вошёл на карте вселенной — звёзды улетят в облако ☁️.
+    </div>
+  </section>
+</div>
+
+<footer>PyTactics · статика для GitHub Pages · <a href="index.html" style="color:#58a6ff">карта вселенной</a> · сделано для уроков информатики 🐍</footer>
+
+<script src="js/py_engine.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/game.js"></script>
+<script src="js/robots.js"></script>
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>
