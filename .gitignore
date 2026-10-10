@@ -1,2 +1,5 @@
 pytactics_deploy_key
 pytactics_deploy_key.pub
+node_modules/
+desktop/dist/
+desktop/out/
