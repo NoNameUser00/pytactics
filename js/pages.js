@@ -210,7 +210,7 @@
     if ($("flyBtn")) $("flyBtn").onclick = function () { location.href = "map.html"; };
   }
 
-  // ---------- гиперпрыжок при входе ----------
+  // ---------- гиперпрыжок при входе: разгон -> тоннель -> вспышка ----------
   function jumpIntro() {
     var c = $("jump");
     var uni = document.querySelector(".uni");
@@ -218,27 +218,47 @@
     if (!c) return;
     var ctx = c.getContext("2d");
     c.width = window.innerWidth; c.height = window.innerHeight;
-    var cx = c.width / 2, cy = c.height / 2, parts = [];
-    for (var i = 0; i < 130; i++) {
-      parts.push({ a: Math.random() * 6.283, r: Math.random() * 60, sp: 4 + Math.random() * 10 });
+    var cx = c.width / 2, cy = c.height / 2;
+    var maxR = Math.sqrt(cx * cx + cy * cy);
+    var parts = [];
+    for (var i = 0; i < 170; i++) {
+      parts.push({ a: Math.random() * 6.283, r: Math.random() * maxR, sp: 0.5 + Math.random(), w: 1 + Math.random() * 2 });
     }
-    var t0 = performance.now();
+    var T = 1500, t0 = performance.now();
     (function frame(t) {
-      var k = (t - t0) / 1100;
+      var k = Math.min(1, (t - t0) / T);
       if (k >= 1) { if (c.parentNode) c.parentNode.removeChild(c); return; }
-      ctx.fillStyle = "rgba(2,4,9," + (0.25 + k * 0.6) + ")";
+      ctx.fillStyle = "rgb(2,4,12)";
       ctx.fillRect(0, 0, c.width, c.height);
-      ctx.strokeStyle = "#cfe4ff";
-      ctx.globalAlpha = 1 - k;
-      ctx.lineWidth = 2;
+      var acc = k * k; // ускорение
+      var flash = k < 0.82 ? 0 : (k - 0.82) / 0.18;
+      ctx.globalAlpha = Math.min(1, 0.35 + k);
       parts.forEach(function (p) {
-        var r1 = p.r + k * 60 * p.sp, r2 = r1 + 20 + k * 130;
+        var a = p.a + acc * 0.9 * p.sp; // лёгкая закрутка в спираль
+        var r1 = p.r + acc * maxR * 1.6 * p.sp;
+        if (r1 > maxR * 2.2) { p.r = Math.random() * 40; return; }
+        var len = 8 + acc * 260 * p.sp;
+        var g = Math.floor(207 + k * 48);
+        ctx.strokeStyle = "rgb(160," + g + ",255)";
+        ctx.lineWidth = p.w;
         ctx.beginPath();
-        ctx.moveTo(cx + Math.cos(p.a) * r1, cy + Math.sin(p.a) * r1);
-        ctx.lineTo(cx + Math.cos(p.a) * r2, cy + Math.sin(p.a) * r2);
+        ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+        ctx.lineTo(cx + Math.cos(a) * (r1 + len), cy + Math.sin(a) * (r1 + len));
         ctx.stroke();
       });
       ctx.globalAlpha = 1;
+      // ядро тоннеля разгорается
+      var core = 30 + acc * 190;
+      var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, core);
+      grad.addColorStop(0, "rgba(190,230,255," + (0.25 + acc * 0.65) + ")");
+      grad.addColorStop(1, "rgba(190,230,255,0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(cx - core, cy - core, core * 2, core * 2);
+      // финальная вспышка выхода
+      if (flash > 0) {
+        ctx.fillStyle = "rgba(235,245,255," + flash + ")";
+        ctx.fillRect(0, 0, c.width, c.height);
+      }
       requestAnimationFrame(frame);
     })(t0);
   }
