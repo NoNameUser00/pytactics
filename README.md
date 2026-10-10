@@ -92,6 +92,9 @@ js/game.js          — симуляция пошагового боя
 js/ui.js            — редактор, кнопки, анимация, звёзды (через Backend)
 js/config.js        — URL + anon-ключ Supabase (вставь свои, см. SUPABASE_SETUP.md)
 js/backend.js       — Auth + облачный прогресс с fallback на localStorage
+icons/              — иконки PWA (PNG 192/512 + SVG)
+manifest.webmanifest— PWA-манифест: установка как приложение (Windows/ROSA)
+sw.js               — service worker: офлайн после первой загрузки
 js/universe.js      — карта вселенной, замки планет, модалка входа
 SUPABASE_SETUP.md   — пошаговое подключение проекта informatika (SQL + RLS + ключи)
 TEXTBOOK_PLAN.md    — план: главы учебника → галактики (перейти позже)
