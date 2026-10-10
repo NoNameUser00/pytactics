@@ -222,6 +222,10 @@
       buildLevelTabs();
       setStatus("🏆 Победа за " + trace.turns + " ходов! Награда: " + "★".repeat(nstars) + (usedSolution ? " (было использовано решение)" : ""), "win");
       logConsole("🏆 Уровень пройден! " + "★".repeat(nstars), "win");
+      if (window.currentRobot) {
+        var rbw = window.currentRobot();
+        logConsole(rbw.emoji + " <b>" + rbw.name + ":</b> «" + rbw.win + "»", "win");
+      }
       if (levelIdx < window.LEVELS.length - 1) setStatus($("status").textContent + " Жми «Далее →».", "win");
     } else {
       setStatus("⛔ Не вышло: " + (trace.error || "попробуй ещё") + " Подсказка — кнопка 💡.", "err");
