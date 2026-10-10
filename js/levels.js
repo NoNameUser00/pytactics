@@ -584,5 +584,102 @@ window.LEVELS = [
     ],
     solution: 'coded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
     starTurns: 6
+  },
+  // ---------- Глава 7. Шаблоны (ручные регулярки) ----------
+  {
+    id: 37, title: "Найди знак", topic: "find()", book: "7.1/7.3",
+    briefing: "§7.1 и §7.3: поиск — первый шаблон. Найди позицию «я» в слове «маяк».",
+    lore: "Ищи знак — найдёшь путь.",
+    goal: "Выведи позицию и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["2"],
+    starter: 's = "маяк"\nprint(s.find("я"))\nmove_right()\n',
+    hints: [
+      "Намёк: счёт с нуля: м-0, а-1, я-2. Добавь второй шаг.",
+      "Псевдокод: print + 2× move_right().",
+      "Решение:\ns = \"маяк\"\nprint(s.find(\"я\"))\nmove_right()\nmove_right()"
+    ],
+    solution: 's = "маяк"\nprint(s.find("я"))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 38, title: "Начало и поиск", topic: "startswith() и in", book: "7.3",
+    briefing: "§7.3: match смотрит в начало, search — везде. Проверь слово «маяк» обоими.",
+    lore: "Начало важно. Остальное — тоже.",
+    goal: "Выведи два True и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["True", "True"],
+    starter: 's = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\nmove_right()\n',
+    hints: [
+      "Намёк: обе проверки дают True. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\ns = \"маяк\"\nprint(s.startswith(\"ма\"))\nprint(\"я\" in s)\nmove_right()\nmove_right()"
+    ],
+    solution: 's = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 39, title: "Считалка", topic: "findall вручную", book: "7.4",
+    briefing: "§7.4: findall собирает все совпадения. Собери вручную: посчитай «а» в «Барабан» циклом.",
+    lore: "Считай совпадения — побеждай.",
+    goal: "Выведи 3 и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["3"],
+    starter: 's = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\nmove_right()\n',
+    hints: [
+      "Намёк: цикл уже считает (строчных «а» — три). Добавь второй шаг.",
+      "Псевдокод: цикл + print + 2× move_right().",
+      "Решение:\ns = \"Барабан\"\nn = 0\nfor i in range(len(s)):\n    if s[i] == \"а\":\n        n = n + 1\nprint(n)\nmove_right()\nmove_right()"
+    ],
+    solution: 's = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 40, title: "Замена", topic: "sub вручную: replace()", book: "7.5/7.6.6",
+    briefing: "§7.5 и §7.6.6: sub меняет текст. Успокой Рой и вычисти мусор из слова.",
+    lore: "Меняй текст — меняй мир.",
+    goal: "Выведи оба слова и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["Рой молчит", "мусор"],
+    starter: 'print("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\nmove_right()\n',
+    hints: [
+      "Намёк: обе замены уже написаны. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nprint(\"Рой гудит\".replace(\"гудит\", \"молчит\"))\nprint(\"м-у-с-о-р\".replace(\"-\", \"\"))\nmove_right()\nmove_right()"
+    ],
+    solution: 'print("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 41, title: "Маска", topic: "шаблон *.txt", book: "7.6.1/7.6.2",
+    briefing: "§7.6.1–7.6.2: маска «rep*.txt» — начало «rep» и конец «.txt». Проверь файл.",
+    lore: "Маска видит суть файла.",
+    goal: "Выведи два True и дойди до 🌀.",
+    map: ["#####", "#P.X#", "#####"],
+    energy: 20, maxTurns: 12, expect: ["True", "True"],
+    starter: 'name = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\nmove_right()\n',
+    hints: [
+      "Намёк: начало и конец совпадают. Добавь второй шаг.",
+      "Псевдокод: два print + 2× move_right().",
+      "Решение:\nname = \"report.txt\"\nprint(name.startswith(\"rep\"))\nprint(name.endswith(\".txt\"))\nmove_right()\nmove_right()"
+    ],
+    solution: 'name = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\nmove_right()\nmove_right()',
+    starTurns: 2
+  },
+  {
+    id: 42, title: "Патруль шаблонов", topic: "босс: три проверки", book: "7.6.4/7.6.5",
+    briefing: "§7.6.4–7.6.5: патруль пропустит только «.py»-файлы. Проверь три имени, одолей стражу.",
+    lore: "Шаблон не врёт. Штурмовик — тем более.",
+    goal: "Проверь имена, одолей стражу, дойди до 🌀.",
+    map: ["########", "#P.E..X#", "########"],
+    energy: 20, maxTurns: 16, expect: ["True", "False", "True"], biome: "ice", place: "Ледяной архив",
+    starter: 'a = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\nmove_right()\nattack("right")\n',
+    hints: [
+      "Намёк: проверки уже дают True, False, True. После: шаг, удар, четыре шага.",
+      "Псевдокод: три print + шаг + удар + 4 шага.",
+      "Решение:\na = \"bot.py\"\nb = \"bot.txt\"\nc = \"run.py\"\nprint(a.endswith(\".py\"))\nprint(b.endswith(\".py\"))\nprint(c.endswith(\".py\"))\nmove_right()\nattack(\"right\")\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+    ],
+    solution: 'a = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\nmove_right()\nattack("right")\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    starTurns: 6
   }
 ];

@@ -363,7 +363,8 @@ window.PyEngine = (function () {
       js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\[([^\[\]:]*):([^\[\]:]*)(?::([^\[\]:]*))?\]/g, "__slice($1,\"$2\",\"$3\",\"$4\")");
       // методы строк
       js = js.replace(/\.upper\(\)/g, ".toUpperCase()").replace(/\.lower\(\)/g, ".toLowerCase()")
-        .replace(/\.strip\(\)/g, ".trim()").replace(/\.find\(/g, ".indexOf(").replace(/\.startswith\(/g, ".startsWith(");
+        .replace(/\.strip\(\)/g, ".trim()").replace(/\.find\(/g, ".indexOf(").replace(/\.startswith\(/g, ".startsWith(").replace(/\.endswith\(/g, ".endsWith(");
+      js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.replace\(([^,()]+),([^()]+)\)/g, "__replace($1,$2,$3)");
       js = js.replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isdigit\(\)/g, "__isdigit($1)")
         .replace(/([A-Za-z_]\w*(?:\([^()]*\))?)\.isalpha\(\)/g, "__isalpha($1)");
       js = js.replace(/__POW__/g, "**");
@@ -438,6 +439,7 @@ window.PyEngine = (function () {
         return a * b;
       };
       ctx["__contains"] = function (c, x) { return String(c).indexOf(String(x)) >= 0; };
+      ctx["__replace"] = function (s, a, b) { return String(s).split(String(a)).join(String(b)); };
       ctx["__slice"] = function (s, a, b, c) {
         s = String(s);
         function idx(v, def) {
@@ -458,8 +460,7 @@ window.PyEngine = (function () {
         }
         return out;
       };
-      ctx["__isdigit"] = function (x) { return /^[0-9]+$/.test(String(x)); };
-      ctx["__isalpha"] = function (x) { return /^[A-Za-z\u00c0-\u024f\u0400-\u04ff\u0500-\u052f]+$/.test(String(x)); };
+      ctx["__isdigit"] = function (x) { return /^[0-9]+$/.test(String(x)); };      ctx["__isalpha"] = function (x) { return /^[A-Za-z\u00c0-\u024f\u0400-\u04ff\u0500-\u052f]+$/.test(String(x)); };
       ctx["ord"] = function (x) { return String(x).codePointAt(0); };
       ctx["chr"] = function (x) { return String.fromCodePoint(Math.floor(Number(x))); };
       var keys = Object.keys(ctx), vals = keys.map(function (k) { return ctx[k]; });

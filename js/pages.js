@@ -17,11 +17,12 @@
       { name: "Глава 3. Операторы", desc: "§3.1–3.5: математика, строки, калькулятор — сектор «Кузница»", levels: [10, 11, 12, 13, 14, 15], cls: "g3", icon: "☄️" },
       { name: "Глава 4. Циклы и условия", desc: "§4.1–4.5: if, for, while, break — сектор «Лабиринт»", levels: [16, 17, 18, 19, 20, 21], cls: "g4", icon: "🌑" },
       { name: "Глава 5. Математика", desc: "§5.1–5.7: числа, round, random, «Угадай число» — сектор «Обсерватория»", levels: [22, 23, 24, 25, 26, 27, 28], cls: "g5", icon: "🔭" },
-      { name: "Глава 6. Строки", desc: "§6.1–6.11: кавычки, срезы, методы, шифр — сектор «Архив»", levels: [29, 30, 31, 32, 33, 34, 35, 36], cls: "g6", icon: "📜" }
+      { name: "Глава 6. Строки", desc: "§6.1–6.11: кавычки, срезы, методы, шифр — сектор «Архив»", levels: [29, 30, 31, 32, 33, 34, 35, 36], cls: "g6", icon: "📜" },
+      { name: "Глава 7. Шаблоны", desc: "§7.1–7.6: поиск, маски, замена — сектор «Картотека»", levels: [37, 38, 39, 40, 41, 42], cls: "g1", icon: "🔍" }
     ];
   }
   function PTYPE() {
-    return { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "rock", 6: "gas", 7: "city", 8: "ice", 9: "lava", 10: "rock", 11: "gas", 12: "lava", 13: "ice", 14: "city", 15: "rock", 16: "lava", 17: "gas", 18: "rock", 19: "ice", 20: "ring", 21: "ring", 22: "rock", 23: "ice", 24: "gas", 25: "city", 26: "lava", 27: "ice", 28: "ring", 29: "rock", 30: "gas", 31: "city", 32: "ice", 33: "lava", 34: "ring", 35: "gas", 36: "ring" };
+    return { 1: "rock", 2: "gas", 3: "city", 4: "rock", 5: "rock", 6: "gas", 7: "city", 8: "ice", 9: "lava", 10: "rock", 11: "gas", 12: "lava", 13: "ice", 14: "city", 15: "rock", 16: "lava", 17: "gas", 18: "rock", 19: "ice", 20: "ring", 21: "ring", 22: "rock", 23: "ice", 24: "gas", 25: "city", 26: "lava", 27: "ice", 28: "ring", 29: "rock", 30: "gas", 31: "city", 32: "ice", 33: "lava", 34: "ring", 35: "gas", 36: "ring", 37: "rock", 38: "gas", 39: "city", 40: "ice", 41: "lava", 42: "ring" };
   }
   function levelById(id) {
     for (var i = 0; i < window.LEVELS.length; i++) if (window.LEVELS[i].id === id) return window.LEVELS[i];
