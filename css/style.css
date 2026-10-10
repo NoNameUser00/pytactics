@@ -41,6 +41,11 @@ h1{font-size:20px;margin:0} h1 span{color:var(--accent)}
 .topic{color:var(--accent2);font-size:13px;margin-bottom:8px}
 .brief{font-size:14px;line-height:1.5;background:var(--panel2);border-left:3px solid var(--accent2);padding:8px 10px;border-radius:0 8px 8px 0;white-space:pre-wrap}
 .goal{margin:8px 0;font-size:13px;color:var(--gold)}
+.place{font-size:12px;color:var(--muted);margin-bottom:6px}
+/* Биомы планет: перекрашивают только поле */
+#board.biome-desert{--cell:#3d2f16;--bg:#120c04;--exit:#7a4a08}
+#board.biome-ice{--cell:#16303e;--bg:#040d14;--exit:#0e4a5e}
+#board.biome-deathstar{--cell:#1c1c24;--bg:#08080c;--exit:#4a0e0e}
 .lore{font-size:13px;font-style:italic;color:var(--accent2);margin:6px 0;line-height:1.5}
 #hud{font-size:14px;margin:6px 0;color:var(--text)}
 #board{display:grid;gap:3px;background:var(--deep);padding:8px;border-radius:10px;border:1px solid var(--line)}

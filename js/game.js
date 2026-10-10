@@ -4,21 +4,24 @@ window.Game = (function () {
   var DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
 
   function parseMap(rows) {
-    var grid = [], player = null, enemies = [], crystals = [], exit = null;
+    var grid = [], player = null, enemies = [], crystals = [], pickups = [], exit = null;
     rows.forEach(function (row, y) {
       var line = [];
       for (var x = 0; x < row.length; x++) {
         var c = row[x];
         if (c === "P") { player = { x: x, y: y }; line.push("."); }
-        else if (c === "E") { enemies.push({ x: x, y: y, alive: true }); line.push("."); }
-        else if (c === "B") { enemies.push({ x: x, y: y, alive: true, boss: true }); line.push("."); }
+        else if (c === "E") { enemies.push({ x: x, y: y, alive: true, rank: "E" }); line.push("."); }
+        else if (c === "R") { enemies.push({ x: x, y: y, alive: true, rank: "R" }); line.push("."); }
+        else if (c === "D") { enemies.push({ x: x, y: y, alive: true, rank: "D" }); line.push("."); }
+        else if (c === "B") { enemies.push({ x: x, y: y, alive: true, rank: "B", boss: true }); line.push("."); }
+        else if (c === "H") { pickups.push({ x: x, y: y }); line.push("."); }
         else if (c === "C") { crystals.push({ x: x, y: y }); line.push("C"); }
         else if (c === "X") { exit = { x: x, y: y }; line.push("X"); }
         else line.push(c);
       }
       grid.push(line);
     });
-    return { grid: grid, player: player, enemies: enemies, crystals: crystals, exit: exit, w: grid[0].length, h: grid.length };
+    return { grid: grid, player: player, enemies: enemies, crystals: crystals, pickups: pickups, exit: exit, w: grid[0].length, h: grid.length };
   }
 
   function isWall(par, x, y) {
@@ -32,7 +35,8 @@ window.Game = (function () {
     var st = {
       px: par.player.x, py: par.player.y,
       energy: level.energy, turns: 0,
-      enemies: par.enemies.map(function (e) { return { x: e.x, y: e.y, alive: true, boss: !!e.boss }; }),
+      enemies: par.enemies.map(function (e) { return { x: e.x, y: e.y, alive: true, rank: e.rank || "E", boss: !!e.boss }; }),
+      pickups: par.pickups.map(function (p) { return { x: p.x, y: p.y }; }),
       crystals: par.crystals.map(function (c) { return { x: c.x, y: c.y }; }),
       collected: 0, total: par.crystals.length,
       exit: par.exit, over: false, win: false
@@ -126,6 +130,13 @@ window.Game = (function () {
         } else {
           st.px = nx; st.py = ny;
           events.push({ type: "move", dir: dir, snap: snap() });
+          var pi = -1;
+          st.pickups.forEach(function (p, i) { if (p.x === st.px && p.y === st.py) pi = i; });
+          if (pi >= 0) {
+            st.pickups.splice(pi, 1);
+            st.energy += 6;
+            events.push({ type: "cell", snap: snap(), message: "🔋 Энергоячейка! +6 энергии." });
+          }
         }
       }
       afterEnemyTurn();
@@ -172,8 +183,9 @@ window.Game = (function () {
       return {
         px: st.px, py: st.py, energy: Math.max(st.energy, 0), turns: st.turns,
         collected: st.collected, total: st.total,
-        enemies: st.enemies.map(function (e) { return { x: e.x, y: e.y, alive: e.alive, boss: !!e.boss }; }),
-        crystals: st.crystals.map(function (c) { return { x: c.x, y: c.y }; })
+        enemies: st.enemies.map(function (e) { return { x: e.x, y: e.y, alive: e.alive, rank: e.rank, boss: !!e.boss }; }),
+        crystals: st.crystals.map(function (c) { return { x: c.x, y: c.y }; }),
+        pickups: st.pickups.map(function (p) { return { x: p.x, y: p.y }; })
       };
     }
   }

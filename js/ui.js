@@ -85,6 +85,8 @@
     var l = cur();
     $("lvlTitle").textContent = "Уровень " + l.id + ": " + l.title;
     $("lvlTopic").textContent = l.topic;
+    var pl = $("place");
+    if (pl) pl.textContent = l.place ? "📍 " + l.place : "";
     $("brief").textContent = l.briefing;
     $("goal").textContent = "🎯 " + l.goal + "  ·  ⚡ энергии: " + l.energy + "  ·  макс. ходов: " + l.maxTurns;
     var lo = $("lore");
@@ -129,16 +131,18 @@
       if (snap.px === x && snap.py === y) return "P";
       var foe = null;
       snap.enemies.forEach(function (e) { if (e.alive && e.x === x && e.y === y) foe = e; });
-      if (foe) return foe.boss ? "B" : "E";
+      if (foe) return foe.rank || (foe.boss ? "B" : "E");
       if (snap.crystals.some(function (c) { return c.x === x && c.y === y; })) return "C";
-      if (base === "E" || base === "B" || base === "C" || base === "P") base = ".";
+      if (snap.pickups && snap.pickups.some(function (p) { return p.x === x && p.y === y; })) return "H";
+      if (base === "E" || base === "B" || base === "R" || base === "D" || base === "C" || base === "H" || base === "P") base = ".";
     }
-    if (base === "B") return "B";
+    if (base === "B" || base === "R" || base === "D" || base === "H") return base;
     return base;
   }
 
   function renderBoard(l, snap) {
     var board = $("board"); board.innerHTML = "";
+    board.className = l.biome ? "biome-" + l.biome : "";
     var rbE = "🤖", rbN = "";
     if (window.currentRobot) { var rb = window.currentRobot(); rbE = rb.emoji; rbN = rb.name; }
     var par = window.Game.parseMap(l.map);
@@ -148,7 +152,7 @@
         var ch = cellChar(l, x, y, snap);
         var d = document.createElement("div");
         d.className = "cell t" + ch;
-        d.textContent = ch === "#" ? "⬛" : ch === "P" ? rbE : ch === "E" ? "👾" : ch === "B" ? "👹" : ch === "C" ? "💎" : ch === "X" ? "🌀" : "";
+        d.textContent = ch === "#" ? "⬛" : ch === "P" ? rbE : ch === "E" ? "👾" : ch === "R" ? "👺" : ch === "D" ? "💀" : ch === "B" ? "👹" : ch === "H" ? "🔋" : ch === "C" ? "💎" : ch === "X" ? "🌀" : "";
         if (snap && snap.px === x && snap.py === y) d.classList.add("hero");
         board.appendChild(d);
       }
@@ -201,7 +205,7 @@
   function stopAnim() { if (animTimer) clearInterval(animTimer); animTimer = null; }
 
   function narrate(ev) {
-    var icons = { move: "🚶", bump: "🧱", collect: "💎", nocollect: "🤔", attack_hit: "⚔️", attack_miss: "💨", hurt: "💥", wait: "⏳", log: "💬", win: "🏆", lose: "💀", error: "⛔", start: "" };
+    var icons = { move: "🚶", bump: "🧱", collect: "💎", cell: "🔋", nocollect: "🤔", attack_hit: "⚔️", attack_miss: "💨", hurt: "💥", wait: "⏳", log: "💬", win: "🏆", lose: "💀", error: "⛔", start: "" };
     if (ev.message) logConsole((icons[ev.type] || "·") + " " + esc(ev.message), ev.type);
     else if (ev.type === "move") logConsole("🚶 ход " + ev.snap.turns, "");
   }
