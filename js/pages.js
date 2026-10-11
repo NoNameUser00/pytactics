@@ -436,6 +436,14 @@
     var g = gals[gi];
     if ($("gTitle")) $("gTitle").textContent = g.icon + " " + g.name;
     if ($("gDesc")) $("gDesc").textContent = g.desc;
+    if (window.MENTOR) {
+      var face = $("mentorFaceG"), txt = $("mentorTextG");
+      if (window.sprite) {
+        var gg = window.sprite("mentor_ghost");
+        if (gg && face) face.innerHTML = gg;
+      }
+      if (txt) txt.textContent = window.MENTOR.galaxy[gi] || window.MENTOR.pick(window.MENTOR.greetings);
+    }
     renderSystem(g, st);
     var row = $("planets");
     if (row) {

@@ -197,6 +197,13 @@ a.backlink:hover{text-decoration:underline}
 /* История мира */
 .story p{font-size:14px;line-height:1.65;margin:6px 0}
 .story .rule{font-size:13px;color:var(--muted)}
+/* Наставник-призрак */
+.mentor{display:flex;gap:10px;align-items:center;background:rgba(88,166,255,.07);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:13.5px;line-height:1.5}
+.mentor .mface{width:46px;height:46px;flex:0 0 auto;border-radius:50%;animation:ghostfloat 3s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(140,200,255,.8))}
+.mentor .mface svg{width:100%;height:100%}
+.mentor .mname{color:var(--accent2);font-weight:700;font-size:12px}
+.mentor.big .mface{width:64px;height:64px}
+@keyframes ghostfloat{50%{transform:translateY(-4px)}}
 /* Переключатель палитры */
 .dots{display:flex;gap:7px;align-items:center}
 .tdot{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}

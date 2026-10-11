@@ -105,6 +105,7 @@
     $("goal").textContent = "🎯 " + l.goal + "  ·  ⚡ энергии: " + l.energy + "  ·  макс. ходов: " + l.maxTurns;
     var lo = $("lore");
     if (lo) lo.textContent = l.lore ? "«" + l.lore + "»" : "";
+    mentorSay("greet");
     $("hintBox").innerHTML = "<i>Нажми 💡 Подсказка — открою намёк, потом псевдокод. Кнопка «Решение» даёт готовый код, но срезает звёзды до 1.</i>";
     $("console").innerHTML = "";
     var saved = localStorage.getItem(codeKey(l.id));
@@ -264,6 +265,7 @@
         var rbw = window.currentRobot();
         logConsole(rbw.emoji + " <b>" + rbw.name + ":</b> «" + rbw.win + "»", "win");
       }
+      mentorSay("wins");
       if (levelIdx < window.LEVELS.length - 1) setStatus($("status").textContent + " Жми «Далее →».", "win");
       if (l.id === 76) {
         setStatus("👑 ВЛАДЫКА БАГ ПОВЕРЖЕН! Маяки горят, ядра дома. Ты — Хранитель Грида. Да пребудет с тобой Код!", "win");
@@ -272,6 +274,7 @@
     } else {
       setStatus("⛔ Не вышло: " + (trace.error || "попробуй ещё") + " Подсказка — кнопка 💡.", "err");
       if (trace.error) logConsole("⛔ " + esc(trace.error), "err");
+      mentorSay("fails");
     }
   }
 
@@ -283,8 +286,20 @@
   }
 
   // ---------- подсказки ----------
+  function mentorSay(kind) {
+    if (!window.MENTOR) return;
+    var box = $("mentorText");
+    if (box) box.textContent = window.MENTOR.pick(window.MENTOR[kind] || window.MENTOR.greetings);
+    var face = $("mentorFace");
+    if (face && window.sprite) {
+      var g = window.sprite("mentor_ghost");
+      if (g) face.innerHTML = g;
+    }
+  }
+
   function onHint() {
     var l = cur();
+    mentorSay("hintIntros");
     if (hintStep < 2) {
       var box = $("hintBox");
       box.innerHTML = "<b>💡 Подсказка " + (hintStep + 1) + "/2:</b><br>" + esc(l.hints[hintStep]).replace(/\n/g, "<br>");

@@ -94,6 +94,12 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:14px}
   .brief{font-size:13px}
 }
 .kbd{background:var(--panel2);border:1px solid var(--line);border-radius:5px;padding:0 6px;font-size:12px}
+/* Наставник-призрак */
+.mentor{display:flex;gap:10px;align-items:center;background:rgba(88,166,255,.07);border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:13.5px;line-height:1.5}
+.mentor .mface{width:46px;height:46px;flex:0 0 auto;border-radius:50%;animation:ghostfloat 3s ease-in-out infinite;filter:drop-shadow(0 0 8px rgba(140,200,255,.8))}
+.mentor .mface svg{width:100%;height:100%}
+.mentor .mname{color:var(--accent2);font-weight:700;font-size:12px}
+@keyframes ghostfloat{50%{transform:translateY(-4px)}}
 /* Корабль в гиперпрыжке (только на время анимации) */
 #shipwrap{position:fixed;left:50%;bottom:5%;width:130px;z-index:61;pointer-events:none;transform:translateX(-50%);animation:shipfly 2.2s ease-in-out both}
 #shipwrap svg{width:100%;height:auto;filter:drop-shadow(0 0 14px rgba(140,190,255,.55))}
