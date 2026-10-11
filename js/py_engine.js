@@ -1,3 +1,4 @@
+/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* PyEngine — мини-интерпретатор подмножества Python.
    Поддерживает: присваивание, print, if/elif/else, while, for i in range(),
    def/return, break/continue, and/or/not, True/False/None, + - * / // % **,

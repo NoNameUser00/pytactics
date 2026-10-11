@@ -1,3 +1,4 @@
+/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* pages.js — постраничная навигация:
    home (index.html: выбор пилота) → map (map.html: секторы) →
    galaxy (galaxy.html: планеты главы) → game (game.html: арена).

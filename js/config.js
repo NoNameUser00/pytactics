@@ -1,3 +1,4 @@
+/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* Скопируй свои значения из Supabase Dashboard → Project Settings → API.
    Подробно: см. SUPABASE_SETUP.md (шаг 3).
    ANON-ключ публиковать можно: доступ к чужим строкам закрыт RLS-политиками. */

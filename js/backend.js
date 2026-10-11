@@ -1,3 +1,4 @@
+/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* backend.js — Supabase Auth + облачный прогресс.
    Без настроенного config.js или без интернета — тихий fallback на localStorage.
    Порядок скриптов: config.js -> supabase CDN -> backend.js -> ui.js / universe.js */

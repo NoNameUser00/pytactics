@@ -1,3 +1,4 @@
+/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* sprites.js — оригинальный векторный арт в духе звёздной саги.
    Все образы нарисованы с нуля (геометрический flat-стиль), никаких копий.
    window.sprite(id): hero_<robotId> | foe_E/R/D/B | tile_crystal/cell/portal */
