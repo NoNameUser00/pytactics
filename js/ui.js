@@ -139,11 +139,12 @@
 
   // ---------- карта ----------
   // Иконка сущности: SVG-арт, fallback — эмодзи
-  function entIcon(ch, heroId, heroEmoji) {
+  function entIcon(ch, heroId, heroEmoji, vx) {
     var EMOJI = { "#": "⬛", "P": heroEmoji, "E": "👾", "R": "👺", "D": "💀", "B": "👹", "H": "🔋", "C": "💎", "X": "🌀" };
     if (window.sprite) {
       var id = ch === "P" ? "hero_" + heroId
         : ch === "X" ? "tile_portal" : ch === "C" ? "tile_crystal" : ch === "H" ? "tile_cell"
+        : ch === "#" ? "tile_rock" + ((vx || 0) % 3)
         : (ch === "E" || ch === "R" || ch === "D" || ch === "B") ? "foe_" + ch : null;
       if (id) {
         var s = window.sprite(id);
@@ -183,7 +184,7 @@
         var ch = cellChar(l, x, y, snap);
         var d = document.createElement("div");
         d.className = "cell t" + ch;
-        d.innerHTML = entIcon(ch, rbId, rbE);
+        d.innerHTML = entIcon(ch, rbId, rbE, x + y);
         if (snap && snap.px === x && snap.py === y) d.classList.add("hero");
         board.appendChild(d);
       }

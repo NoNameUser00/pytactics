@@ -48,8 +48,11 @@ h1{font-size:20px;margin:0} h1 span{color:var(--accent)}
 .place{font-size:12px;color:var(--muted);margin-bottom:6px}
 /* Биомы планет: перекрашивают только поле */
 #board.biome-desert{--cell:#3d2f16;--bg:#120c04;--exit:#7a4a08}
+#board.biome-desert .cell.t\#,#board.biome-desert .cell.t#:empty{filter:sepia(.45) brightness(1.05)}
 #board.biome-ice{--cell:#16303e;--bg:#040d14;--exit:#0e4a5e}
+#board.biome-ice .cell.t\#,#board.biome-ice .cell.t#:empty{filter:saturate(.7) brightness(1.1)}
 #board.biome-deathstar{--cell:#1c1c24;--bg:#08080c;--exit:#4a0e0e}
+#board.biome-deathstar .cell.t\#,#board.biome-deathstar .cell.t#:empty{filter:brightness(.85) contrast(1.12)}
 .lore{font-size:13px;font-style:italic;color:var(--accent2);margin:6px 0;line-height:1.5}
 #hud{font-size:14px;margin:6px 0;color:var(--text)}
 #board{display:grid;gap:3px;background:var(--deep);padding:8px;border-radius:10px;border:1px solid var(--line)}
