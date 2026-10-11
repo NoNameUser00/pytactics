@@ -1,4 +1,4 @@
-/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
+/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* mascot.js — Наставник-призрак бродит по странице как живой:
    медленно плывёт, останавливается по своим делам (читает, кодит,
    смотрит звёзды, медитирует), бормочет перевёртыши. Клики не перехватывает.
@@ -7,7 +7,8 @@
   "use strict";
   function $(id) { return document.getElementById(id); }
 
-  var CSS = "#mascot{position:fixed;left:12px;bottom:12px;width:58px;z-index:5;pointer-events:none;transition:left 9s linear,top 9s linear;filter:drop-shadow(0 0 9px rgba(140,200,255,.75))}"
+  var CSS = "#mascot{position:fixed;left:12px;bottom:12px;width:58px;z-index:5;pointer-events:auto;cursor:grab;touch-action:none;transition:left 9s linear,top 9s linear;filter:drop-shadow(0 0 9px rgba(140,200,255,.75))}"
+    + "#mascot.drag{transition:none;cursor:grabbing}"
     + "#mascot svg{width:100%;height:auto;animation:ghostfloat 3s ease-in-out infinite}"
     + "#mascot .mact{position:absolute;left:50%;top:-26px;transform:translateX(-50%);font-size:22px}"
     + "#mascot .msay{position:absolute;left:60px;bottom:40px;max-width:210px;background:rgba(10,16,30,.94);border:1px solid #2b3648;border-radius:10px;padding:6px 9px;font-size:12px;line-height:1.45;color:#e6edf3;opacity:0;transition:opacity .5s;white-space:normal}"
@@ -53,23 +54,61 @@
       m.style.top = y + "px";
     }
     function wander() {
+      if (dragging) return;
+      var g = gen;
       var mx = 70, my = 90;
       var nx = mx + Math.random() * Math.max(mx, window.innerWidth - mx * 2);
       var ny = my + Math.random() * Math.max(my, window.innerHeight - my * 2 - 40);
       m.classList.toggle("flip", nx < x);
       place(nx, ny);
-      setTimeout(doAct, 9000 + Math.random() * 5000);
+      setTimeout(function () { if (g === gen && !dragging) doAct(); }, 9000 + Math.random() * 5000);
     }
     function doAct() {
+      if (dragging) return;
+      var g = gen;
       var a = pick(ACTS);
       act.textContent = a.prop;
       say.textContent = a.text;
       say.classList.add("on");
       setTimeout(function () {
+        if (g !== gen) return;
         say.classList.remove("on");
-        setTimeout(function () { act.textContent = ""; wander(); }, 800);
+        setTimeout(function () { if (g === gen && !dragging) { act.textContent = ""; wander(); } }, 800);
       }, 4200);
     }
+    var dragging = false, gen = 0;
+    function dragMove(e) {
+      x = Math.min(Math.max(e.clientX - 29, 0), window.innerWidth - 60);
+      y = Math.min(Math.max(e.clientY - 29, 0), window.innerHeight - 90);
+      m.style.left = x + "px";
+      m.style.top = y + "px";
+    }
+    m.addEventListener("pointerdown", function (e) {
+      dragging = true; gen++;
+      m.classList.add("drag");
+      say.classList.remove("on");
+      act.textContent = "✋";
+      try { m.setPointerCapture(e.pointerId); } catch (err) {}
+      dragMove(e);
+      e.preventDefault();
+    });
+    m.addEventListener("pointermove", function (e) { if (dragging) dragMove(e); });
+    function drop() {
+      if (!dragging) return;
+      dragging = false;
+      m.classList.remove("drag");
+      act.textContent = "";
+      var g = gen;
+      say.textContent = "Несёшь меня ты. Приятно.";
+      say.classList.add("on");
+      setTimeout(function () {
+        if (g !== gen) return;
+        say.classList.remove("on");
+        setTimeout(function () { if (g === gen) wander(); }, 600);
+      }, 1800);
+    }
+    m.addEventListener("pointerup", drop);
+    m.addEventListener("pointercancel", drop);
     place(x, y);
     setTimeout(wander, 2500);
     window.addEventListener("resize", function () {
