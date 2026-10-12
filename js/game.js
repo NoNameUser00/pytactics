@@ -1,4 +1,4 @@
-/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
+/* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
 /* game.js — пошаговая симуляция: карта, герой, враги, кристаллы, энергия. */
 window.Game = (function () {
   "use strict";
@@ -31,11 +31,19 @@ window.Game = (function () {
   }
 
   // Запустить код ученика на копии уровня. Возвращает trace для анимации.
-  function simulate(level, code) {
-    var par = parseMap(level.map);
+  // spec — арена от MapGen.build(): строки карты, энергия, лимит ходов.
+  function simulate(level, code, spec) {
+    var lvl = level;
+    if (spec) {
+      lvl = {
+        map: spec.rows, energy: spec.energy, maxTurns: spec.maxTurns,
+        expect: level.expect, starTurns: spec.starTurns
+      };
+    }
+    var par = parseMap(lvl.map);
     var st = {
       px: par.player.x, py: par.player.y,
-      energy: level.energy, turns: 0,
+      energy: lvl.energy, turns: 0,
       enemies: par.enemies.map(function (e) { return { x: e.x, y: e.y, alive: true, rank: e.rank || "E", boss: !!e.boss }; }),
       pickups: par.pickups.map(function (p) { return { x: p.x, y: p.y }; }),
       crystals: par.crystals.map(function (c) { return { x: c.x, y: c.y }; }),
@@ -53,8 +61,8 @@ window.Game = (function () {
       return { events: events, logs: logs, win: false, error: res.error, turns: st.turns, collected: st.collected, total: st.total, energy: st.energy };
     }
     // проверка print()-задач учебника (поле expect уровня)
-    if (!res.error && level.expect) {
-      var missing = level.expect.filter(function (want) { return logs.indexOf(want) < 0; });
+    if (!res.error && lvl.expect) {
+      var missing = lvl.expect.filter(function (want) { return logs.indexOf(want) < 0; });
       if (missing.length) {
         var m2 = "Нужно вывести через print(): " + missing.map(function (s) { return "«" + s + "»"; }).join(", ");
         events = events.filter(function (e) { return e.type !== "win"; });
@@ -75,7 +83,14 @@ window.Game = (function () {
     // ---------- API героя ----------
     function buildApi() {
       function need(dir) {
-        if (!DIRS[dir]) throw { pyError: true, message: "Направление должно быть \"up\"/\"down\"/\"left\"/\"right\", а не «" + dir + "»" };
+        if (!DIRS[dir] && dir !== "here" && dir !== "self") {
+          throw { pyError: true, message: "Направление должно быть \"up\"/\"down\"/\"left\"/\"right\" или \"here\" (под ногами), а не «" + dir + "»" };
+        }
+      }
+      // смещение от робота: обычное направление или "here" — та же клетка
+      function off(dir) {
+        if (dir === "here" || dir === "self") return [0, 0];
+        return DIRS[dir];
       }
       return {
         __print: function (s) { events.push({ type: "log", message: s, snap: snap() }); },
@@ -95,7 +110,8 @@ window.Game = (function () {
           afterEnemyTurn();
           return hit;
         },
-        collect: function () {
+        collect: function (dir) {
+          if (dir !== undefined) { need(dir); }
           endTurn("collect");
           var idx = -1;
           st.crystals.forEach(function (c, i) { if (c.x === st.px && c.y === st.py) idx = i; });
@@ -109,17 +125,17 @@ window.Game = (function () {
           return idx >= 0;
         },
         wait: function () { endTurn("wait"); events.push({ type: "wait", snap: snap() }); afterEnemyTurn(); return true; },
-        is_wall: function (dir) { need(dir); var d = DIRS[dir]; return isWall(par, st.px + d[0], st.py + d[1]); },
+        is_wall: function (dir) { need(dir); var d = off(dir); return isWall(par, st.px + d[0], st.py + d[1]); },
         is_enemy: function (dir) {
-          need(dir); var d = DIRS[dir], tx = st.px + d[0], ty = st.py + d[1];
+          need(dir); var d = off(dir), tx = st.px + d[0], ty = st.py + d[1];
           return st.enemies.some(function (e) { return e.alive && e.x === tx && e.y === ty; });
         },
         is_crystal: function (dir) {
-          need(dir); var d = DIRS[dir], tx = st.px + d[0], ty = st.py + d[1];
+          need(dir); var d = off(dir), tx = st.px + d[0], ty = st.py + d[1];
           return st.crystals.some(function (c) { return c.x === tx && c.y === ty; });
         },
         is_exit: function (dir) {
-          need(dir); var d = DIRS[dir];
+          need(dir); var d = off(dir);
           return st.exit && st.exit.x === st.px + d[0] && st.exit.y === st.py + d[1];
         },
         get_x: function () { return st.px; },
@@ -158,9 +174,9 @@ window.Game = (function () {
       if (st.over) throw { __halt: true, win: st.win };
       st.turns++;
       st.energy -= 1;
-      if (st.turns > level.maxTurns + 10) {
+      if (st.turns > lvl.maxTurns + 10) {
         st.over = true; st.win = false;
-        events.push({ type: "lose", snap: snap(), message: "Ходы кончились (лимит " + level.maxTurns + "). Нужен более короткий алгоритм!" });
+        events.push({ type: "lose", snap: snap(), message: "Ходы кончились (лимит " + lvl.maxTurns + "). Нужен более короткий алгоритм!" });
         throw { __halt: true, win: false };
       }
       if (st.energy < 0) st.energy = 0;

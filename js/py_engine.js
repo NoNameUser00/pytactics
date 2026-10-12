@@ -1,4 +1,4 @@
-/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
+/* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
 /* PyEngine — мини-интерпретатор подмножества Python.
    Поддерживает: присваивание, print, if/elif/else, while, for i in range(),
    def/return, break/continue, and/or/not, True/False/None, + - * / // % **,
@@ -807,5 +807,76 @@ window.PyEngine = (function () {
     }
   }
 
-  return { run: run };
+    // ---- Статический анализ кода: какие конструкции ученик РЕАЛЬНО написал.
+    // Нужен для антихардкода: чтобы нельзя было «прокликать» уровень,
+    // не применив тему главы (цикл, условие, функцию, датчики).
+    // Возвращает:
+    //   for,while,if,elif,else,def,break,continue,print,comment — флаги конструкций,
+    //   calls {} — какие функции (в т.ч. move_*, is_*, attack) встречаются,
+    //   sensors {} — только датчики, moves {} — только шаги,
+    //   maxRepeat — максимальная серия ОДИНАКОВЫХ подряд идущих «действий»
+    //               (именно так выглядит захардкоженный путь: move_right() ×20),
+    //   lines — число непустых строк кода.
+    var ACTIONS = { move_up: 1, move_down: 1, move_left: 1, move_right: 1, attack: 1, collect: 1, wait: 1 };
+    var SENSORS = { is_wall: 1, is_enemy: 1, is_crystal: 1, is_exit: 1, get_x: 1, get_y: 1, get_energy: 1, crystals_left: 1 };
+
+    function analyze(code) {
+      var src = String(code);
+      var res = {
+        "for": false, "while": false, "if": false, "elif": false, "else": false, "def": false,
+        "break": false, "continue": false, print: false, comment: false, maxRepeat: 0, lines: 0,
+        calls: {}, sensors: {}, moves: {}
+      };
+      // 1) маскируем строки, чтобы не считать «for» внутри текста
+      var saved = [];
+      var noStr = src.replace(/"""[\s\S]*?"""|'''[\s\S]*?'''|"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'/g, function (m) {
+        saved.push(m); return "__S" + (saved.length - 1) + "__";
+      });
+      // 2) выкидываем комментарии и пустые строки, запоминаем отступ
+      var stmts = [];
+      noStr.split("\n").forEach(function (raw) {
+        var line = raw.replace(/#.*$/, "");
+        if (/^\s*$/.test(line)) return;
+        var indent = (line.match(/^\s*/) || [""])[0].replace(/\t/g, "    ").length;
+        res.lines++;
+        stmts.push({ ind: indent, code: line.replace(/^\s+/, "") });
+      });
+      // после маскирования строк любой оставшийся «#» — это комментарий
+      res.comment = noStr.indexOf("#") >= 0;
+
+      var repeatKey = null, repeatLen = 0;
+      stmts.forEach(function (s) {
+        var t = s.code;
+        // конструкции (по началу строки, с учётом вложенности)
+        if (/^(for)\b/.test(t)) res["for"] = true;
+        if (/^(while)\b/.test(t)) res["while"] = true;
+        if (/^(if)\b/.test(t)) res["if"] = true;
+        if (/^el(se|if)\b/.test(t)) { res["else"] = true; if (/^elif\b/.test(t)) res["elif"] = true; }
+        if (/^(def)\b/.test(t)) res["def"] = true;
+        if (/^break\b/.test(t)) res["break"] = true;
+        if (/^continue\b/.test(t)) res["continue"] = true;
+        if (/^print\s*\(/.test(t) || /=\s*print\s*\(/.test(t)) res.print = true;
+        // вызовы функций
+        var m, re = /([A-Za-z_]\w*)\s*\(/g;
+        while ((m = re.exec(t)) !== null) {
+          var name = m[1];
+          if (["for", "while", "if", "elif", "else", "def", "print", "len", "str", "int", "float", "range", "bool", "type", "list", "set", "dict", "tuple", "ord", "chr", "abs", "round", "sorted", "sum", "min", "max", "enumerate", "zip", "reversed"].indexOf(name) >= 0) continue;
+          res.calls[name] = true;
+          if (SENSORS[name]) res.sensors[name] = true;
+          if (ACTIONS[name]) res.moves[name] = true;
+        }
+        // серия одинаковых «действий» подряд (одна и та же команда, тот же отступ)
+        var act = t.match(/^(?:[A-Za-z_]\w*\s*=\s*)?(move_up|move_down|move_left|move_right|attack|collect|wait)\s*\(([^()]*)\)\s*$/);
+        if (act) {
+          var key = s.ind + "|" + act[1] + "(" + act[2].replace(/\s+/g, "") + ")";
+          if (key === repeatKey) repeatLen++; else { repeatKey = key; repeatLen = 1; }
+          if (repeatLen > res.maxRepeat) res.maxRepeat = repeatLen;
+        } else {
+          repeatKey = null; repeatLen = 0;
+        }
+      });
+      return res;
+    }
+
+  return { run: run, analyze: analyze };
 })();

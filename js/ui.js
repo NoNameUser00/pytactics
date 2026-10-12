@@ -1,11 +1,21 @@
-/* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
+/* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
 /* ui.js — редактор, карта, анимация боя, подсказки, звёзды, прогресс. */
 (function () {
   "use strict";
   var levelIdx = 0, animTimer = null, animPos = 0, lastTrace = null;
   var hintStep = 0, usedSolution = false;
+  var spec = null, specSeed = 0;   // текущая арена уровня (карта может быть случайной)
 
   var $ = function (id) { return document.getElementById(id); };
+
+  // Новая арена: случайная карта каждый заход (антихардкод) + пересчёт лимитов.
+  function rollMap(l, keepSeed) {
+    if (!window.MapGen) { spec = null; return; }
+    if (!keepSeed) specSeed = (specSeed + 1 + Math.floor(Math.random() * 7));
+    window.LevelRules.apply(l);
+    spec = window.MapGen.build(l, specSeed);
+  }
+  function curSpec() { return spec || { rows: cur().map, energy: cur().energy, maxTurns: cur().maxTurns, starTurns: cur().starTurns, kind: "fixed" }; }
 
   function stars() {
     try {
@@ -23,6 +33,8 @@
     $("btnRun").onclick = onRun;
     $("btnStep").onclick = onStep;
     $("btnReset").onclick = onReset;
+    var rb = $("btnRemap");
+    if (rb) rb.onclick = onRemap;
     $("btnHint").onclick = onHint;
     $("btnSolution").onclick = onSolution;
     $("btnNext").onclick = function () {
@@ -95,15 +107,19 @@
   }
 
   function loadLevel(i) {
-    levelIdx = i; hintStep = 0; usedSolution = false; lastTrace = null;
+    levelIdx = i; hintStep = 0; usedSolution = false; lastTrace = null; specSeed = 0;
     stopAnim();
     var l = cur();
+    window.LevelRules.apply(l);
+    rollMap(l, false);
+    var sp = curSpec();
     $("lvlTitle").textContent = "Уровень " + l.id + ": " + l.title;
     $("lvlTopic").textContent = (l.book ? "§" + l.book + " · " : "") + l.topic;
     var pl = $("place");
     if (pl) pl.textContent = l.place ? "📍 " + l.place : "";
     $("brief").textContent = l.briefing;
-    $("goal").textContent = "🎯 " + l.goal + "  ·  ⚡ энергии: " + l.energy + "  ·  макс. ходов: " + l.maxTurns;
+    $("goal").textContent = "🎯 " + l.goal + "  ·  ⚡ энергии: " + sp.energy + "  ·  макс. ходов: " + sp.maxTurns;
+    if ($("needLine")) $("needLine").innerHTML = l.needText ? "<b>Требование темы:</b> " + esc(l.needText) : "";
     var lo = $("lore");
     if (lo) lo.textContent = l.lore ? "«" + l.lore + "»" : "";
     mentorSay("greet");
@@ -159,7 +175,7 @@
   }
 
   function cellChar(l, x, y, snap) {
-    var row = l.map[y];
+    var row = curSpec().rows[y];
     var base = row[x];
     if (snap) {
       if (snap.px === x && snap.py === y) return "P";
@@ -176,10 +192,11 @@
 
   function renderBoard(l, snap) {
     var board = $("board"); board.innerHTML = "";
+    var sp = curSpec();
     board.className = l.biome ? "biome-" + l.biome : "";
     var rbE = "🤖", rbN = "", rbId = "bolt";
     if (window.currentRobot) { var rb = window.currentRobot(); rbE = rb.emoji; rbN = rb.name; rbId = rb.id; }
-    var par = window.Game.parseMap(l.map);
+    var par = window.Game.parseMap(sp.rows);
     board.style.gridTemplateColumns = "repeat(" + par.w + ", 1fr)";
     for (var y = 0; y < par.h; y++) {
       for (var x = 0; x < par.w; x++) {
@@ -191,10 +208,10 @@
         board.appendChild(d);
       }
     }
-    var s = snap || { energy: l.energy, turns: 0, collected: 0, total: par.crystals.length };
+    var s = snap || { energy: sp.energy, turns: 0, collected: 0, total: par.crystals.length };
     var rbIcon = (window.sprite && window.sprite("hero_" + rbId)) || rbE;
     var rbHtml = rbIcon.indexOf("<svg") === 0 ? '<span class="hudhero">' + rbIcon + "</span>" : rbIcon;
-    $("hud").innerHTML = rbHtml + " " + rbN + " &nbsp;·&nbsp; ⚡ " + s.energy + " &nbsp;·&nbsp; 🚶 ходов: " + s.turns + "/" + l.maxTurns + " &nbsp;·&nbsp; 💎 " + s.collected + "/" + s.total;
+    $("hud").innerHTML = rbHtml + " " + rbN + " &nbsp;·&nbsp; ⚡ " + s.energy + " &nbsp;·&nbsp; 🚶 ходов: " + s.turns + "/" + sp.maxTurns + " &nbsp;·&nbsp; 💎 " + s.collected + "/" + s.total;
   }
 
   function renderStatic() { renderBoard(cur(), null); }
@@ -209,10 +226,22 @@
     var l = cur(), code = $("editor").value;
     if (!code.trim()) { setStatus("Пустой код — напиши хотя бы одну команду.", "err"); return; }
     localStorage.setItem(codeKey(l.id), code);
+
+    // --- правила уровня: тема + антихардкод (до запуска боя) ---
+    var chk = window.LevelRules.check(l, code);
+    if (!chk.ok) {
+      setStatus("⛔ " + chk.reason, "err");
+      logConsole("⛔ " + esc(chk.reason), "err");
+      logConsole("💡 " + esc(chk.tip), "");
+      mentorSay("fails");
+      renderStatic();
+      return;
+    }
+
     setStatus("Симуляция боя...", "");
     var trace;
     try {
-      trace = window.Game.simulate(l, code);
+      trace = window.Game.simulate(l, code, curSpec());
     } catch (e) {
       setStatus("Внутренняя ошибка: " + (e && e.message), "err");
       return;
@@ -250,9 +279,9 @@
     var l = cur();
     if (trace.win) {
       var lines = $("editor").value.split("\n").filter(function (s) { return s.trim() !== "" && s.trim()[0] !== "#"; }).length;
-      var nstars = 3;
+      var nstars = window.MapGen ? window.MapGen.starFor(l, curSpec(), trace.turns) : 3;
       if (usedSolution) nstars = 1;
-      else if (trace.turns > l.starTurns || lines > 14) nstars = 2;
+      else if (lines > 14) nstars = Math.min(nstars, 2);
       var st = stars();
       var better = Math.max(st[l.id] || 0, nstars);
       if (window.Backend && window.Backend.saveStars) {
@@ -284,6 +313,21 @@
     $("console").innerHTML = "";
     renderStatic();
     setStatus("Поле сброшено. Код на месте — жми ▶.", "");
+  }
+
+  // Новая карта: ученик специально проверяет, работает ли его алгоритм
+  // на другом коридоре. Тема не меняется — меняется только арена.
+  function onRemap() {
+    var l = cur();
+    if (!l.gen) { setStatus("У этой планеты карта неизменна — она часть учебной задачи.", ""); return; }
+    rollMap(l, false);
+    var sp = curSpec();
+    $("goal").textContent = "🎯 " + l.goal + "  ·  ⚡ энергии: " + sp.energy + "  ·  макс. ходов: " + sp.maxTurns;
+    stopAnim();
+    $("console").innerHTML = "";
+    renderStatic();
+    setStatus("🔁 Новая арена: коридор другой длины, вирусы и кристаллы — на других местах. Твой код должен справиться и с ней.", "");
+    logConsole("🔁 Карта обновлена. Если решение опиралось на «повтори N раз» — теперь оно сломается. Так и должно быть.", "");
   }
 
   // ---------- подсказки ----------

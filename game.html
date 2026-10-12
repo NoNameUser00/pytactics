@@ -34,6 +34,7 @@
       <div class="place" id="place"></div>
       <div class="brief" id="brief"></div>
       <div class="goal" id="goal"></div>
+      <div class="needline" id="needLine"></div>
       <div class="lore" id="lore"></div>
       <div id="hud"></div>
       <div class="mentor" id="mentor"><span class="mface" id="mentorFace"></span><span><span class="mname">Магистр Ом · призрак:</span> <span id="mentorText"></span></span></div>
@@ -51,6 +52,7 @@
         <button id="btnRun" class="primary">▶ Запустить</button>
         <button id="btnStep">🐢 По шагам</button>
         <button id="btnReset">↺ Сброс поля</button>
+        <button id="btnRemap" title="Коридор будет другим: проверь, что алгоритм работает всегда">🔁 Новая арена</button>
         <button id="btnHint">💡 Подсказка</button>
         <button id="btnSolution">🔑 Решение</button>
       </div>
@@ -64,8 +66,9 @@
         <b>API героя:</b>
         <code>move_up()</code> <code>move_down()</code> <code>move_left()</code> <code>move_right()</code>
         <code>attack("up"|"down"|"left"|"right")</code> <code>collect()</code> <code>wait()</code><br>
-        <b>Сенсоры:</b> <code>is_wall(dir)</code> <code>is_enemy(dir)</code> <code>is_crystal(dir)</code> <code>is_exit(dir)</code>
+        <b>Сенсоры:</b> <code>is_wall(dir)</code> <code>is_enemy(dir)</code> <code>is_crystal(dir)</code> <code>is_exit(dir)</code> <code>is_crystal("here")</code>
         <code>get_x()</code> <code>get_y()</code> <code>get_energy()</code> <code>crystals_left()</code> <code>print(x)</code><br>
+        <b>Как читать карту:</b> <code>dir</code> — <code>"up"/"down"/"left"/"right"</code>, а <code>"here"</code> — клетка под роботом. Кристалл забирают <code>collect()</code>, когда робот на нём стоит.<br>
         <b>Python:</b> переменные, <code>if/elif/else:</code>, <code>for i in range(n):</code>, <code>while cond:</code>, <code>def f():</code>, <code>return</code>, <code>break</code>, <code>and/or/not</code>, <code>int()</code> <code>str()</code> <code>type()</code> <code>del x</code><br>
         <b>Строки:</b> <code>s[i]</code> <code>s[a:b]</code> <code>in</code> <code>*</code> <code>upper/lower/strip/find/replace</code> <code>ord/chr</code><br>
         <b>Списки:</b> <code>[]</code> <code>a[i]</code> <code>a[-1]</code> <code>for x in a</code> <code>append/pop/sort</code> <code>insert/remove/del a[i]</code> <code>sum/sorted/join</code> <code>seed/shuffle/choice</code><br>
@@ -93,6 +96,8 @@
 
 <script src="js/py_engine.js?v=8"></script>
 <script src="js/levels.js?v=8"></script>
+<script src="js/maps.js"></script>
+<script src="js/rules.js"></script>
 <script src="js/game.js?v=8"></script>
 <script src="js/robots.js?v=8"></script>
 <script src="js/sprites.js?v=8"></script>
