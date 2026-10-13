@@ -1146,11 +1146,11 @@ window.LEVELS = [
     energy: 30, maxTurns: 20,
     starter: "# напиши функцию step() и зови её в цикле\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n",
     hints: [
-      "Намёк: вынеси «удар и шаг» в функцию step(), а в цикле зови её по имени. Не забудь: если впереди вирус — сначала удар.",
-      "Псевдокод:\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)",
-      "Решение:\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)"
+      "Намёк: вынеси «удар, шаг, сбор» в функцию step(), а в цикле зови её по имени. Не забудь про is_crystal(\"here\").",
+      "Псевдокод:\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)",
+      "Решение:\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)"
     ],
-    solution: "def step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)",
+    solution: "def step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)",
     starTurns: 8
   },
   // ---------- Глава 13. Исключения ----------
@@ -1233,6 +1233,6 @@ window.LEVELS = [
       "Решение:\ndef шаг_вправо():\n    setheading(0)\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\ndef шаг_влево():\n    setheading(180)\n    if is_enemy(\"left\"):\n        attack(\"left\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nforward(2)\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall(\"right\"):\n    шаг_вправо()\nsetheading(270)\nforward(3)\n# нижний ярус: до левого края\nwhile not is_wall(\"left\"):\n    шаг_влево()\n# и обратно к порталу\nwhile not is_exit(\"here\"):\n    шаг_вправо()"
     ],
     solution: "def шаг_вправо():\n    setheading(0)\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\ndef шаг_влево():\n    setheading(180)\n    if is_enemy(\"left\"):\n        attack(\"left\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nforward(2)\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall(\"right\"):\n    шаг_вправо()\nsetheading(270)\nforward(3)\n# нижний ярус: до левого края\nwhile not is_wall(\"left\"):\n    шаг_влево()\n# и обратно к порталу\nwhile not is_exit(\"here\"):\n    шаг_вправо()",
-    starTurns: 30
+    starTurns: 29
   }
 ];

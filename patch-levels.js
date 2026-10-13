@@ -165,8 +165,8 @@ const FINAL = {
     goal: "Сделай свою функцию и пройди лабиринт.",
     briefing: "§11.1: функция — это команда, которую ты назвал сам. Один раз написал, потом зовёшь по имени: тело один раз, а шагов сколько угодно.",
     starter: '# напиши функцию step() и зови её в цикле\ndef step():\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n',
-    solution: 'def step():\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n\nwhile not is_exit("right"):\n    step()\nforward(1)',
-    hint: "Намёк: вынеси «удар и шаг» в функцию step(), а в цикле зови её по имени. Не забудь: если впереди вирус — сначала удар."
+    solution: 'def step():\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\n\nwhile not is_exit("right"):\n    step()\nforward(1)',
+    hint: "Намёк: вынеси «удар, шаг, сбор» в функцию step(), а в цикле зови её по имени. Не забудь про is_crystal(\"here\")."
   },
   76: {
     goal: "Пройди экзамен: всё вместе.",
