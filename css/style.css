@@ -112,3 +112,26 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:14px}
 @keyframes eng{from{opacity:.5}to{opacity:1}}
 @keyframes navb{50%{opacity:.25}}
 @keyframes shipfly{from{transform:translateX(-50%) translateY(26px) scale(.9)}to{transform:translateX(-50%) translateY(-14px) scale(1.05)}}
+
+/* ==== Редактор кода (CodeMirror 5) ====
+   Подсветка синтаксиса, номера строк, парные скобки и автозакрытие.
+   Оформление берёт те же переменные, что и остальная игра, поэтому палитра
+   из themes.html применяется к редактору сама — править отдельно не нужно.
+   Файл редактора лежит рядом (textarea #editor) — это запасной вариант,
+   если библиотека не загрузилась: игра останется рабочей. */
+#editorBox .CodeMirror{min-height:280px;background:var(--deep);color:var(--text);border:1px solid var(--line);border-radius:10px;font-family:Consolas,"JetBrains Mono",monospace;font-size:14px;line-height:1.55}
+.CodeMirror-gutters{background:var(--panel2);border-right:1px solid var(--line)}
+.CodeMirror-linenumber{color:var(--muted)}
+.CodeMirror-cursor{border-left:2px solid var(--accent)}
+.CodeMirror-selected{background:var(--line)!important}
+.CodeMirror-focused .CodeMirror-selected{background:rgba(120,160,200,.25)}
+.CodeMirror-activeline-background{background:rgba(127,143,163,.09)}
+.cm-s-default .CodeMirror-activeline-background,.cm-s-default .CodeMirror-activeline-gutter{background:rgba(127,143,163,.10)}
+.cm-s-default .CodeMirror-cursor{border-left:2px solid var(--accent)}
+.cm-s-default .CodeMirror-selected,.cm-s-default.CodeMirror-focused .CodeMirror-selected{background:rgba(120,160,200,.25)!important}
+.CodeMirror-matchingbracket{color:var(--gold)!important;border-bottom:1px solid var(--gold)}
+.cm-keyword{color:var(--accent)} .cm-def{color:var(--gold)} .cm-string{color:var(--green)}
+.cm-number{color:var(--accent2)} .cm-comment{color:var(--muted);font-style:italic}
+.cm-operator{color:var(--accent2)} .cm-builtin{color:var(--gold)} .cm-property{color:var(--accent2)}
+.cm-variable{color:var(--text)} .cm-variable-2{color:var(--accent2)} .cm-variable-3{color:var(--green)}
+.cm-atom{color:var(--gold)} .cm-meta{color:var(--muted)}

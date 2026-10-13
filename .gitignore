@@ -7,3 +7,4 @@ www/
 android/
 *.apk
 icons/*.webp
+.playwright-mcp/

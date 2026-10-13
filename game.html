@@ -12,6 +12,7 @@
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/style.css?v=8">
+<link rel="stylesheet" href="vendor/codemirror.min.css">
 </head>
 <body>
 <canvas id="jump" style="position:fixed;inset:0;z-index:60;pointer-events:none"></canvas>
@@ -57,9 +58,11 @@
         <button id="btnRemap" title="Коридор будет другим: проверь, что алгоритм работает всегда">🔁 Новая арена</button>
         <button id="btnHint">💡 Подсказка</button>
         <button id="btnSolution">🔑 Решение</button>
+        <button id="btnSound" title="Звук боя">🔊</button>
       </div>
       <div class="meta"><span>🐍 editor.py — пиши Python (отступ 4 пробела, <span class="kbd">Tab</span> работает, запуск: <span class="kbd">Ctrl+Enter</span>)</span><span id="statLines"></span></div>
       <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off"></textarea>
+      <div id="editorBox"></div>
       <div class="meta"><span>📟 Консоль робота:</span><span id="cloudState"></span></div>
       <div id="console"></div>
       <div class="status" id="status"></div>
@@ -110,6 +113,12 @@
 <script defer src="js/supabase.min.js?v=8"></script>
 <script src="js/backend.js?v=8"></script>
 <script src="js/pages.js?v=8"></script>
+<script src="vendor/codemirror.min.js"></script>
+<script src="vendor/mode/python/python.min.js"></script>
+<script src="vendor/addon/edit/closebrackets.min.js"></script>
+<script src="vendor/addon/edit/matchbrackets.min.js"></script>
+<script src="vendor/addon/selection/active-line.min.js"></script>
+<script src="js/sfx.js"></script>
 <script src="js/ui.js?v=8"></script>
 <script>
 if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {

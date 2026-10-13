@@ -1,4 +1,4 @@
-/* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
+﻿/* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
 /* ui.js — редактор, карта, анимация боя, подсказки, звёзды, прогресс. */
 (function () {
   "use strict";
@@ -7,6 +7,42 @@
   var spec = null, specSeed = 0;   // текущая арена уровня (карта может быть случайной)
 
   var $ = function (id) { return document.getElementById(id); };
+
+  /* --- редактор кода ---
+     Основной путь — CodeMirror 5: подсветка синтаксиса, номера строк, парные
+     скобки, автозакрытие скобок. Лежит локально в vendor/, поэтому работает
+     офлайн. Если библиотека не загрузилась, остаётся обычный textarea —
+     игра в этом случае работает как раньше. */
+  var cm = null;
+  function getCode() { return cm ? cm.getValue() : $("editor").value; }
+  function setCode(v) { if (cm) cm.setValue(v); else $("editor").value = v; }
+  function focusEditor() { if (cm) cm.focus(); else $("editor").focus(); }
+
+  function initEditor() {
+    var ta = $("editor"), box = $("editorBox");
+    if (!window.CodeMirror || !box) return false;
+    try {
+      cm = window.CodeMirror(box, {
+        value: ta.value,
+        mode: "python",
+        lineNumbers: true,
+        lineWrapping: true,
+        indentUnit: 4,
+        tabSize: 4,
+        indentWithTabs: false,
+        smartIndent: true,
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        styleActiveLine: true,
+        viewportMargin: 10,
+        extraKeys: { "Ctrl-Space": "autocomplete" }
+      });
+    } catch (e) { cm = null; return false; }
+    ta.style.display = "none";           // запасной textarea прячем, но не удаляем
+    cm.on("change", function () { saveCode(); });
+    cm.on("focus", function () { cm.focus(); });
+    return true;
+  }
 
   // Новая арена: случайная карта каждый заход (антихардкод) + пересчёт лимитов.
   function rollMap(l, keepSeed) {
@@ -37,6 +73,13 @@
     if (rb) rb.onclick = onRemap;
     $("btnHint").onclick = onHint;
     $("btnSolution").onclick = onSolution;
+    var sb = $("btnSound");
+    if (sb) {
+      var paint = function () { sb.textContent = (window.Sfx && window.Sfx.isMuted()) ? "🔇" : "🔊";
+        sb.title = (window.Sfx && window.Sfx.isMuted()) ? "Звук выключен" : "Звук боя"; };
+      sb.onclick = function () { if (window.Sfx) window.Sfx.toggle(); paint(); };
+      paint();
+    }
     $("btnNext").onclick = function () {
       if (levelIdx >= window.LEVELS.length - 1) return;
       var nl = window.LEVELS[levelIdx + 1];
@@ -66,20 +109,26 @@
     };
     if (window.Backend && window.Backend.init) window.Backend.init().then(go, go);
     else go();
+    if (initEditor()) focusEditor();
     $("editor").addEventListener("input", function () {
-      localStorage.setItem(codeKey(cur().id), $("editor").value);
-      updateStats();
+      saveCode();
     });
     document.addEventListener("keydown", function (e) {
       if ((e.ctrlKey || e.metaKey) && e.key === "Enter") onRun();
-      // Tab в редакторе — 4 пробела
-      if (e.key === "Tab" && document.activeElement === $("editor")) {
+      // Tab в редакторе — 4 пробела (в CodeMirror отступ и так ставит сам)
+      if (e.key === "Tab" && !cm && document.activeElement === $("editor")) {
         e.preventDefault();
         var el = $("editor"), s = el.selectionStart;
         el.value = el.value.slice(0, s) + "    " + el.value.slice(el.selectionEnd);
         el.selectionStart = el.selectionEnd = s + 4;
       }
     });
+  }
+
+  /* сохранение кода уровня + счётчик строк — вызывается и из textarea, и из CodeMirror */
+  function saveCode() {
+    localStorage.setItem(codeKey(cur().id), getCode());
+    updateStats();
   }
 
   function cur() { return window.LEVELS[levelIdx]; }
@@ -126,7 +175,8 @@
     $("hintBox").innerHTML = "<i>Нажми 💡 Подсказка — открою намёк, потом псевдокод. Кнопка «Решение» даёт готовый код, но срезает звёзды до 1.</i>";
     $("console").innerHTML = "";
     var saved = localStorage.getItem(codeKey(l.id));
-    $("editor").value = saved !== null ? saved : l.starter;
+    setCode(saved !== null ? saved : l.starter);
+    if (window.Sfx) window.Sfx.level();
     $("btnNext").disabled = (i >= window.LEVELS.length - 1);
     buildLevelTabs();
     renderStatic();
@@ -138,7 +188,7 @@
   }
 
   function updateStats() {
-    var lines = $("editor").value.split("\n").filter(function (s) { return s.trim() !== "" && s.trim()[0] !== "#"; }).length;
+    var lines = getCode().split("\n").filter(function (s) { return s.trim() !== "" && s.trim()[0] !== "#"; }).length;
     $("statLines").textContent = "строк кода: " + lines;
   }
 
@@ -223,7 +273,7 @@
   function runCode(stepMode) {
     stopAnim();
     $("console").innerHTML = "";
-    var l = cur(), code = $("editor").value;
+    var l = cur(), code = getCode();
     if (!code.trim()) { setStatus("Пустой код — напиши хотя бы одну команду.", "err"); return; }
     localStorage.setItem(codeKey(l.id), code);
 
@@ -271,14 +321,33 @@
 
   function narrate(ev) {
     var icons = { move: "🚶", bump: "🧱", collect: "💎", cell: "🔋", nocollect: "🤔", attack_hit: "⚔️", attack_miss: "💨", hurt: "💥", wait: "⏳", log: "💬", win: "🏆", lose: "💀", error: "⛔", start: "" };
+    if (window.Sfx) soundFor(ev.type);
     if (ev.message) logConsole((icons[ev.type] || "·") + " " + esc(ev.message), ev.type);
     else if (ev.type === "move") logConsole("🚶 ход " + ev.snap.turns, "");
   }
 
+  /* звук события боя; за шаг и ожидание не звучим — иначе на длинном коде
+     превращается в треск, а ученик всё равно смотрит на поле */
+  function soundFor(type) {
+    var S = window.Sfx;
+    if (!S) return;
+    switch (type) {
+      case "collect": S.collect(); break;
+      case "cell": S.cell(); break;
+      case "bump": S.bump(); break;
+      case "attack_hit": S.attack(); break;
+      case "hurt": S.hurt(); break;
+      case "error": S.error(); break;
+      case "move": if (animStep++ % 2 === 0) S.move(); break;   // через ход, иначе трещит
+    }
+  }
+  var animStep = 0;
+
   function finishTrace(trace) {
     var l = cur();
+    if (window.Sfx) { if (trace.win) window.Sfx.win(); else window.Sfx.lose(); }
     if (trace.win) {
-      var lines = $("editor").value.split("\n").filter(function (s) { return s.trim() !== "" && s.trim()[0] !== "#"; }).length;
+      var lines = getCode().split("\n").filter(function (s) { return s.trim() !== "" && s.trim()[0] !== "#"; }).length;
       var nstars = window.MapGen ? window.MapGen.starFor(l, curSpec(), trace.turns) : 3;
       if (usedSolution) nstars = 1;
       else if (lines > 14) nstars = Math.min(nstars, 2);
@@ -344,6 +413,7 @@
 
   function onHint() {
     var l = cur();
+    if (window.Sfx) window.Sfx.hint();
     mentorSay("hintIntros");
     if (hintStep < 2) {
       var box = $("hintBox");
@@ -357,7 +427,7 @@
     var l = cur();
     if (!confirm("Показать готовое решение? Награда за уровень упадёт до 1 звезды.")) return;
     usedSolution = true;
-    $("editor").value = l.solution;
+    setCode(l.solution);
     localStorage.setItem(codeKey(l.id), l.solution);
     $("hintBox").innerHTML = "<b>🔑 Решение:</b><pre>" + esc(l.solution) + "</pre>Нажми ▶ Запустить и разбери, как оно работает.";
     updateStats();
