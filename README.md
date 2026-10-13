@@ -15,6 +15,29 @@
 > библиотека 2,4 МБ), лежит в репозитории в `vendor/pyodide/`, дальше отдаётся
 > сервис-воркером. Если папки нет — качается одним движением:
 > `node get-pyodide.js`.
+>
+> Из-за этого APK вырос с 5 до ~25 МБ: без ядра Python телефон работать не
+> будет. Загрузка ленивая — Python грузится в момент первого запуска кода, а не
+> при открытии страницы, поэтому сама карта открывается мгновенно.
+
+## 📦 Сборка приложений
+
+```bash
+node get-pyodide.js        # один раз: положить ядро Python в vendor/
+npx cap sync android      # переложить www/ внутрь Android-проекта
+cd android && gradlew.bat assembleDebug
+```
+
+Для сборки нужен **JDK 21** (в системе стоит только JRE — Gradle потребует
+`javac` и `jlink`): Temurin лежит в `C:\Java\temurin21\jdk-21.0.12.1+1`,
+в сборке выставляется `$env:JAVA_HOME`. Android SDK — `C:\Android\Sdk`.
+
+Готовый файл: `android/app/build/outputs/apk/debug/app-debug.apk`,
+копия — `PyTactics.apk` в корне проекта. **Версия 1.6 (versionCode 7), 27,6 МБ.**
+
+В `www/` не должно быть: служебных скриптов (`test-runner.html`,
+`patch-levels.js`, `get-pyodide.js`), учебника-PDF и копии `www/` внутри `www/`
+— всё это попадает в APK и раздувает его. Стоит появиться, если чистить вручную.
 
 ## 🎮 Играть локально
 
