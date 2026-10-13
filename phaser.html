@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<!-- (c) 2026 NoNameUser00. All rights reserved. See LICENSE. -->
+<html lang="ru" data-theme="abyss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>PyTactics — Phaser-демо (отдельно)</title>
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  #phaser-game canvas{border-radius:10px;border:1px solid var(--line);max-width:100%}
+  .demo-note{font-size:13px;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">🧪</div>
+  <div>
+    <h1>PyTactics <span>/ Phaser-демо</span></h1>
+    <div class="sub">Отдельная страница. Арена game.html не тронута (DOM+SVG)</div>
+  </div>
+  <div style="flex:1"></div>
+  <a href="game.html" style="color:#58a6ff;font-size:14px">← Арена (DOM)</a>
+  <a href="map.html" style="color:#58a6ff;font-size:14px;margin-left:12px">Карта</a>
+</header>
+
+<div class="wrap">
+  <section class="card">
+    <h2>Демо: та же карта, но рендер через Phaser</h2>
+    <div class="brief">Карта уровня 3 «Комментарии»: <code>#P.C.X#</code>. Ходи стрелками / WASD или кнопками. Собери 💎 и встань на 🌀.</div>
+    <div class="meta"><span id="phaser-status">Загрузка Phaser с CDN…</span><span id="demo-stat"></span></div>
+    <div id="phaser-game"></div>
+    <div class="toolbar">
+      <button id="dUp">↑</button>
+      <button id="dLeft">←</button>
+      <button id="dDown">↓</button>
+      <button id="dRight">→</button>
+      <button id="dReset">↺ Сброс</button>
+    </div>
+    <div class="status" id="demo-status">Стрелки — ход. Цель: 💎 → 🌀.</div>
+  </section>
+
+  <section class="card" style="margin-top:12px">
+    <h2>Зачем отдельно?</h2>
+    <div class="demo-note">
+      Основная игра — пошаговый DOM-грид (<code>js/ui.js:161</code>), офлайн через <code>sw.js</code>.
+      Phaser здесь подключён <b>только</b> на этой странице через CDN, без сборки:
+      <code>cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js</code>.<br>
+      Без сети Phaser не загрузится — тогда эта страница покажет заглушку, а <code>game.html</code> продолжит работать.
+    </div>
+  </section>
+</div>
+
+<footer>PyTactics · Phaser-демо изолировано · <a href="game.html" style="color:#58a6ff">арена</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var statusEl = document.getElementById("phaser-status");
+  var demoStatus = document.getElementById("demo-status");
+  var statEl = document.getElementById("demo-stat");
+
+  if (typeof Phaser === "undefined") {
+    statusEl.textContent = "Phaser не загрузился (нет сети / CDN заблокирован).";
+    demoStatus.textContent = "Офлайн-заглушка: основная арена game.html работает без сети на DOM+SVG.";
+    demoStatus.className = "status err";
+    return;
+  }
+  statusEl.textContent = "Phaser " + Phaser.VERSION + " загружен с CDN.";
+
+  var MAP = ["#######", "#P.C.X#", "#######"];
+  var TILE = 48;
+  var W = MAP[0].length, H = MAP.length;
+
+  var px = 1, py = 1, crystals = {}, moves = 0, won = false;
+  var playerText = null, sceneRef = null;
+
+  function resetState() {
+    px = 1; py = 1; moves = 0; won = false;
+    crystals = {};
+    for (var y = 0; y < H; y++) for (var x = 0; x < W; x++)
+      if (MAP[y][x] === "C") crystals[x + "," + y] = true;
+    updateStat();
+  }
+
+  function updateStat() {
+    var left = Object.keys(crystals).length;
+    statEl.textContent = "ходов: " + moves + " · 💎 осталось: " + left;
+  }
+
+  function isWall(x, y) {
+    if (x < 0 || y < 0 || x >= W || y >= H) return true;
+    return MAP[y][x] === "#";
+  }
+
+  function tryMove(dx, dy) {
+    if (won || !sceneRef) return;
+    var nx = px + dx, ny = py + dy;
+    if (isWall(nx, ny)) { demoStatus.textContent = "⬛ Стена."; return; }
+    px = nx; py = ny; moves++;
+    var key = px + "," + py;
+    if (crystals[key]) { delete crystals[key]; demoStatus.textContent = "💎 Ядро подобрано!"; }
+    else if (MAP[py][px] === "X") {
+      if (Object.keys(crystals).length === 0) {
+        won = true;
+        demoStatus.textContent = "🌀 Победа за " + moves + " ходов! Жми ↺ для повтора.";
+        demoStatus.className = "status win";
+      } else demoStatus.textContent = "🌀 Портал ждёт: забери все 💎.";
+    } else demoStatus.textContent = "Ход " + moves + ": (" + px + ", " + py + ").";
+    if (!won) demoStatus.className = "status";
+    sceneRef.refresh();
+    updateStat();
+  }
+
+  var config = {
+    type: Phaser.AUTO,
+    parent: "phaser-game",
+    width: W * TILE,
+    height: H * TILE,
+    backgroundColor: "#040b16",
+    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+    scene: {
+      create: function () {
+        sceneRef = this;
+        resetState();
+        this.refresh = function () {
+          this.children.removeAll();
+          for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+            var cx = x * TILE + TILE / 2, cy = y * TILE + TILE / 2;
+            var ch = MAP[y][x];
+            if (ch === "#") this.add.text(cx, cy, "⬛", { fontSize: "30px" }).setOrigin(0.5);
+            else {
+              this.add.rectangle(cx, cy, TILE - 4, TILE - 4, 0x0d1b2e).setStrokeStyle(1, 0x1e3a52);
+              if (ch === "X") this.add.text(cx, cy, "🌀", { fontSize: "30px" }).setOrigin(0.5);
+            }
+          }
+          Object.keys(crystals).forEach(function (k) {
+            var p = k.split(",");
+            this.add.text(+p[0] * TILE + TILE / 2, +p[1] * TILE + TILE / 2, "💎", { fontSize: "28px" }).setOrigin(0.5);
+          }, this);
+          playerText = this.add.text(px * TILE + TILE / 2, py * TILE + TILE / 2, "🤖", { fontSize: "30px" }).setOrigin(0.5);
+        };
+        this.refresh();
+        this.input.keyboard.on("keydown-UP", function () { tryMove(0, -1); });
+        this.input.keyboard.on("keydown-DOWN", function () { tryMove(0, 1); });
+        this.input.keyboard.on("keydown-LEFT", function () { tryMove(-1, 0); });
+        this.input.keyboard.on("keydown-RIGHT", function () { tryMove(1, 0); });
+        this.input.keyboard.on("keydown-W", function () { tryMove(0, -1); });
+        this.input.keyboard.on("keydown-S", function () { tryMove(0, 1); });
+        this.input.keyboard.on("keydown-A", function () { tryMove(-1, 0); });
+        this.input.keyboard.on("keydown-D", function () { tryMove(1, 0); });
+      }
+    }
+  };
+
+  new Phaser.Game(config);
+
+  document.getElementById("dUp").onclick = function () { tryMove(0, -1); };
+  document.getElementById("dDown").onclick = function () { tryMove(0, 1); };
+  document.getElementById("dLeft").onclick = function () { tryMove(-1, 0); };
+  document.getElementById("dRight").onclick = function () { tryMove(1, 0); };
+  document.getElementById("dReset").onclick = function () {
+    resetState();
+    demoStatus.textContent = "Поле сброшено.";
+    demoStatus.className = "status";
+    if (sceneRef) sceneRef.refresh();
+  };
+})();
+</script>
+</body>
+</html>
