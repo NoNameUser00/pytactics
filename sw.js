@@ -1,15 +1,18 @@
 /* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
 /* sw.js — офлайн для десктопа/школы: после первой загрузки игра работает без сети.
    Облако Supabase без сети недоступно — прогресс пишется локально (см. backend.js). */
-var CACHE = "pytactics-v12";
+/* Версию кэша поднимаем при каждом изменении списка SHELL: статика
+   отдаётся из кэша (hit || net), и без нового имени кэша ученик долго
+   получал бы старые скрипты. Имя кэша и есть версия. */
+var CACHE = "pytactics-v13";
 var SHELL = [
   "./", "./index.html", "./map.html", "./galaxy.html", "./game.html", "./themes.html",
   "./manifest.webmanifest",
-  "./css/style.css?v=8", "./css/universe.css?v=8",
-  "./js/py_engine.js?v=8", "./js/levels.js?v=8", "./js/game.js?v=8", "./js/robots.js?v=8",
-  "./js/sprites.js?v=8", "./js/ships.js?v=8", "./js/config.js?v=8", "./js/supabase.min.js?v=8",
-  "./js/backend.js?v=8", "./js/ui.js?v=8", "./js/pages.js?v=8", "./js/mentor.js", "./js/mascot.js",
-  "./js/maps.js", "./js/rules.js", "./js/sfx.js", "./js/pyodide-engine.js", "./js/cmdref.js",
+  "./css/style.css?v=9", "./css/universe.css?v=9",
+  "./js/py_engine.js?v=9", "./js/levels.js?v=9", "./js/game.js?v=9", "./js/robots.js?v=9",
+  "./js/sprites.js?v=9", "./js/ships.js?v=9", "./js/config.js?v=9", "./js/supabase.min.js?v=9",
+  "./js/backend.js?v=9", "./js/ui.js?v=9", "./js/pages.js?v=9", "./js/mentor.js", "./js/mascot.js",
+  "./js/maps.js", "./js/rules.js", "./js/sfx.js", "./js/pyodide-engine.js", "./js/cmdref.js", "./js/editor-mode.js",
   "./vendor/pyodide/pyodide.js", "./vendor/pyodide/pyodide.asm.wasm",
   "./vendor/pyodide/python_stdlib.zip", "./vendor/pyodide/pyodide-lock.json",
   "./vendor/codemirror.min.js", "./vendor/codemirror.min.css",

@@ -24,7 +24,7 @@
     try {
       cm = window.CodeMirror(box, {
         value: ta.value,
-        mode: "python",
+        mode: "text/x-pytactics",     /* python + команды игры отдельным цветом */
         lineNumbers: true,
         lineWrapping: true,
         indentUnit: 4,

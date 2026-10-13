@@ -130,11 +130,29 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:14px}
 .cm-s-default .CodeMirror-cursor{border-left:2px solid var(--accent)}
 .cm-s-default .CodeMirror-selected,.cm-s-default.CodeMirror-focused .CodeMirror-selected{background:rgba(120,160,200,.25)!important}
 .CodeMirror-matchingbracket{color:var(--gold)!important;border-bottom:1px solid var(--gold)}
-.cm-keyword{color:var(--accent)} .cm-def{color:var(--gold)} .cm-string{color:var(--green)}
-.cm-number{color:var(--accent2)} .cm-comment{color:var(--muted);font-style:italic}
-.cm-operator{color:var(--accent2)} .cm-builtin{color:var(--gold)} .cm-property{color:var(--accent2)}
-.cm-variable{color:var(--text)} .cm-variable-2{color:var(--accent2)} .cm-variable-3{color:var(--green)}
-.cm-atom{color:var(--gold)} .cm-meta{color:var(--muted)}
+/* Токены Python. Важно: у CodeMirror есть своя тема .cm-s-default, и её
+   правила .cm-s-default .cm-string сильнее обычного .cm-string — без префикса
+   наши цвета просто не применяются (строки остаются тёмно-красными и на
+   тёмном фоне не читаются). Поэтому везде с .cm-s-default.
+   Палитра сознательно скудная: четыре оттенка плюс нейтрали — радуга из
+   шести цветов в маленьком блоке только мешает читать. */
+.cm-s-default .cm-keyword{color:var(--accent)}                  /* if for while def return */
+.cm-s-default .cm-atom{color:var(--accent2)}                    /* True False None */
+.cm-s-default .cm-number{color:var(--accent2)}
+.cm-s-default .cm-builtin{color:var(--gold)}                    /* print len range int … */
+.cm-s-default .cm-def{color:var(--gold)}                        /* имена своих функций */
+.cm-s-default .cm-variable-2{color:var(--accent2)}              /* аргументы функций */
+.cm-s-default .cm-variable-3{color:var(--accent)}
+.cm-s-default .cm-property{color:var(--text)}
+.cm-s-default .cm-string{color:#7ee787}                         /* строки: светло-зелёные */
+.cm-s-default .cm-string-2{color:#7ee787}
+.cm-s-default .cm-regexp{color:#7ee787}
+.cm-s-default .cm-comment{color:var(--muted);font-style:italic} /* вторичный текст */
+.cm-s-default .cm-operator{color:var(--muted)}
+.cm-s-default .cm-meta{color:var(--muted)}
+.cm-s-default .cm-punctuation{color:var(--muted)}
+.cm-s-default .cm-variable{color:var(--text)}
+.cm-s-default .cm-tag{color:var(--accent)}
 
 /* ==== Справка по командам под редактором ====
    Растёт вместе с прогрессом: на ранних уровнях строк мало, новые команды
