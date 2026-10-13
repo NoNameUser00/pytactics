@@ -360,6 +360,15 @@
       buildLevelTabs();
       setStatus("🏆 Победа за " + trace.turns + " ходов! Награда: " + "★".repeat(nstars) + (usedSolution ? " (было использовано решение)" : ""), "win");
       logConsole("🏆 Уровень пройден! " + "★".repeat(nstars), "win");
+      // Второй слой обучения — тот же, что и в хороших играх про программирование:
+      // задача выполнена, но можно короче. Показываем оптимум, чтобы ученик
+      // сравнивал не только «выиграл/проиграл», а «насколько умно».
+      var par = window.MapGen && curSpec().starTurns ? curSpec().starTurns : (l.starTurns || 0);
+      if (par && trace.turns > 0) {
+        if (trace.turns <= par) logConsole("⚡ Оптимально: " + trace.turns + " ходов — столько и нужно.", "win");
+        else logConsole("⚡ Оптимально: " + par + " ходов, у тебя " + trace.turns +
+          ". Задача та же — можно короче.", "");
+      }
       if (window.currentRobot) {
         var rbw = window.currentRobot();
         logConsole(rbw.emoji + " <b>" + rbw.name + ":</b> «" + rbw.win + "»", "win");
