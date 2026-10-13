@@ -135,3 +135,13 @@ footer{color:var(--muted);font-size:12px;text-align:center;padding:14px}
 .cm-operator{color:var(--accent2)} .cm-builtin{color:var(--gold)} .cm-property{color:var(--accent2)}
 .cm-variable{color:var(--text)} .cm-variable-2{color:var(--accent2)} .cm-variable-3{color:var(--green)}
 .cm-atom{color:var(--gold)} .cm-meta{color:var(--muted)}
+
+/* ==== Справка по командам под редактором ====
+   Растёт вместе с прогрессом: на ранних уровнях строк мало, новые команды
+   подсвечены. Поэтому стили проще, чем у обычного блока справки. */
+.cmdref-head{font-size:14px;margin-bottom:4px;color:var(--text)}
+.cmdref-head i{color:var(--muted);font-style:normal}
+.cmdref-new{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 7px;margin:4px 0 6px;font-size:13px}
+.cmdref-new code{background:rgba(255,214,10,.12);border-color:var(--gold)}
+.api code.fresh{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);color:var(--gold);font-weight:600}
+.cmdnote{color:var(--muted);font-size:12px}

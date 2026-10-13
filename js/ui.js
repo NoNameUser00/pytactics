@@ -110,6 +110,7 @@
     if (window.Backend && window.Backend.init) window.Backend.init().then(go, go);
     else go();
     if (initEditor()) focusEditor();
+    if (window.CmdRef) window.CmdRef.build();   // справка по командам — один раз на страницу
     $("editor").addEventListener("input", function () {
       saveCode();
     });
@@ -172,6 +173,7 @@
     var lo = $("lore");
     if (lo) lo.textContent = l.lore ? "«" + l.lore + "»" : "";
     mentorSay("greet");
+    if (window.CmdRef) window.CmdRef.render(l.id);
     $("hintBox").innerHTML = "<i>Нажми 💡 Подсказка — открою намёк, потом псевдокод. Кнопка «Решение» даёт готовый код, но срезает звёзды до 1.</i>";
     $("console").innerHTML = "";
     var saved = localStorage.getItem(codeKey(l.id));

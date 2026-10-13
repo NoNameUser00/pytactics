@@ -67,18 +67,9 @@
       <div id="console"></div>
       <div class="status" id="status"></div>
       <div class="hint" id="hintBox"></div>
-      <div class="api">
-        <b>Черепаха (движение):</b>
-        <code>forward(n)</code> <code>backward(n)</code> — шаги (смотрит вправо)<br>
-        <code>left(90)</code> <code>right(90)</code> — поворот, ход не тратится; <code>goto(x, y)</code> — идти в точку<br>
-        <code>dot()</code> — взять ядро под ногами; <code>circle(r)</code> — обойти квадрат r×r<br>
-        <code>penup()</code> / <code>pendown()</code> — перо: опущенное перо собирает ядра по пути<br>
-        <b>Датчики:</b> <code>is_wall(dir)</code> <code>is_enemy(dir)</code> <code>is_crystal(dir)</code> <code>is_exit(dir)</code> <code>is_crystal("here")</code>
-        <code>x()</code> <code>y()</code> <code>energy()</code> <code>crystals_left()</code> <code>print(x)</code><br>
-        <b>dir</b> — <code>"up"/"down"/"left"/"right"</code>, а <code>"here"</code> — клетка под роботом.<br>
-        <b>Старая механика тоже работает:</b> <code>move_up()</code> <code>move_down()</code> <code>move_left()</code> <code>move_right()</code> <code>collect()</code> <code>wait()</code> <code>attack(dir)</code> <code>get_x()</code> <code>get_y()</code> <code>get_energy()</code><br>
-        <b>Python настоящий:</b> переменные, <code>if/elif/else:</code>, <code>for i in range(n):</code>, <code>while cond:</code>, <code>def f():</code>, <code>return</code>, <code>break</code>, <code>and/or/not</code>, f-строки <code>f"{x=}"</code>, comprehensions, <code>try/except/finally</code>, <code>class</code> и вся стандартная библиотека (<code>math</code>, <code>random</code>, <code>re</code>, <code>itertools</code>, <code>collections</code>, <code>heapq</code>, <code>string</code>)<br>
-        <b>Поле:</b> 🪨 астероид 🌀 маяк 💎 ядро (через <code>dot()</code> или <code>collect()</code>) 🔋 ячейка +6⚡ (сама) 👾 штурмовик 👺 алый страж 💀 морт 👹 владыка
+      <div class="api" id="cmdRef">
+        <div class="cmdnote">Справка собирается по мере прохождения: здесь появляются только те команды,
+        которые ты уже встречал. Новые команды этого уровня подсвечены.</div>
       </div>
     </section>
   </div>
@@ -99,6 +90,7 @@
 
 <script src="js/py_engine.js?v=8"></script>
 <script src="js/pyodide-engine.js"></script>
+<script src="js/cmdref.js"></script>
 <script src="js/levels.js?v=8"></script>
 <script src="js/maps.js"></script>
 <script src="js/rules.js"></script>

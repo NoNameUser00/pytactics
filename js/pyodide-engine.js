@@ -335,6 +335,7 @@ window.PyRunner = (function () {
     return {
       code: src,
       lines: src.split("\n").length,
+      calls: names,
       print: has(/\bprint\s*\(/),
       hasPrint: has(/\bprint\s*\(/),
       for: has(/\bfor\b/),
