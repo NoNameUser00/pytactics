@@ -270,7 +270,7 @@
   function onRun() { runCode(false); }
   function onStep() { runCode(true); }
 
-  function runCode(stepMode) {
+  async function runCode(stepMode) {
     stopAnim();
     $("console").innerHTML = "";
     var l = cur(), code = getCode();
@@ -288,10 +288,15 @@
       return;
     }
 
-    setStatus("Симуляция боя...", "");
+    // Первый запуск ждёт загрузки Python (около 13 МБ) — честно говорим об этом
+    if (window.PyRunner && !window.PyRunner.__warming) {
+      setStatus("⏳ Загружается настоящий Python (один раз, ~13 МБ)…", "");
+      window.PyRunner.warmup();
+    } else setStatus("Симуляция боя...", "");
+
     var trace;
     try {
-      trace = window.Game.simulate(l, code, curSpec());
+      trace = await window.Game.simulate(l, code, curSpec());
     } catch (e) {
       setStatus("Внутренняя ошибка: " + (e && e.message), "err");
       return;

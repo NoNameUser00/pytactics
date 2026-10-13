@@ -60,7 +60,7 @@
         <button id="btnSolution">🔑 Решение</button>
         <button id="btnSound" title="Звук боя">🔊</button>
       </div>
-      <div class="meta"><span>🐍 editor.py — пиши Python (отступ 4 пробела, <span class="kbd">Tab</span> работает, запуск: <span class="kbd">Ctrl+Enter</span>)</span><span id="statLines"></span></div>
+      <div class="meta"><span>🐍 editor.py — настоящий Python 3.14 (Pyodide). Отступ 4 пробела, <span class="kbd">Tab</span> работает, запуск: <span class="kbd">Ctrl+Enter</span></span><span id="statLines"></span></div>
       <textarea id="editor" spellcheck="false" autocomplete="off" autocapitalize="off" autocorrect="off"></textarea>
       <div id="editorBox"></div>
       <div class="meta"><span>📟 Консоль робота:</span><span id="cloudState"></span></div>
@@ -68,19 +68,17 @@
       <div class="status" id="status"></div>
       <div class="hint" id="hintBox"></div>
       <div class="api">
-        <b>API героя:</b>
-        <code>move_up()</code> <code>move_down()</code> <code>move_left()</code> <code>move_right()</code>
-        <code>attack("up"|"down"|"left"|"right")</code> <code>collect()</code> <code>wait()</code><br>
-        <b>Сенсоры:</b> <code>is_wall(dir)</code> <code>is_enemy(dir)</code> <code>is_crystal(dir)</code> <code>is_exit(dir)</code> <code>is_crystal("here")</code>
-        <code>get_x()</code> <code>get_y()</code> <code>get_energy()</code> <code>crystals_left()</code> <code>print(x)</code><br>
-        <b>Как читать карту:</b> <code>dir</code> — <code>"up"/"down"/"left"/"right"</code>, а <code>"here"</code> — клетка под роботом. Кристалл забирают <code>collect()</code>, когда робот на нём стоит.<br>
-        <b>Python:</b> переменные, <code>if/elif/else:</code>, <code>for i in range(n):</code>, <code>while cond:</code>, <code>def f():</code>, <code>return</code>, <code>break</code>, <code>and/or/not</code>, <code>int()</code> <code>str()</code> <code>type()</code> <code>del x</code><br>
-        <b>Строки:</b> <code>s[i]</code> <code>s[a:b]</code> <code>in</code> <code>*</code> <code>upper/lower/strip/find/replace</code> <code>ord/chr</code><br>
-        <b>Списки:</b> <code>[]</code> <code>a[i]</code> <code>a[-1]</code> <code>for x in a</code> <code>append/pop/sort</code> <code>insert/remove/del a[i]</code> <code>sum/sorted/join</code> <code>seed/shuffle/choice</code><br>
-        <b>Кортежи:</b> <code>(a, b)</code> <code>x, y = t</code> — менять запрещено<br>
-        <b>Словари:</b> <code>{}</code> <code>d[k]</code> <code>d[k] = v</code> <code>for k in d</code> <code>set()</code><br>
-        <b>Ошибки:</b> <code>try/except/finally</code> <code>raise()</code><br>
-        <b>Поле:</b> 🪨 астероид 🌀 маяк 💎 ядро (через <code>collect()</code>) 🔋 ячейка +6⚡ (сама) 👾 штурмовик 👺 алый страж 💀 морт 👹 владыка
+        <b>Черепаха (движение):</b>
+        <code>forward(n)</code> <code>backward(n)</code> — шаги (смотрит вправо)<br>
+        <code>left(90)</code> <code>right(90)</code> — поворот, ход не тратится; <code>goto(x, y)</code> — идти в точку<br>
+        <code>dot()</code> — взять ядро под ногами; <code>circle(r)</code> — обойти квадрат r×r<br>
+        <code>penup()</code> / <code>pendown()</code> — перо: опущенное перо собирает ядра по пути<br>
+        <b>Датчики:</b> <code>is_wall(dir)</code> <code>is_enemy(dir)</code> <code>is_crystal(dir)</code> <code>is_exit(dir)</code> <code>is_crystal("here")</code>
+        <code>x()</code> <code>y()</code> <code>energy()</code> <code>crystals_left()</code> <code>print(x)</code><br>
+        <b>dir</b> — <code>"up"/"down"/"left"/"right"</code>, а <code>"here"</code> — клетка под роботом.<br>
+        <b>Старая механика тоже работает:</b> <code>move_up()</code> <code>move_down()</code> <code>move_left()</code> <code>move_right()</code> <code>collect()</code> <code>wait()</code> <code>attack(dir)</code> <code>get_x()</code> <code>get_y()</code> <code>get_energy()</code><br>
+        <b>Python настоящий:</b> переменные, <code>if/elif/else:</code>, <code>for i in range(n):</code>, <code>while cond:</code>, <code>def f():</code>, <code>return</code>, <code>break</code>, <code>and/or/not</code>, f-строки <code>f"{x=}"</code>, comprehensions, <code>try/except/finally</code>, <code>class</code> и вся стандартная библиотека (<code>math</code>, <code>random</code>, <code>re</code>, <code>itertools</code>, <code>collections</code>, <code>heapq</code>, <code>string</code>)<br>
+        <b>Поле:</b> 🪨 астероид 🌀 маяк 💎 ядро (через <code>dot()</code> или <code>collect()</code>) 🔋 ячейка +6⚡ (сама) 👾 штурмовик 👺 алый страж 💀 морт 👹 владыка
       </div>
     </section>
   </div>
@@ -100,6 +98,7 @@
 <footer>PyTactics · статика для GitHub Pages · <a href="map.html" style="color:#58a6ff">карта секторов</a> · сделано для уроков информатики 🐍</footer>
 
 <script src="js/py_engine.js?v=8"></script>
+<script src="js/pyodide-engine.js"></script>
 <script src="js/levels.js?v=8"></script>
 <script src="js/maps.js"></script>
 <script src="js/rules.js"></script>

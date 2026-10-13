@@ -32,7 +32,7 @@ window.Game = (function () {
 
   // Запустить код ученика на копии уровня. Возвращает trace для анимации.
   // spec — арена от MapGen.build(): строки карты, энергия, лимит ходов.
-  function simulate(level, code, spec) {
+  async function simulate(level, code, spec) {
     var lvl = level;
     if (spec) {
       lvl = {
@@ -48,13 +48,14 @@ window.Game = (function () {
       pickups: par.pickups.map(function (p) { return { x: p.x, y: p.y }; }),
       crystals: par.crystals.map(function (c) { return { x: c.x, y: c.y }; }),
       collected: 0, total: par.crystals.length,
-      exit: par.exit, over: false, win: false
+      exit: par.exit, over: false, win: false,
+      pen: false          // перо опущено? тогда ядра собираются по пути (turtle)
     };
     var events = [{ type: "start", snap: snap() }];
     var logs = [];
     var api = buildApi();
 
-    var res = window.PyEngine.run(code, api, { maxSteps: 15000 });
+    var res = await window.PyRunner.run(code, api, { maxSteps: 15000 });
     logs = res.logs || [];
     if (res.error && !st.over) {
       events.push({ type: "error", message: res.error, snap: snap() });
@@ -141,7 +142,11 @@ window.Game = (function () {
         get_x: function () { return st.px; },
         get_y: function () { return st.py; },
         get_energy: function () { return st.energy; },
-        crystals_left: function () { return st.total - st.collected; }
+        crystals_left: function () { return st.total - st.collected; },
+        /* перо черепахи: поднято — ядра по пути не берутся (по умолчанию),
+           опущено — берутся сами. Это способ пройти коридор быстрее. */
+        __pen: function (down) { st.pen = !!down; return st.pen; },
+        is_pen_down: function () { return st.pen; }
       };
     }
 
@@ -157,6 +162,15 @@ window.Game = (function () {
         } else {
           st.px = nx; st.py = ny;
           events.push({ type: "move", dir: dir, snap: snap() });
+          /* перо опущено — ядро под ногами берётся само */
+          if (st.pen) {
+            var ci = -1;
+            st.crystals.forEach(function (c, i2) { if (c.x === st.px && c.y === st.py) ci = i2; });
+            if (ci >= 0) {
+              st.crystals.splice(ci, 1); st.collected++;
+              events.push({ type: "collect", snap: snap(), message: "Перо опущено — ядро " + st.collected + "/" + st.total + " 💎" });
+            }
+          }
           var pi = -1;
           st.pickups.forEach(function (p, i) { if (p.x === st.px && p.y === st.py) pi = i; });
           if (pi >= 0) {

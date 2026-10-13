@@ -9,147 +9,147 @@ window.LEVELS = [
   // ---------- Глава 1. Первые программы ----------
   {
     id: 1, title: "Первая программа", topic: "print()", book: "1.1",
-    briefing: "§1.1 из учебника: первая программа просто выводит текст. Твой маяк ждёт справа, а консоль — твой первый отчёт.",
+    briefing: "§1.1: первая программа выводит текст. Робот — это черепаха: она смотрит вправо, forward(n) ведёт её на n клеток, dot() берёт ядро под ногами.",
     lore: "Да пребудет с тобой Код. Маяк ждёт справа.",
-    goal: 'Выведи «Привет, Грид!», забери 💎 и дойди до 🌀.',
+    goal: "Выведи «Привет, Грид!», забери 💎 и дойди до 🌀.",
     map: ["#####", "#PCX#", "#####"],
     energy: 20, maxTurns: 12, expect: ["Привет, Грид!"],
-    starter: 'print("Привет, Грид!")\nmove_right()\n',
+    starter: "print(\"Привет, Грид!\")\nforward(1)\n",
     hints: [
-      'Намёк: босс лечит твоё время, но не память. Сделай два шага-по-умолчанию (вправо/влево), потом два цикла: до стены и обратно к порталу. Портал найдёшь через is_exit("here").',
-      'Псевдокод:\ndef right_step():\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\n\ndef left_step():\n    if is_enemy("left"):\n        attack("left")\n    move_left()\n    if is_crystal("here"):\n        collect()\n\nmove_right()\nmove_right()\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall("right"):\n    right_step()\nmove_down()\nmove_down()\nmove_down()\n# нижний ярус: до левого края, потом обратно к порталу\nwhile not is_wall("left"):\n    left_step()\nwhile not is_exit("here"):\n    right_step()',
-      'Решение:\ndef right_step():\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\n\ndef left_step():\n    if is_enemy("left"):\n        attack("left")\n    move_left()\n    if is_crystal("here"):\n        collect()\n\nmove_right()\nmove_right()\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall("right"):\n    right_step()\nmove_down()\nmove_down()\nmove_down()\n# нижний ярус: до левого края, потом обратно к порталу\nwhile not is_wall("left"):\n    left_step()\nwhile not is_exit("here"):\n    right_step()'
+      "Намёк: черепаха смотрит вправо. forward(1) — шаг, dot() — взять ядро, потом ещё шаг до портала.",
+      "Псевдокод:\nprint(\"Привет, Грид!\")\nforward(1)\ndot()\nforward(1)",
+      "Решение:\nprint(\"Привет, Грид!\")\nforward(1)\ndot()\nforward(1)"
     ],
-    solution: 'print("Привет, Грид!")\nmove_right()\ncollect()\nmove_right()',
+    solution: "print(\"Привет, Грид!\")\nforward(1)\ndot()\nforward(1)",
     starTurns: 3
   },
   {
     id: 2, hardcode: 6, title: "Структура программы", topic: "последовательность команд", book: "1.4",
-    briefing: "§1.4: программа выполняется сверху вниз, строка за строкой. Проведи робота по коридору — 5 приказов подряд.",
+    briefing: "§1.4: программа выполняется сверху вниз, строка за строкой. Идти можно сразу на несколько клеток: forward(4) — это четыре шага одной строкой.",
     lore: "Код идёт сверху вниз, как corridor. Шаг за шагом.",
-    goal: 'Пройди коридор и забери 💎.',
+    goal: "Пройди коридор и забери 💎.",
     map: ["########", "#PC...X#", "########"],
     energy: 20, maxTurns: 15,
-    starter: '# Команды выполняются по порядку\nmove_right()\nmove_right()\n',
+    starter: "# Команды выполняются по порядку\nforward(1)\n",
     hints: [
-      'Намёк: коридор из 5 клеток, кристалл — на второй. Шаг, collect(), и дальше до портала.',
-      'Псевдокод:\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
-      'Решение:\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()'
+      "Намёк: ядро на второй клетке. Один шаг, dot(), потом до портала — одной командой forward(4).",
+      "Псевдокод:\nforward(1)\ndot()\nforward(4)",
+      "Решение:\nforward(1)\ndot()\nforward(4)"
     ],
-    solution: 'move_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()',
+    solution: "forward(1)\ndot()\nforward(4)",
     starTurns: 6
   },
   {
     id: 3, title: "Комментарии", topic: "# комментарии", book: "1.5",
-    briefing: "§1.5: строки с # робот-читатель пропускает, а человек понимает. Забери ядро, подписав каждый шаг.",
+    briefing: "§1.5: строки с # черепаха не читает, а человек понимает. Подпиши каждый шаг — и код станет понятнее через полгода.",
     lore: "Мудрый оператор подписывает путь. Решётка # — чернила.",
     goal: "Собери 💎 и дойди до 🌀.",
     map: ["#######", "#P.C.X#", "#######"],
     energy: 20, maxTurns: 15,
-    starter: '# Иди и забери кристалл\nmove_right()\nmove_right()\ncollect()\n',
+    starter: "# Иди и забери кристалл\nforward(2)\n",
     hints: [
-      "Намёк: ядро на 3-й клетке. Схема: шаг, шаг, взять, шаг, шаг.",
-      "Псевдокод:\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()",
-      "Решение:\nmove_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()"
+      "Намёк: ядро через две клетки. Схема: forward(2), dot(), forward(2).",
+      "Псевдокод:\n# до ядра\nforward(2)\ndot()\n# до портала\nforward(2)",
+      "Решение:\n# до ядра\nforward(2)\ndot()\n# до портала\nforward(2)"
     ],
-    solution: 'move_right()\nmove_right()\ncollect()\nmove_right()\nmove_right()',
+    solution: "# до ядра\nforward(2)\ndot()\n# до портала\nforward(2)",
     starTurns: 5
   },
   {
     id: 4, title: "Вывод данных", topic: "print() и переменные", book: "1.6",
-    briefing: "§1.6: сохрани число шагов в переменную, выведи её и только потом иди. Консоль должна показать 4.",
+    briefing: "§1.6: сохрани число в переменную, выведи её — и используй как расстояние. Настоящий Python считает: forward(steps - 1).",
     lore: "Сначала посчитай, потом шагай.",
-    goal: 'Выведи число шагов, забери 💎 и дойди до 🌀.',
+    goal: "Выведи число шагов, забери 💎 и дойди до 🌀.",
     map: ["#######", "#PC..X#", "#######"],
     energy: 20, maxTurns: 14, expect: ["4"],
-    starter: 'steps = 4\nprint(steps)\nmove_right()\n',
+    starter: "steps = 4\nprint(steps)\nforward(1)\n",
     hints: [
-      'Намёк: print уже выводит 4. По дороге кристалл: встань на него и вызови collect().',
-      'Псевдокод:\nsteps = 4\nprint(steps)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
-      'Решение:\nsteps = 4\nprint(steps)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()'
+      "Намёк: print уже выводит 4. До портала от старта 4 клетки, но одну ты потратишь на ядро — значит вперёд на steps - 1.",
+      "Псевдокод:\nsteps = 4\nprint(steps)\nforward(1)\ndot()\nforward(steps - 1)",
+      "Решение:\nsteps = 4\nprint(steps)\nforward(1)\ndot()\nforward(steps - 1)"
     ],
-    solution: 'steps = 4\nprint(steps)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
+    solution: "steps = 4\nprint(steps)\nforward(1)\ndot()\nforward(steps - 1)",
     starTurns: 5
   },
   // ---------- Глава 2. Переменные и типы ----------
   {
     id: 5, title: "Имена", topic: "переменные", book: "2.1",
-    briefing: "§2.1: у каждой переменной — имя. Назови своего робота и представь его консоли.",
+    briefing: "§2.1: у каждой переменной есть имя. Назови робота и представь его консоли — консоль это и есть твой отчёт.",
     lore: "Безымянный робот — просто железо. Назови его.",
-    goal: 'Выведи имя, забери 💎 и дойди до 🌀.',
+    goal: "Выведи имя, забери 💎 и дойди до 🌀.",
     map: ["#######", "#PC..X#", "#######"],
     energy: 20, maxTurns: 13, expect: ["Бип"],
-    starter: 'name = "Бип"\nprint(name)\nmove_right()\n',
+    starter: "name = \"Бип\"\nprint(name)\nforward(1)\n",
     hints: [
-      'Намёк: имя уже выводится. На второй клетке кристалл — нужен collect().',
-      'Псевдокод:\nname = "Бип"\nprint(name)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
-      'Решение:\nname = "Бип"\nprint(name)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()'
+      "Намёк: имя уже выводится. Ядро — через клетку, до портала потом ещё три шага.",
+      "Псевдокод:\nname = \"Бип\"\nprint(name)\nforward(1)\ndot()\nforward(3)",
+      "Решение:\nname = \"Бип\"\nprint(name)\nforward(1)\ndot()\nforward(3)"
     ],
-    solution: 'name = "Бип"\nprint(name)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
+    solution: "name = \"Бип\"\nprint(name)\nforward(1)\ndot()\nforward(3)",
     starTurns: 5
   },
   {
     id: 6, title: "Присваивание", topic: "= и счётчик", book: "2.3",
-    briefing: "§2.3: переменную можно менять: crystals = crystals + 1. Считай ядра в переменную.",
+    briefing: "§2.3: переменную можно менять на ходу: crystals = crystals + 1. Считай ядра и выведи итог.",
     lore: "Считай ядра — Орден любит порядок.",
     goal: "Собери 2 💎, посчитай их, дойди до 🌀.",
     map: ["#########", "#P.C.C.X#", "#########"],
     energy: 20, maxTurns: 18, expect: ["2"],
-    starter: 'crystals = 0\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\n',
+    starter: "crystals = 0\nforward(2)\n",
     hints: [
-      "Намёк: после каждого collect() прибавляй 1, в конце выведи и сделай 2 финальных шага.",
-      "Псевдокод: collect → +1 … collect → +1 … print(crystals) … иди.",
-      "Решение:\ncrystals = 0\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nprint(crystals)\nmove_right()\nmove_right()"
+      "Намёк: после каждого dot() прибавляй 1. В конце print(crystals) и два шага до портала.",
+      "Псевдокод:\ncrystals = 0\nforward(2)\ndot()\ncrystals = crystals + 1\nforward(2)\ndot()\ncrystals = crystals + 1\nprint(crystals)\nforward(2)",
+      "Решение:\ncrystals = 0\nforward(2)\ndot()\ncrystals = crystals + 1\nforward(2)\ndot()\ncrystals = crystals + 1\nprint(crystals)\nforward(2)"
     ],
-    solution: 'crystals = 0\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nmove_right()\nmove_right()\ncollect()\ncrystals = crystals + 1\nprint(crystals)\nmove_right()\nmove_right()',
+    solution: "crystals = 0\nforward(2)\ndot()\ncrystals = crystals + 1\nforward(2)\ndot()\ncrystals = crystals + 1\nprint(crystals)\nforward(2)",
     starTurns: 8
   },
   {
     id: 7, title: "Типы", topic: "bool и сенсоры", book: "2.2",
-    briefing: "§2.2: сенсор is_wall() возвращает логическое True/False. Сохрани ответ в переменную и реши, куда идти.",
+    briefing: "§2.2: датчик is_wall() отвечает True или False. Черепаха смотрит вправо, поэтому «прямо по курсу» — это is_wall(\"right\").",
     lore: "Стена отвечает честно: True. Слушай её.",
     goal: "Обойди стену, выведи ответ сенсора.",
     map: ["#######", "#P.#.X#", "#.....#", "#######"],
     energy: 20, maxTurns: 16, expect: ["True"],
-    starter: 'move_right()\nwall = is_wall("right")\nprint(wall)\nif wall:\n    move_down()\nelse:\n    move_right()\n',
+    starter: "forward(1)\nwall = is_wall(\"right\")\nprint(wall)\n",
     hints: [
-      "Намёк: скелет верный. После спуска: два шага вправо, вверх, шаг к выходу.",
-      "Псевдокод: … move_down() … move_right() x2 … move_up() … move_right().",
-      "Решение:\nmove_right()\nwall = is_wall(\"right\")\nprint(wall)\nif wall:\n    move_down()\nelse:\n    move_right()\nmove_right()\nmove_right()\nmove_up()\nmove_right()"
+      "Намёк: прямо курс упёрся в стену — поверни направо (right(90)) и обойди её снизу. Потом развернись обратно: left(90).",
+      "Псевдокод:\nforward(1)\nwall = is_wall(\"right\")\nprint(wall)\nif wall:\n    right(90)\n    forward(1)\nelse:\n    forward(1)\nleft(90)\nforward(3)\nleft(90)\nforward(1)",
+      "Решение:\nforward(1)\nwall = is_wall(\"right\")\nprint(wall)\nif wall:\n    right(90)\n    forward(1)\nelse:\n    forward(1)\nleft(90)\nforward(3)\nleft(90)\nforward(1)"
     ],
-    solution: 'move_right()\nwall = is_wall("right")\nprint(wall)\nif wall:\n    move_down()\nelse:\n    move_right()\nmove_right()\nmove_right()\nmove_up()\nmove_right()',
+    solution: "forward(1)\nwall = is_wall(\"right\")\nprint(wall)\nif wall:\n    right(90)\n    forward(1)\nelse:\n    forward(1)\nleft(90)\nforward(3)\nleft(90)\nforward(1)",
     starTurns: 6
   },
   {
     id: 8, title: "Приведение типов", topic: "int() и type()", book: "2.4",
-    briefing: "§2.4: строка \"4\" — не число. Преврати её в int(), проверь type() и пройди 4 клетки.",
+    briefing: "§2.4: строка \"4\" — не число. Преврати её в int(). Настоящий Python печатает тип как <class 'int'>, а короткое имя даёт type(n).__name__.",
     lore: "Слова — в числа. Магия приведения.",
-    goal: 'Выведи тип, забери 💎 и дойди до 🌀.',
+    goal: "Выведи имя типа, забери 💎 и дойди до 🌀.",
     map: ["#######", "#PC..X#", "#######"],
     energy: 20, maxTurns: 14, expect: ["int"],
-    starter: 'n = "4"\nn = int(n)\nprint(type(n))\nmove_right()\n',
+    starter: "n = \"4\"\nn = int(n)\nprint(type(n).__name__)\nforward(1)\n",
     hints: [
-      'Намёк: тип уже выводится. На второй клетке кристалл — не забудь collect().',
-      'Псевдокод:\nn = "4"\nn = int(n)\nprint(type(n))\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
-      'Решение:\nn = "4"\nn = int(n)\nprint(type(n))\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()'
+      "Намёк: type(n) даст <class 'int'>, а нужен просто int — бери type(n).__name__.",
+      "Псевдокод:\nn = \"4\"\nn = int(n)\nprint(type(n).__name__)\nforward(1)\ndot()\nforward(3)",
+      "Решение:\nn = \"4\"\nn = int(n)\nprint(type(n).__name__)\nforward(1)\ndot()\nforward(3)"
     ],
-    solution: 'n = "4"\nn = int(n)\nprint(type(n))\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
+    solution: "n = \"4\"\nn = int(n)\nprint(type(n).__name__)\nforward(1)\ndot()\nforward(3)",
     starTurns: 5
   },
   {
     id: 9, title: "Удаление", topic: "del", book: "2.5",
-    briefing: "§2.5: временная переменная больше не нужна — удали её через del. Сначала выведи энергию.",
+    briefing: "§2.5: временная переменная больше не нужна — удали её через del. Сначала выведи энергию: energy().",
     lore: "Чистый код — чистый коридор.",
-    goal: 'Выведи энергию, удали переменную, забери 💎 и дойди до 🌀.',
+    goal: "Выведи энергию, удали переменную, забери 💎 и дойди до 🌀.",
     map: ["#####", "#PCX#", "#####"],
     energy: 20, maxTurns: 12, expect: ["20"],
-    starter: 'temp = get_energy()\nprint(temp)\ndel temp\nmove_right()\n',
+    starter: "temp = energy()\nprint(temp)\ndel temp\nforward(1)\n",
     hints: [
-      'Намёк: всё есть, кроме collect() на кристалле и последнего шага.',
-      'Псевдокод:\ntemp = get_energy()\nprint(temp)\ndel temp\nmove_right()\ncollect()\nmove_right()',
-      'Решение:\ntemp = get_energy()\nprint(temp)\ndel temp\nmove_right()\ncollect()\nmove_right()'
+      "Намёк: энергия уже выводится. Дальше шаг, dot(), шаг до портала.",
+      "Псевдокод:\ntemp = energy()\nprint(temp)\ndel temp\nforward(1)\ndot()\nforward(1)",
+      "Решение:\ntemp = energy()\nprint(temp)\ndel temp\nforward(1)\ndot()\nforward(1)"
     ],
-    solution: 'temp = get_energy()\nprint(temp)\ndel temp\nmove_right()\ncollect()\nmove_right()',
+    solution: "temp = energy()\nprint(temp)\ndel temp\nforward(1)\ndot()\nforward(1)",
     starTurns: 3
   },
   // ---------- Глава 3. Операторы ----------
@@ -171,18 +171,18 @@ window.LEVELS = [
   },
   {
     id: 11, title: "Время в пути", topic: "деление", book: "3.1.2",
-    briefing: "§3.1.2 из учебника: время = путь / скорость. Путь 120, скорость 60 — выведи время и иди.",
+    briefing: "§3.1.2: в настоящем Python / всегда даёт дробное число, даже если делится нацело. Целочисленное деление — это //.",
     lore: "Сто двадцать парсеков? Нет — сто двадцать шагов пополам.",
-    goal: 'Выведи время, забери 💎 и дойди до 🌀.',
+    goal: "Выведи оба ответа деления, забери 💎 и дойди до 🌀.",
     map: ["#######", "#PC..X#", "#######"],
-    energy: 20, maxTurns: 13, expect: ["2"],
+    energy: 20, maxTurns: 13, expect: ["2.0", "2"],
     starter: 's = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\n',
     hints: [
-      'Намёк: время уже посчитано (2). Кристалл на второй клетке — нужен collect().',
-      'Псевдокод:\ns = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
-      'Решение:\ns = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()'
+      "Намёк: 120 / 60 даст 2.0 — потому что / в Python всегда возвращает float. Для целого числа есть оператор //.",
+      "Псевдокод:\ns = 120\nv = 60\nprint(s / v)\nprint(s // v)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\ns = 120\nv = 60\nprint(s / v)\nprint(s // v)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 's = 120\nv = 60\nt = s / v\nprint(t)\nmove_right()\ncollect()\nmove_right()\nmove_right()\nmove_right()',
+    solution: "s = 120\nv = 60\nprint(s / v)\nprint(s // v)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 5
   },
   {
@@ -349,34 +349,34 @@ window.LEVELS = [
   // ---------- Глава 5. Математические функции ----------
   {
     id: 22, gen: "flat", title: "Типы чисел", topic: "int и float", book: "5.1",
-    briefing: "§5.1: числа бывают целые (int) и дробные (float). Выведи оба типа и иди.",
+    briefing: "§5.1: type(5) показывает <class 'int'>, а короткое имя типа — type(5).__name__. Разница видна сразу.",
     lore: "Числа — тоже Сила. Целые и дробные.",
-    goal: "Выведи типы и дойди до 🌀.",
+    goal: "Выведи имена типов и дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
     energy: 20, maxTurns: 12, expect: ["int", "float"],
     starter: 'print(type(5))\nprint(type(3.5))\nmove_right()\n',
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint(type(5))\nprint(type(3.5))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: type(5) даст <class 'int'>. Короткое имя типа лежит в __name__.",
+      "Псевдокод:\nprint(type(5).__name__)\nprint(type(3.5).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nprint(type(5).__name__)\nprint(type(3.5).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'print(type(5))\nprint(type(3.5))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "print(type(5).__name__)\nprint(type(3.5).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
     id: 23, gen: "flat", title: "Округление", topic: "round()", book: "5.2.1",
-    briefing: "§5.2.1: число пи бесконечно, а экран — нет. Округли 3.14159 до сотых.",
+    briefing: "§5.2.1: Python округляет ровно .5 к чётному числу — round(2.5) даёт 2, а не 3. Это не ошибка, а правило: banker’s rounding.",
     lore: "Округляй точно, как прицел.",
-    goal: "Выведи 3.14 и 3, дойди до 🌀.",
+    goal: "Выведи оба округления, дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
-    energy: 20, maxTurns: 12, expect: ["3.14", "3"],
+    energy: 20, maxTurns: 12, expect: ["3.14", "2"],
     starter: 'print(round(3.14159, 2))\nprint(round(2.5))\nmove_right()\n',
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint(round(3.14159, 2))\nprint(round(2.5))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: в Python round(2.5) == 2 — половинки округляются к чётному. Не как в школьной тетрадке.",
+      "Псевдокод:\nprint(round(3.14159, 2))\nprint(round(2.5))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nprint(round(3.14159, 2))\nprint(round(2.5))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'print(round(3.14159, 2))\nprint(round(2.5))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "print(round(3.14159, 2))\nprint(round(2.5))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
@@ -413,50 +413,50 @@ window.LEVELS = [
   },
   {
     id: 26, gen: "flat", title: "Генератор", topic: "seed() и randint()", book: "5.4",
-    briefing: "§5.4: случайность приручается зерном: seed(7) — и кубик всегда честен. Брось кубик 1–6.",
+    briefing: "§5.4: случайность в Python настоящая — модуль random. Чтобы число каждый раз было одно и то же, ставь зерно: random.seed(7).",
     lore: "Случайность можно приручить. Зерно решает.",
     goal: "Выведи выпавшее число и дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
-    energy: 20, maxTurns: 12, expect: ["1"],
-    starter: 'seed(7)\nn = randint(1, 6)\nprint(n)\nmove_right()\n',
+    energy: 20, maxTurns: 12, expect: ["3"],
+    starter: "import random\nrandom.seed(7)\nn = random.randint(1, 6)\nprint(n)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)\n",
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nseed(7)\nn = randint(1, 6)\nprint(n)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: import random, потом random.seed(7) и random.randint(1, 6). С зерном 7 выпадает 3 — всегда.",
+      "Псевдокод:\nimport random\nrandom.seed(7)\nn = random.randint(1, 6)\nprint(n)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nimport random\nrandom.seed(7)\nn = random.randint(1, 6)\nprint(n)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'seed(7)\nn = randint(1, 6)\nprint(n)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "import random\nrandom.seed(7)\nn = random.randint(1, 6)\nprint(n)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
     id: 27, gen: "flat", title: "За гранью", topic: "Infinity и NaN", book: "5.5",
-    briefing: "§5.5: что будет, если разделить на ноль? В Гриде — бесконечность. Проверь сам.",
+    briefing: "§5.5: настоящий Python не делит на ноль — он бросает ZeroDivisionError. Бесконечность и «не число» берутся из модуля math и float('nan').",
     lore: "Делить на ноль? В Гриде бывает и такое.",
     goal: "Выведи оба чуда и дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
-    energy: 20, maxTurns: 12, expect: ["Infinity", "NaN"],
-    starter: 'print(1 / 0)\nprint(0 / 0)\nmove_right()\n',
+    energy: 20, maxTurns: 12, expect: ["inf", "nan"],
+    starter: "import math\nprint(math.inf)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)\n",
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint(1 / 0)\nprint(0 / 0)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: math.inf — бесконечность, float('nan') — «не число». А вот 1 / 0 в Python вызовет ошибку.",
+      "Псевдокод:\nimport math\nprint(math.inf)\nprint(float('nan'))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nimport math\nprint(math.inf)\nprint(float('nan'))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'print(1 / 0)\nprint(0 / 0)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "import math\nprint(math.inf)\nprint(float('nan'))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
     id: 28, gen: "enemy", title: "Угадай число", topic: "мини-босс §5.7", book: "5.7",
-    briefing: "§5.7 из учебника: Владыка задумал число от 1 до 10 (зерно 3). Перебери по порядку, угадай, одолей стражу и зажги маяк.",
+    briefing: "§5.7: загадай число через random с зерном и найди его перебором. while + break — обычный способ не зациклиться.",
     lore: "Угадай число Владыки. Десять попыток — и ни одной лишней.",
-    goal: "Угадай число, одолей стражу, дойди до 🌀.",
+    goal: "Угадай число, дойди до 🌀.",
     map: ["########", "#P.E..X#", "########"],
-    energy: 20, maxTurns: 16, expect: ["Угадал: 8"], biome: "deathstar", place: "Узел Роя",
-    starter: 'seed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print("Угадал: " + str(guess))\n        break\nmove_right()\nattack("right")\nmove_right()\n',
+    energy: 20, maxTurns: 16, expect: ["Угадал: 4"], biome: "deathstar", place: "Узел Роя",
+    starter: "import random\nrandom.seed(3)\nhidden = random.randint(1, 10)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)\n",
     hints: [
-      'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nseed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print("Угадал: " + str(guess))\n        break\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: с зерном 3 выпадает 4. Сравнивай guess != hidden в while и прибавляй по единице.",
+      "Псевдокод:\nimport random\nrandom.seed(3)\nhidden = random.randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\nprint(\"Угадал: \" + str(guess))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nimport random\nrandom.seed(3)\nhidden = random.randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\nprint(\"Угадал: \" + str(guess))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'seed(3)\nhidden = randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\n    if guess == hidden:\n        print("Угадал: " + str(guess))\n        break\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "import random\nrandom.seed(3)\nhidden = random.randint(1, 10)\nguess = 0\nwhile guess != hidden:\n    guess = guess + 1\nprint(\"Угадал: \" + str(guess))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 7
   },
   // ---------- Глава 6. Строки ----------
@@ -784,18 +784,18 @@ window.LEVELS = [
   },
   {
     id: 49, gen: "flat", title: "Тас", topic: "shuffle() с зерном", book: "8.7",
-    briefing: "§8.7: shuffle тасует колоду. С зерном 5 тас всегда одинаковый — узнай первую карту.",
+    briefing: "§8.5: random.shuffle перемешивает список на месте. С зерном результат всегда один и тот же — его можно проверять.",
     lore: "Тас честен, если зерно одно.",
-    goal: "Выведи первую карту и дойди до 🌀.",
+    goal: "Выведи первую карту, дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
-    energy: 20, maxTurns: 12, expect: ["2"],
-    starter: 'seed(5)\ndeck = [1, 2, 3, 4]\nshuffle(deck)\nprint(deck[0])\nmove_right()\n',
+    energy: 20, maxTurns: 12, expect: ["1"],
+    starter: "import random\nrandom.seed(5)\ndeck = [1, 2, 3, 4]\nrandom.shuffle(deck)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)\n",
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nseed(5)\ndeck = [1, 2, 3, 4]\nshuffle(deck)\nprint(deck[0])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: random.seed(5), потом random.shuffle(deck). Первая карта получается 1.",
+      "Псевдокод:\nimport random\nrandom.seed(5)\ndeck = [1, 2, 3, 4]\nrandom.shuffle(deck)\nprint(deck[0])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nimport random\nrandom.seed(5)\ndeck = [1, 2, 3, 4]\nrandom.shuffle(deck)\nprint(deck[0])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'seed(5)\ndeck = [1, 2, 3, 4]\nshuffle(deck)\nprint(deck[0])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "import random\nrandom.seed(5)\ndeck = [1, 2, 3, 4]\nrandom.shuffle(deck)\nprint(deck[0])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
@@ -897,18 +897,18 @@ window.LEVELS = [
   },
   {
     id: 56, gen: "flat", title: "Кто есть кто", topic: "type()", book: "9.10",
-    briefing: "§9.10: список и кортеж похожи, но type() их различает. Спроси у обоих.",
+    briefing: "§9.10: кортеж и список — разные типы. type((1,)) даст <class 'tuple'>, а короткое имя — type((1,)).__name__.",
     lore: "Похожи — не значит одинаковы.",
-    goal: "Выведи tuple и list, дойди до 🌀.",
+    goal: "Выведи имена типов и дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
     energy: 20, maxTurns: 12, expect: ["tuple", "list"],
     starter: 'print(type((1,)))\nprint(type([1]))\nmove_right()\n',
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint(type((1,)))\nprint(type([1]))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: type печатает <class 'tuple'>. Короткое имя типа — через __name__.",
+      "Псевдокод:\nprint(type((1,)).__name__)\nprint(type([1]).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nprint(type((1,)).__name__)\nprint(type([1]).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'print(type((1,)))\nprint(type([1]))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "print(type((1,)).__name__)\nprint(type([1]).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
@@ -946,18 +946,18 @@ window.LEVELS = [
   // ---------- Глава 10. Словари и множества ----------
   {
     id: 59, gen: "flat", title: "Картотека", topic: "словарь {}", book: "10.1",
-    briefing: "§10.1: словарь — карточки «ключ: значение». Заведи карточку пилота и прочитай её.",
+    briefing: "§10.1: словарь хранит ключи и значения. Имя типа, как и раньше, достаётся через __name__.",
     lore: "Каждая вещь — на своей карточке.",
-    goal: "Выведи имя и тип, дойди до 🌀.",
+    goal: "Выведи значение и имя типа, дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
     energy: 20, maxTurns: 12, expect: ["Бип", "dict"],
     starter: 'd = {"пилот": "Бип"}\nprint(d["пилот"])\nprint(type(d))\nmove_right()\n',
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nd = {"пилот": "Бип"}\nprint(d["пилот"])\nprint(type(d))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: type(d) даст <class 'dict'>, а нужен просто dict — бери type(d).__name__.",
+      "Псевдокод:\nd = {\"пилот\": \"Бип\"}\nprint(d[\"пилот\"])\nprint(type(d).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nd = {\"пилот\": \"Бип\"}\nprint(d[\"пилот\"])\nprint(type(d).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'd = {"пилот": "Бип"}\nprint(d["пилот"])\nprint(type(d))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "d = {\"пилот\": \"Бип\"}\nprint(d[\"пилот\"])\nprint(type(d).__name__)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
@@ -1172,18 +1172,18 @@ window.LEVELS = [
   },
   {
     id: 73, gen: "flat", title: "Имя аварии", topic: "except as", book: "13.3",
-    briefing: "§13.3: аварию можно назвать по имени через as. Поймай «Перегрев» и доложи.",
+    briefing: "§13.3: своя ошибка — это обычный класс, который наследуется от Exception. Объяви его через class и бросай через raise.",
     lore: "Назови аварию — и она уже меньше.",
     goal: "Выведи доклад и дойди до 🌀.",
     map: ["#####", "#P.X#", "#####"],
     energy: 20, maxTurns: 12, expect: ["Авария: Перегрев"],
-    starter: 'try:\n    raise("Перегрев")\nexcept Ошибка as e:\n    print("Авария: " + e)\nmove_right()\n',
+    starter: "class Ошибка(Exception):\n    pass\n\ntry:\n    raise Ошибка(\"Перегрев\")\nexcept Ошибка as e:\n    print(\"Авария: \" + str(e))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)\n",
     hints: [
-      'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ntry:\n    raise("Перегрев")\nexcept Ошибка as e:\n    print("Авария: " + e)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: сначала class Ошибка(Exception): pass, потом try и raise Ошибка(\"Перегрев\"). В except ловишь as e и печатаешь str(e).",
+      "Псевдокод:\nclass Ошибка(Exception):\n    pass\n\ntry:\n    raise Ошибка(\"Перегрев\")\nexcept Ошибка as e:\n    print(\"Авария: \" + str(e))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nclass Ошибка(Exception):\n    pass\n\ntry:\n    raise Ошибка(\"Перегрев\")\nexcept Ошибка as e:\n    print(\"Авария: \" + str(e))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'try:\n    raise("Перегрев")\nexcept Ошибка as e:\n    print("Авария: " + e)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "class Ошибка(Exception):\n    pass\n\ntry:\n    raise Ошибка(\"Перегрев\")\nexcept Ошибка as e:\n    print(\"Авария: \" + str(e))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit(\"right\"):\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 2
   },
   {
@@ -1204,18 +1204,18 @@ window.LEVELS = [
   },
   {
     id: 75, gen: "enemy", title: "Реактор", topic: "босс: перегрев", book: "13.3",
-    briefing: "§13.3 в бою: реактор греется (15 при норме 10). Поймай аварию и прорвись к маяку.",
+    briefing: "§13.3: finally выполняется всегда — даже если в try что-то сломалось. Это надёжный способ доложить об аварии.",
     lore: "Реактор греется. Руки — нет.",
-    goal: "Поймай аварию, одолей стражу, дойди до 🌀.",
+    goal: "Выведи аварию, дойди до 🌀.",
     map: ["########", "#P.E..X#", "########"],
     energy: 20, maxTurns: 16, expect: ["Перегрев!"], biome: "deathstar", place: "Реактор",
-    starter: 'temp = 15\ntry:\n    if temp > 10:\n        raise("Перегрев!")\nexcept Авария as e:\n    print(e)\nmove_right()\nattack("right")\n',
+    starter: "class Авария(Exception):\n    pass\n\ntemp = 15\ntry:\n    if temp > 10:\n        raise Авария(\"Перегрев!\")\nexcept Авария as e:\n    print(e)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)\n",
     hints: [
-      'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ntemp = 15\ntry:\n    if temp > 10:\n        raise("Перегрев!")\nexcept Авария as e:\n    print(e)\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: ошибка — это класс class Авария(Exception). Внутри try бросаешь raise Авария(\"Перегрев!\"), а в except печатаешь e.",
+      "Псевдокод:\nclass Авария(Exception):\n    pass\n\ntemp = 15\ntry:\n    if temp > 10:\n        raise Авария(\"Перегрев!\")\nexcept Авария as e:\n    print(e)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
+      "Решение:\nclass Авария(Exception):\n    pass\n\ntemp = 15\ntry:\n    if temp > 10:\n        raise Авария(\"Перегрев!\")\nexcept Авария as e:\n    print(e)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)"
     ],
-    solution: 'temp = 15\ntry:\n    if temp > 10:\n        raise("Перегрев!")\nexcept Авария as e:\n    print(e)\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "class Авария(Exception):\n    pass\n\ntemp = 15\ntry:\n    if temp > 10:\n        raise Авария(\"Перегрев!\")\nexcept Авария as e:\n    print(e)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit(\"right\"):\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\nforward(1)",
     starTurns: 6
   },
   // ---------- Финал: Владыка Баг ----------

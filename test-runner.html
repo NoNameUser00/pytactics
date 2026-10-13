@@ -1,0 +1,142 @@
+<!-- (c) 2026 NoNameUser00. All rights reserved. See LICENSE. -->
+<!DOCTYPE html>
+<html lang="ru" data-theme="abyss">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PyTactics — стенд проверки уровней</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body{padding:16px}
+  .wrap{max-width:1100px;margin:0 auto}
+  h2{margin:14px 0 6px}
+  #sum{font-size:15px;padding:10px;border-radius:8px;background:var(--panel2);border:1px solid var(--line)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
+  .ok{color:var(--green)} .bad{color:var(--red)} .warn{color:var(--gold)}
+  button{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:14px;margin-right:8px}
+  button.primary{background:var(--accent);color:#020409;font-weight:600}
+  pre{margin:2px 0;font-size:12px;color:var(--muted);white-space:pre-wrap}
+  .bar{height:6px;background:var(--panel2);border-radius:4px;overflow:hidden;margin:8px 0}
+  .bar i{display:block;height:100%;background:var(--accent);width:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🧪 Стенд проверки уровней</h1>
+  <p>Гоняет эталонные решения всех уровней на настоящем Python и говорит честно:
+     прошёл уровень или нет. Ничего не сохраняет и не портит прогресс — только читает
+     <code>js/levels.js</code> и прогоняет бой в памяти.</p>
+  <div>
+    <button class="primary" id="runAll">Прогнать все</button>
+    <button id="runFail">Только непройденные</button>
+    <button id="stop">Стоп</button>
+    <span id="from" style="font-size:13px;color:var(--muted)"></span>
+    <span id="to" style="font-size:13px;color:var(--muted)"></span>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+  <div id="sum">—</div>
+  <table id="tbl">
+    <thead><tr><th style="width:34px">#</th><th style="width:150px">уровень</th><th style="width:56px">§</th><th style="width:62px">итог</th><th>подробности</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<script src="js/py_engine.js"></script>
+<script src="js/pyodide-engine.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/maps.js"></script>
+<script src="js/rules.js"></script>
+<script src="js/game.js"></script>
+<script>
+(function () {
+  "use strict";
+  var stop = false, results = [];
+
+  function row(id, title, book) {
+    var tr = document.createElement("tr");
+    tr.innerHTML = "<td>" + id + "</td><td>" + title + "</td><td>" + book + "</td>" +
+      "<td class='warn'>⏳</td><td class='det'></td>";
+    document.querySelector("#tbl tbody").appendChild(tr);
+    return tr;
+  }
+
+  /* Один уровень: три проверки.
+     1) правила уровня принимают эталонное решение (иначе ученик в тупике),
+     2) стартовый код — настоящий Python без ошибок,
+     3) эталонное решение реально выигрывает бой. */
+  async function check(l) {
+    var tr = row(l.id, l.title, l.book || "");
+    var det = tr.querySelector(".det");
+    var verdict = tr.querySelector("td:nth-child(4)");
+    var notes = [];
+
+    var rules = window.LevelRules.check(l, l.solution || "");
+    if (!rules.ok) notes.push("<span class='bad'>правило отклонило решение: " + rules.reason + "</span>");
+
+    var spec = window.MapGen ? window.MapGen.build(l, 11) : null;
+    var tr1 = await window.Game.simulate(l, l.starter || "", spec);
+    if (tr1.error) notes.push("<span class='warn'>старт не запускается: " + tr1.error + "</span>");
+
+    var tr2 = await window.Game.simulate(l, l.solution || "", spec);
+    if (tr2.error) notes.push("<span class='bad'>решение падает: " + tr2.error + "</span>");
+    else if (!tr2.win) notes.push("<span class='bad'>решение не выигрывает: ходов " + tr2.turns +
+      ", собрано " + tr2.collected + "/" + tr2.total + "</span>");
+    if (l.expect && l.expect.length) {
+      l.expect.forEach(function (w) {
+        if ((tr2.logs || []).indexOf(w) < 0) notes.push("<span class='bad'>нет вывода «" + w + "»</span>");
+      });
+    }
+
+    var bad = tr2.error || !tr2.win || !rules.ok;
+    verdict.className = bad ? "bad" : "ok";
+    verdict.textContent = bad ? "❌" : "✅";
+    det.innerHTML = notes.length ? notes.join("<br>") : "ходов " + tr2.turns + ", звёзд " + (window.MapGen ? window.MapGen.starFor(l, spec, tr2.turns) : "?");
+    results.push({ id: l.id, ok: !bad, notes: notes.length });
+    return !bad;
+  }
+
+  async function run(list, label) {
+    stop = false; results = [];
+    document.querySelector("#tbl tbody").innerHTML = "";
+    document.getElementById("sum").textContent = "Прогон: " + label + ", уровней: " + list.length;
+    var t0 = Date.now();
+    for (var i = 0; i < list.length; i++) {
+      if (stop) break;
+      document.getElementById("bar").style.width = ((i + 1) / list.length * 100) + "%";
+      document.getElementById("from").textContent = i + 1;
+      try { await check(list[i]); }
+      catch (e) {
+        results.push({ id: list[i].id, ok: false });
+        document.getElementById("sum").textContent = "Ошибка на уровне " + list[i].id + ": " + e.message;
+      }
+    }
+    document.getElementById("bar").style.width = "0";
+    var okN = results.filter(function (r) { return r.ok; }).length;
+    var ms = ((Date.now() - t0) / 1000).toFixed(1);
+    document.getElementById("sum").innerHTML =
+      "<b>" + okN + " из " + results.length + "</b> прошли · " + ms + " с" +
+      (stop ? " · <span class='warn'>остановлено</span>" : "");
+    document.getElementById("to").textContent = results.length;
+    return { ok: okN, total: results.length, results: results };
+  }
+
+  window.addEventListener("load", function () {
+    document.getElementById("runAll").onclick = function () { run(window.LEVELS, "все"); };
+    document.getElementById("runFail").onclick = function () {
+      var list = results.length
+        ? window.LEVELS.filter(function (l) { return !results.some(function (r) { return r.id === l.id && r.ok; }); })
+        : window.LEVELS;
+      run(list, "непрошедшие");
+    };
+    document.getElementById("stop").onclick = function () { stop = true; };
+    window.__runAll = function () { return run(window.LEVELS, "все"); };
+    window.__runList = function (ids) {
+      var set = {}; ids.forEach(function (i) { set[i] = 1; });
+      return run(window.LEVELS.filter(function (l) { return set[l.id]; }), "выбранные");
+    };
+  });
+})();
+</script>
+</body>
+</html>
