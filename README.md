@@ -33,7 +33,14 @@ cd android && gradlew.bat assembleDebug
 в сборке выставляется `$env:JAVA_HOME`. Android SDK — `C:\Android\Sdk`.
 
 Готовый файл: `android/app/build/outputs/apk/debug/app-debug.apk`,
-копия — `PyTactics.apk` в корне проекта. **Версия 1.6 (versionCode 7), 27,6 МБ.**
+копия — `PyTactics.apk` в корне проекта. **Версия 1.7 (versionCode 8), 11,8 МБ.**
+
+> `gradlew assembleDebug` **не копирует `www/` сам**. Без `npx cap sync android`
+> сборка получается успешной, но внутри APK лежит прошлый сайт: так ушёл APK
+> 1.6 со старым кэшем сервис-воркера и без новых скриптов. Сборка это не
+> показывает — проверяется только вскрытием архива. Если сомневаешься, смотри
+> `android/app/src/main/assets/public/sw.js`: версия кэша должна совпадать с
+> `sw.js` в корне проекта.
 
 В `www/` не должно быть: служебных скриптов (`test-runner.html`,
 `patch-levels.js`, `get-pyodide.js`), учебника-PDF и копии `www/` внутри `www/`
