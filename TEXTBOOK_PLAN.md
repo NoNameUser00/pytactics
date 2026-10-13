@@ -1,3 +1,5 @@
+<!-- (c) 2026 NoNameUser00. All rights reserved. See LICENSE. -->
+
 # Учебник → Вселенная
 
 Источник: `_media_books_python-na-primerah-praktika-praktika-i-tolko-praktika.pdf`

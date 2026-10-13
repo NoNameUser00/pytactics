@@ -1,3 +1,5 @@
+<!-- (c) 2026 NoNameUser00. All rights reserved. See LICENSE. -->
+
 # 🤖 PyTactics — аркада по информатике: Python + алгоритмы
 © 2026 NoNameUser00. Все права защищены (см. `LICENSE`).
 

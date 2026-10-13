@@ -1,3 +1,5 @@
+/* (c) 2026 NoNameUser00. All rights reserved. See LICENSE. */
+
 /* � 2026 NoNameUser00. ��� ����� ��������. ��. LICENSE. */
 /* Уровни PyTactics = учебник: глава → галактика, параграф → планета.
    Поля: book (§ учебника), expect (точные строки print для победы),

@@ -1,3 +1,5 @@
+<!-- (c) 2026 NoNameUser00. All rights reserved. See LICENSE. -->
+
 # 📕 Лор PyTactics: хроники Грида (в духе звёздной саги)
 
 ## Мир

@@ -1,3 +1,5 @@
+<!-- (c) 2026 NoNameUser00. All rights reserved. See LICENSE. -->
+
 # ☁️ Подключение PyTactics к Supabase (проект `informatika`) — пошаговая инструкция
 
 Итог: ученики регистрируются (email + пароль), звёзды за уровни летят в твой
