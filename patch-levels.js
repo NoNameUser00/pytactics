@@ -159,6 +159,24 @@ const CH34 = {
   }
 };
 
+/* ---------- два босса: функции и финал ---------- */
+const FINAL = {
+  71: {
+    goal: "Сделай свою функцию и пройди лабиринт.",
+    briefing: "§11.1: функция — это команда, которую ты назвал сам. Один раз написал, потом зовёшь по имени: тело один раз, а шагов сколько угодно.",
+    starter: '# напиши функцию step() и зови её в цикле\ndef step():\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n',
+    solution: 'def step():\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n\nwhile not is_exit("right"):\n    step()\nforward(1)',
+    hint: "Намёк: вынеси «удар и шаг» в функцию step(), а в цикле зови её по имени. Не забудь: если впереди вирус — сначала удар."
+  },
+  76: {
+    goal: "Пройди экзамен: всё вместе.",
+    briefing: "Финал. Функция умеет идти в любую сторону: setheading(0) — на восток, setheading(180) — на запад, setheading(270) — на юг. Внизу ячейка ⚡, вверху страж и владыка.",
+    starter: '# напиши шаг_вправо() и шаг_влево(), потом обойди станцию\n',
+    solution: 'def шаг_вправо():\n    setheading(0)\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\n\ndef шаг_влево():\n    setheading(180)\n    if is_enemy("left"):\n        attack("left")\n    forward(1)\n    if is_crystal("here"):\n        dot()\n\nforward(2)\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall("right"):\n    шаг_вправо()\nsetheading(270)\nforward(3)\n# нижний ярус: до левого края\nwhile not is_wall("left"):\n    шаг_влево()\n# и обратно к порталу\nwhile not is_exit("here"):\n    шаг_вправо()',
+    hint: "Намёк: две функции с setheading — вправо (0) и влево (180). Сверху идём до стены, снизу разворачиваемся и идём до левого края, потом возвращаемся к порталу."
+  }
+};
+
 /* ---------- уровни, где старый движок вёл себя не как настоящий Python ----------
    Всё, что ниже, проверяется настоящим CPython: значения в random зависят
    от версии алгоритма, округление .5 — по правилу «к чётному», деление
@@ -252,6 +270,46 @@ const TAIL = '\n# арена каждый раз новая — идём по д
 /* На аренах с вирусами в коридоре нужен удар: иначе робот не пройдёт. */
 const TAIL_ENEMY = '\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)';
 
+/* ---------- перевод хвоста «проход арены» на черепаху ----------
+   Уровни про строки, списки и словари состоят из двух частей: смысловая (print,
+   работа с данными) и проход арены. Смысл не трогаем — меняем только хвост, и
+   сразу во всех местах файла: в solution, в «Псевдокод» и в «Решение». */
+const OLD_TAILS = [
+  { // с вирусами в коридоре
+    from: '\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    to: TAIL_ENEMY
+  },
+  { // обычный коридор
+    from: '\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    to: TAIL
+  }
+];
+
+function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+/* В файле переносы строк внутри литералов бывают и CRLF, и LF — ищем регуляркой,
+   терпимой к обоим. */
+/* Внутри строк файла перевод строки записан как escape «\n» — это два символа
+   (обратный слэш и n), а не настоящий перевод. Поэтому в регулярке ищем именно
+   такую пару: \\n в исходнике регулярки означает «буквальный обратный слэш». */
+function buildRe(escaped) {
+  const parts = escaped.split("\\n");
+  return new RegExp(parts.map(escapeRe).join("\\\\n"), "g");
+}
+
+function retail(src) {
+  let total = 0;
+  for (const t of OLD_TAILS) {
+    /* в файле литералы в одинарных кавычках — значит " внутри строки сырые,
+       экранировать их нельзя. В шаблон подставляем только переводы строк. */
+    const escapedFrom = t.from.replace(/\r?\n/g, "\\n");
+    const escapedTo = t.to.replace(/\r?\n/g, "\\n");
+    const re = buildRe(escapedFrom);
+    src = src.replace(re, function () { total++; return escapedTo; });
+  }
+  return { src: src, count: total };
+}
+
 /* ---------- правка файла ---------- */
 function findBlock(src, id) {
   /* переводы строк бывают и CRLF, и LF — ищем оба */
@@ -330,9 +388,18 @@ function patchLevel(src, id, data) {
 }
 
 const which = process.argv[2] || "9";
-const TABLE = { CH1: CH1, ch34: CH34, truthful: TRUTH };
+
+if (which === "tails") {
+  let src = fs.readFileSync(FILE, "utf8");
+  const r = retail(src);
+  fs.writeFileSync(FILE, r.src, "utf8");
+  console.log("хвостов переведено на черепаху: " + r.count);
+  process.exit(0);
+}
+
+const TABLE = { CH1: CH1, ch34: CH34, truthful: TRUTH, final: FINAL };
 const tables = which === "all"
-  ? [CH1, CH34, TRUTH]
+  ? [CH1, CH34, TRUTH, FINAL]
   : [TABLE[which] || CH1];
 const table = Object.assign.apply(null, tables);
 /* в TRUTH суть уровня — вывод и типы, поэтому хвост с проходом арены нужен всем;

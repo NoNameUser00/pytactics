@@ -389,10 +389,10 @@ window.LEVELS = [
     starter: 'a = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\na = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\na = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'a = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'a = 7\nb = 2\nprint(a / b)\nprint(round(10 / 3, 2))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -405,10 +405,10 @@ window.LEVELS = [
     starter: 'print(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nprint(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'print(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'print(abs(0 - 7))\nprint(max(3, 9, 4))\nprint(2 ** 10)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -470,10 +470,10 @@ window.LEVELS = [
     starter: 'print(\'Он сказал "Вперёд!"\')\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint(\'Он сказал "Вперёд!"\')\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nprint(\'Он сказал "Вперёд!"\')\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'print(\'Он сказал "Вперёд!"\')\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'print(\'Он сказал "Вперёд!"\')\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -486,10 +486,10 @@ window.LEVELS = [
     starter: 'print("Строка1\\nСтрока2")\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint("Строка1\\nСтрока2")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nprint("Строка1\\nСтрока2")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'print("Строка1\\nСтрока2")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'print("Строка1\\nСтрока2")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -502,10 +502,10 @@ window.LEVELS = [
     starter: 'word = "Грид"\nprint(word[0] + word[3])\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nword = "Грид"\nprint(word[0] + word[3])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nword = "Грид"\nprint(word[0] + word[3])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'word = "Грид"\nprint(word[0] + word[3])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'word = "Грид"\nprint(word[0] + word[3])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -518,10 +518,10 @@ window.LEVELS = [
     starter: 'word = "Маяки горят"\nprint(word[0:5])\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nword = "Маяки горят"\nprint(word[0:5])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nword = "Маяки горят"\nprint(word[0:5])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'word = "Маяки горят"\nprint(word[0:5])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'word = "Маяки горят"\nprint(word[0:5])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -534,10 +534,10 @@ window.LEVELS = [
     starter: 'print("Ха" * 3)\nprint("Код" + "!")\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint("Ха" * 3)\nprint("Код" + "!")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nprint("Ха" * 3)\nprint("Код" + "!")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'print("Ха" * 3)\nprint("Код" + "!")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'print("Ха" * 3)\nprint("Код" + "!")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -550,10 +550,10 @@ window.LEVELS = [
     starter: 's = "маяк"\nprint("я" in s)\nprint(s.isalpha())\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = "маяк"\nprint("я" in s)\nprint(s.isalpha())\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = "маяк"\nprint("я" in s)\nprint(s.isalpha())\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = "маяк"\nprint("я" in s)\nprint(s.isalpha())\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = "маяк"\nprint("я" in s)\nprint(s.isalpha())\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -566,10 +566,10 @@ window.LEVELS = [
     starter: 's = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = "  маяк  "\nprint(s.strip().upper())\nprint("роЙ".lower())\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -582,10 +582,10 @@ window.LEVELS = [
     starter: 'coded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\nmove_right()\nattack("right")\n',
     hints: [
       'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ncoded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ncoded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'coded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'coded = "Лпе"\nkey = 1\nresult = ""\nfor i in range(len(coded)):\n    result = result + chr(ord(coded[i]) - key)\nprint(result)\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 6
   },
   // ---------- Глава 7. Шаблоны (ручные регулярки) ----------
@@ -599,10 +599,10 @@ window.LEVELS = [
     starter: 's = "маяк"\nprint(s.find("я"))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = "маяк"\nprint(s.find("я"))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = "маяк"\nprint(s.find("я"))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = "маяк"\nprint(s.find("я"))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = "маяк"\nprint(s.find("я"))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -615,10 +615,10 @@ window.LEVELS = [
     starter: 's = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = "маяк"\nprint(s.startswith("ма"))\nprint("я" in s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -631,10 +631,10 @@ window.LEVELS = [
     starter: 's = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = "Барабан"\nn = 0\nfor i in range(len(s)):\n    if s[i] == "а":\n        n = n + 1\nprint(n)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -647,10 +647,10 @@ window.LEVELS = [
     starter: 'print("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nprint("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nprint("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'print("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'print("Рой гудит".replace("гудит", "молчит"))\nprint("м-у-с-о-р".replace("-", ""))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -663,10 +663,10 @@ window.LEVELS = [
     starter: 'name = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nname = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nname = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'name = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'name = "report.txt"\nprint(name.startswith("rep"))\nprint(name.endswith(".txt"))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -679,10 +679,10 @@ window.LEVELS = [
     starter: 'a = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\nmove_right()\nattack("right")\n',
     hints: [
       'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\na = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\na = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'a = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'a = "bot.py"\nb = "bot.txt"\nc = "run.py"\nprint(a.endswith(".py"))\nprint(b.endswith(".py"))\nprint(c.endswith(".py"))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 6
   },
   // ---------- Глава 8. Списки ----------
@@ -696,10 +696,10 @@ window.LEVELS = [
     starter: 'nums = [3, 1, 2]\nprint(nums)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nnums = [3, 1, 2]\nprint(nums)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nnums = [3, 1, 2]\nprint(nums)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'nums = [3, 1, 2]\nprint(nums)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'nums = [3, 1, 2]\nprint(nums)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -712,10 +712,10 @@ window.LEVELS = [
     starter: 's = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = 0\nfor x in [1, 2, 3]:\n    s = s + x\nprint(s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -728,10 +728,10 @@ window.LEVELS = [
     starter: 'lst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nlst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nlst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'lst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'lst = ["a", "b", "c"]\nprint("b" in lst)\nprint(lst[1])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -744,10 +744,10 @@ window.LEVELS = [
     starter: 'a = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\na = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\na = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'a = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'a = [1, 2]\na.append(3)\ndel a[0]\nprint(a)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -760,10 +760,10 @@ window.LEVELS = [
     starter: 'a = [30, 4, 200]\na.sort()\nprint(a)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\na = [30, 4, 200]\na.sort()\nprint(a)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\na = [30, 4, 200]\na.sort()\nprint(a)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'a = [30, 4, 200]\na.sort()\nprint(a)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'a = [30, 4, 200]\na.sort()\nprint(a)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -776,10 +776,10 @@ window.LEVELS = [
     starter: 'words = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nwords = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nwords = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'words = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'words = ["Да", "пребудет", "Код"]\nprint(" ".join(words))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -808,10 +808,10 @@ window.LEVELS = [
     starter: 'garage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\nmove_right()\nattack("right")\n',
     hints: [
       'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ngarage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ngarage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'garage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'garage = ["метла", "шина", "ключ"]\nif "ключ" in garage:\n    print("Ключ на месте")\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 6
   },
   // ---------- Глава 9. Кортежи ----------
@@ -825,10 +825,10 @@ window.LEVELS = [
     starter: 't = (10, 20)\nprint(t)\nprint(t[0])\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nt = (10, 20)\nprint(t)\nprint(t[0])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nt = (10, 20)\nprint(t)\nprint(t[0])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 't = (10, 20)\nprint(t)\nprint(t[0])\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 't = (10, 20)\nprint(t)\nprint(t[0])\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -841,10 +841,10 @@ window.LEVELS = [
     starter: 's = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = 0\nfor x in (1, 2, 3):\n    s = s + x\nprint(s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -857,10 +857,10 @@ window.LEVELS = [
     starter: 't = ("a", "b")\nprint(len(t))\nprint("b" in t)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nt = ("a", "b")\nprint(len(t))\nprint("b" in t)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nt = ("a", "b")\nprint(len(t))\nprint("b" in t)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 't = ("a", "b")\nprint(len(t))\nprint("b" in t)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 't = ("a", "b")\nprint(len(t))\nprint("b" in t)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -873,10 +873,10 @@ window.LEVELS = [
     starter: 'coords = (3, 4)\nx, y = coords\nprint(x + y)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ncoords = (3, 4)\nx, y = coords\nprint(x + y)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ncoords = (3, 4)\nx, y = coords\nprint(x + y)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'coords = (3, 4)\nx, y = coords\nprint(x + y)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'coords = (3, 4)\nx, y = coords\nprint(x + y)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -889,10 +889,10 @@ window.LEVELS = [
     starter: 'a = (1, 2)\nb = a + (3,)\nprint(b)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\na = (1, 2)\nb = a + (3,)\nprint(b)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\na = (1, 2)\nb = a + (3,)\nprint(b)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'a = (1, 2)\nb = a + (3,)\nprint(b)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'a = (1, 2)\nb = a + (3,)\nprint(b)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -921,10 +921,10 @@ window.LEVELS = [
     starter: 't = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nt = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nt = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 't = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 't = ()\nif t:\n    print("полон")\nelse:\n    print("пуст")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -937,10 +937,10 @@ window.LEVELS = [
     starter: 'cargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\nmove_right()\nattack("right")\n',
     hints: [
       'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ncargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ncargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'cargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'cargo = ["ключ"]\nbox = ("болт", "гайка")\nprint(len(cargo) + len(box))\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 6
   },
   // ---------- Глава 10. Словари и множества ----------
@@ -970,10 +970,10 @@ window.LEVELS = [
     starter: 'inv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ninv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ninv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'inv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'inv = {"ядро": 2}\ninv["щит"] = 1\nprint(inv["щит"])\nprint(len(inv))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -986,10 +986,10 @@ window.LEVELS = [
     starter: 'data = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndata = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndata = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'data = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'data = {"a": 1, "b": 2}\ns = 0\nfor k in data:\n    s = s + data[k]\nprint(s)\nprint("a" in data)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1002,10 +1002,10 @@ window.LEVELS = [
     starter: 'd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\nd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\nd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'd = {"x": 1, "y": 2}\ndel d["x"]\nprint(len(d))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1018,10 +1018,10 @@ window.LEVELS = [
     starter: 's = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ns = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ns = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 's = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 's = set([1, 2, 2, 3])\nprint(len(s))\ns.add(4)\nprint(4 in s)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1034,10 +1034,10 @@ window.LEVELS = [
     starter: 'depot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\nmove_right()\nattack("right")\n',
     hints: [
       'Намёк: коридор каждый раз новый, а вирус перекрывает путь. Нужен цикл: увидел вируса — attack(), встал на кристалл — collect(), иначе шаг.',
-      'Псевдокод:\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndepot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndepot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'depot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\n# вирус перекрывает путь: сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'depot = {"ключи": 1}\nif "ключи" in depot:\n    print("Есть")\n# арена новая и вирусы на пути — сначала удар, потом шаг\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        attack("right")\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 6
   },
   // ---------- Глава 11. Функции ----------
@@ -1051,10 +1051,10 @@ window.LEVELS = [
     starter: 'def greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndef greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndef greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'def greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'def greet(name):\n    return "Привет, " + name\nprint(greet("Бип"))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1067,10 +1067,10 @@ window.LEVELS = [
     starter: 'def power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndef power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndef power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'def power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'def power(n, exp=2):\n    return n ** exp\nprint(power(3))\nprint(power(2, 3))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1083,10 +1083,10 @@ window.LEVELS = [
     starter: 'def pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndef pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndef pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'def pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'def pos():\n    return 3, 4\nx, y = pos()\nprint(x + y)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1099,10 +1099,10 @@ window.LEVELS = [
     starter: 'def fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndef fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndef fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'def fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'def fact(n):\n    if n <= 1:\n        return 1\n    else:\n        return n * fact(n - 1)\nprint(fact(5))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1115,10 +1115,10 @@ window.LEVELS = [
     starter: 'count = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ncount = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ncount = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'count = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'count = 0\ndef tick():\n    global count\n    count = count + 1\ntick()\ntick()\nprint(count)\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1131,26 +1131,26 @@ window.LEVELS = [
     starter: 'def area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndef area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ndef area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'def area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'def area(w, h):\n    """Площадь прямоугольника."""\n    return w * h\nprint(area(3, 4))\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
     id: 71, gen: "enemy", title: "Штурмовая функция", topic: "босс: приём в def", book: "11.1",
-    briefing: "§11.1 в бою: упакуй «удар + шаг» в функцию kill() и зачисти коридор.",
+    briefing: "§11.1: функция — это команда, которую ты назвал сам. Один раз написал, потом зовёшь по имени: тело один раз, а шагов сколько угодно.",
     lore: "Приём, упакованный в слово, бьёт дважды.",
-    goal: "Зачисти коридор и дойди до 🌀.",
+    goal: "Сделай свою функцию и пройди лабиринт.",
     map: ["#########", "#P.E.E.X#", "#########"],
     energy: 30, maxTurns: 20,
-    starter: 'def kill():\n    attack("right")\n    move_right()\nmove_right()\nkill()\n',
+    starter: "# напиши функцию step() и зови её в цикле\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n",
     hints: [
-      'Намёк: приём kill() уже упакован. Осталось решить, когда его звать: коридор-то каждый раз новый.',
-      'Псевдокод:\ndef kill():\n    attack("right")\n    move_right()\n\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        kill()\n    else:\n        move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ndef kill():\n    attack("right")\n    move_right()\ndef kill():\n    attack("right")\n    move_right()\n\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        kill()\n    else:\n        move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      "Намёк: вынеси «удар и шаг» в функцию step(), а в цикле зови её по имени. Не забудь: если впереди вирус — сначала удар.",
+      "Псевдокод:\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)",
+      "Решение:\ndef step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)"
     ],
-    solution: 'def kill():\n    attack("right")\n    move_right()\ndef kill():\n    attack("right")\n    move_right()\n\nwhile not is_exit("right"):\n    if is_enemy("right"):\n        kill()\n    else:\n        move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: "def step():\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n\nwhile not is_exit(\"right\"):\n    step()\nforward(1)",
     starTurns: 8
   },
   // ---------- Глава 13. Исключения ----------
@@ -1164,10 +1164,10 @@ window.LEVELS = [
     starter: 'try:\n    raise("Бум!")\nexcept:\n    print("Поймано")\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ntry:\n    raise("Бум!")\nexcept:\n    print("Поймано")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ntry:\n    raise("Бум!")\nexcept:\n    print("Поймано")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'try:\n    raise("Бум!")\nexcept:\n    print("Поймано")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'try:\n    raise("Бум!")\nexcept:\n    print("Поймано")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1196,10 +1196,10 @@ window.LEVELS = [
     starter: 'try:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\nmove_right()\n',
     hints: [
       'Намёк: коридор каждый раз новый — запомнить путь не выйдет. Нужен цикл, который сам ищет портал через is_exit() и забирает кристаллы через is_crystal().',
-      'Псевдокод:\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
-      'Решение:\ntry:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()'
+      'Псевдокод:\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
+      'Решение:\ntry:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)'
     ],
-    solution: 'try:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\n# карта новая каждый заход — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    move_right()\n    if is_crystal("here"):\n        collect()\nmove_right()',
+    solution: 'try:\n    x = 1\nexcept:\n    print("нет")\nelse:\n    print("чисто")\nfinally:\n    print("конец")\n# арена каждый раз новая — идём по датчикам, а не «на автопилоте»\nwhile not is_exit("right"):\n    forward(1)\n    if is_crystal("here"):\n        dot()\nforward(1)',
     starTurns: 2
   },
   {
@@ -1221,18 +1221,18 @@ window.LEVELS = [
   // ---------- Финал: Владыка Баг ----------
   {
     id: 76, title: "Владыка Баг", topic: "финал: всё вместе", book: "Финал",
-    briefing: "Всё, чему учил Орден: функция-приём, цикл не нужен — иди точно, ядра, стража и сам ВЛАДЫКА 👹. Зажги последний маяк.",
+    briefing: "Финал. Функция умеет идти в любую сторону: setheading(0) — на восток, setheading(180) — на запад, setheading(270) — на юг. Внизу ячейка ⚡, вверху страж и владыка.",
     lore: "Последний маяк. Последний бой. Да пребудет с тобой Код.",
-    goal: "Собери 2 💎, одолей всех, дойди до 🌀.",
+    goal: "Пройди экзамен: всё вместе.",
     map: ["##########", "#P..C.EB.#", "#........#", "#.######.#", "#C..H..EX#", "##########"],
     energy: 60, maxTurns: 50, biome: "deathstar", place: "Тронный зал",
-    starter: '# Финальный бой. Приём take() уже заряжен.\ndef take():\n    attack("right")\n    move_right()\n\nmove_right()\nmove_right()\nmove_right()\ncollect()\n',
+    starter: "# напиши шаг_вправо() и шаг_влево(), потом обойди станцию\n",
     hints: [
-      "Намёк: верх — три шага, ядро, шаг, take(), take(), два шага. Низ — спустись справа, убей, иди влево за ядром и вернись.",
-      "Псевдокод: верх → вниз справа → влево до ядра → вправо к выходу.",
-      "Решение:\ndef take():\n    attack(\"right\")\n    move_right()\nmove_right()\nmove_right()\nmove_right()\ncollect()\nmove_right()\ntake()\ntake()\nmove_right()\nmove_right()\nmove_down()\nmove_down()\nmove_down()\nattack(\"left\")\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\nmove_left()\ncollect()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()\nmove_right()"
+      "Намёк: две функции с setheading — вправо (0) и влево (180). Сверху идём до стены, снизу разворачиваемся и идём до левого края, потом возвращаемся к порталу.",
+      "Псевдокод:\ndef шаг_вправо():\n    setheading(0)\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\ndef шаг_влево():\n    setheading(180)\n    if is_enemy(\"left\"):\n        attack(\"left\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nforward(2)\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall(\"right\"):\n    шаг_вправо()\nsetheading(270)\nforward(3)\n# нижний ярус: до левого края\nwhile not is_wall(\"left\"):\n    шаг_влево()\n# и обратно к порталу\nwhile not is_exit(\"here\"):\n    шаг_вправо()",
+      "Решение:\ndef шаг_вправо():\n    setheading(0)\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\ndef шаг_влево():\n    setheading(180)\n    if is_enemy(\"left\"):\n        attack(\"left\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nforward(2)\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall(\"right\"):\n    шаг_вправо()\nsetheading(270)\nforward(3)\n# нижний ярус: до левого края\nwhile not is_wall(\"left\"):\n    шаг_влево()\n# и обратно к порталу\nwhile not is_exit(\"here\"):\n    шаг_вправо()"
     ],
-    solution: 'def right_step():\n    if is_enemy("right"):\n        attack("right")\n    move_right()\n    if is_crystal("here"):\n        collect()\n\ndef left_step():\n    if is_enemy("left"):\n        attack("left")\n    move_left()\n    if is_crystal("here"):\n        collect()\n\nmove_right()\nmove_right()\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall("right"):\n    right_step()\nmove_down()\nmove_down()\nmove_down()\n# нижний ярус: до левого края, потом обратно к порталу\nwhile not is_wall("left"):\n    left_step()\nwhile not is_exit("here"):\n    right_step()',
+    solution: "def шаг_вправо():\n    setheading(0)\n    if is_enemy(\"right\"):\n        attack(\"right\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\ndef шаг_влево():\n    setheading(180)\n    if is_enemy(\"left\"):\n        attack(\"left\")\n    forward(1)\n    if is_crystal(\"here\"):\n        dot()\n\nforward(2)\n# верхний коридор: вперёд до стены, попутно бьём вирусов\nwhile not is_wall(\"right\"):\n    шаг_вправо()\nsetheading(270)\nforward(3)\n# нижний ярус: до левого края\nwhile not is_wall(\"left\"):\n    шаг_влево()\n# и обратно к порталу\nwhile not is_exit(\"here\"):\n    шаг_вправо()",
     starTurns: 30
   }
 ];
