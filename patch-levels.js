@@ -78,6 +78,87 @@ const CH1 = {
   }
 };
 
+/* ---------- главы 3-4: арифметика на расстояниях, циклы по датчикам ---------- */
+const CH34 = {
+  10: {
+    briefing: "§3.1: сначала умножение, потом сложение. Черепаха считает шаги настоящим Python — forward(n) берёт n из вычисления.",
+    goal: "Выведи результат, забери 💎 и дойди до 🌀.",
+    starter: 'print(7 + 3 * 2)\nforward(1)\n',
+    solution: 'print(7 + 3 * 2)\nforward(1)\ndot()\nforward(1)',
+    hint: "Намёк: 7 + 3 * 2 — сначала 3 * 2, потом сложение: будет 13. Дальше шаг, dot(), шаг до портала."
+  },
+  12: {
+    briefing: "§3.1.3: // даёт целую часть от деления, % — остаток. Вместе они объясняют, на сколько заправок хватит топлива.",
+    goal: "Выведи 3 и 1, забери 💎 и дойди до 🌀.",
+    starter: 'fuel = 10\nper = 3\nprint(fuel // per)\nprint(fuel % per)\nforward(1)\n',
+    solution: 'fuel = 10\nper = 3\nprint(fuel // per)\nprint(fuel % per)\nforward(1)\ndot()\nforward(1)',
+    hint: "Намёк: 10 // 3 — это 3 полных заправки, 10 % 3 — остаток 1. Остальное — шаг, dot(), шаг."
+  },
+  13: {
+    briefing: "§3.5-3.6: приоритет операций как в математике — умножение считается раньше сложения. Скобки меняют порядок.",
+    goal: "Выведи 13, забери 💎, дойди до 🌀.",
+    starter: 'print(2 + 3 * 4 - 1)\nforward(2)\n',
+    solution: 'print(2 + 3 * 4 - 1)\nforward(2)\ndot()\nforward(2)',
+    hint: "Намёк: сначала 3 * 4 = 12, потом 2 + 12 - 1 = 13. Ядро через две клетки, портал ещё через две."
+  },
+  14: {
+    briefing: "§3.2: строки складываются знаком +, а len() считает символы. Число в кавычках — строка, даже если там цифры.",
+    goal: "Выведи слово и длину, забери 💎 и дойди до 🌀.",
+    starter: 'word = "Гри"\nprint(word + "д")\nprint(len(word))\nforward(1)\n',
+    solution: 'word = "Гри"\nprint(word + "д")\nprint(len(word))\nforward(1)\ndot()\nforward(1)',
+    hint: "Намёк: \"Гри\" + \"д\" даст \"Грид\", а len(\"Гри\") — 3. Потом шаг, dot(), шаг."
+  },
+  15: {
+    briefing: "§3.3-3.4: есть сокращения +=, -=, *=, //= — они меняют переменную на месте. Читается как «прибавь и сохрани».",
+    goal: "Выведи 16, забери 💎 и дойди до 🌀.",
+    starter: 'x = 5\nx += 3\nx *= 2\nprint(x)\nforward(1)\n',
+    solution: 'x = 5\nx += 3\nx *= 2\nprint(x)\nforward(1)\ndot()\nforward(3)',
+    hint: "Намёк: 5 += 3 будет 8, потом 8 * 2 = 16. Дальше шаг, dot() и три шага до портала."
+  },
+  16: {
+    goal: "Обойди стену и собрать 💎.",
+    briefing: "§4.1: if/else — это развилка. Датчик is_wall() говорит, есть ли препятствие, и решает, куда идти. Помни: черепаха начинает лицом вправо.",
+    starter: '# носом вправо: упрёмся в стену — обходим её снизу\nright(90)\nforward(1)\nleft(90)\n',
+    solution: 'right(90)\nforward(2)\nleft(90)\nforward(2)\nif is_wall("up"):\n    forward(2)\nleft(90)\nforward(1)\nif is_crystal("here"):\n    dot()\nforward(1)\nright(90)\nforward(1)',
+    hint: "Намёк: стена прямо по курсу — поверни направо (right(90)) и обойди её снизу. Потом развернись: left(90)."
+  },
+  17: {
+    goal: "Пройди коридор циклом.",
+    briefing: "§4.2.1: for повторяет тело цикла заданное число раз. Одна строка вместо семи — в этом и смысл алгоритма.",
+    starter: '# цикл повторяет тело 7 раз\nfor i in range(7):\n    forward(1)\n',
+    solution: 'for i in range(7):\n    forward(1)',
+    hint: "Намёк: коридор из семи клеток, значит тело нужно повторить 7 раз. Цикл, а не семь строк подряд."
+  },
+  18: {
+    goal: "Собери 💎 и дойди до 🌀.",
+    briefing: "§4.2.2: while повторяет, пока условие истинно. Не знаешь, сколько шагов — спрашивай датчик: пока впереди не стена.",
+    starter: '# спускаемся за кристаллом, потом ползём по нижнему коридору\nright(90)\nforward(1)\nleft(90)\n',
+    solution: 'right(90)\nforward(1)\nleft(90)\nforward(1)\ndot()\nforward(1)\nright(90)\nforward(1)\nleft(90)\nwhile not is_wall("right"):\n    forward(1)\nleft(90)\nforward(2)',
+    hint: "Намёк: дойди до кристалла внизу, потом развернись на юг, нызни в нижний коридор и ползи вправо, пока is_wall(\"right\") не станет правдой."
+  },
+  19: {
+    goal: "Остановись у 💎 и дойди до 🌀.",
+    briefing: "§4.2.3: break выходит из цикла раньше времени. Это удобно: идём вперёд, а как только нашли цель — останавливаемся.",
+    starter: '# идём, пока кристалл не окажется впереди\nwhile True:\n    if is_crystal("right"):\n        break\n    forward(1)\n',
+    solution: 'while True:\n    if is_crystal("right"):\n        break\n    forward(1)\nforward(1)\ndot()\nforward(2)',
+    hint: "Намёк: while True с break — вечный цикл, который выходит сам. Иди вперёд, а как только is_crystal(\"right\") — break."
+  },
+  20: {
+    goal: "Выведи 1–5 и дойди до 🌀.",
+    briefing: "§4.2.4: range(a, b) берёт числа от a до b, не включая b. И это же число — количество повторов цикла.",
+    starter: 'for i in range(1, 6):\n    print(i)\n    forward(1)\n',
+    solution: 'for i in range(1, 6):\n    print(i)\n    forward(1)',
+    hint: "Намёк: range(1, 6) даст 1, 2, 3, 4, 5 — пять шагов. Шестёрки в конце не будет: b не включается."
+  },
+  21: {
+    goal: "Назови пароль, одолей стражу, дойди до 🌀.",
+    briefing: "§4.4-4.5: строки можно сравнивать как ==, а условие в if решает, пускать ли дальше. На настоящей арене страж не спит.",
+    solution: 'code = "py12"\nif code == "py12":\n    print("Доступ разрешён")',
+    tail: true,
+    hint: "Намёк: сравни code == \"py12\" и напечатай «Доступ разрешён». Вируса на пути сначала бей attack(), потом делай шаг."
+  }
+};
+
 /* ---------- уровни, где старый движок вёл себя не как настоящий Python ----------
    Всё, что ниже, проверяется настоящим CPython: значения в random зависят
    от версии алгоритма, округление .5 — по правилу «к чётному», деление
@@ -249,12 +330,18 @@ function patchLevel(src, id, data) {
 }
 
 const which = process.argv[2] || "9";
-const table = which === "all" ? Object.assign({}, CH1, TRUTH)
-  : which === "truthful" ? TRUTH : CH1;
+const TABLE = { CH1: CH1, ch34: CH34, truthful: TRUTH };
+const tables = which === "all"
+  ? [CH1, CH34, TRUTH]
+  : [TABLE[which] || CH1];
+const table = Object.assign.apply(null, tables);
+/* в TRUTH суть уровня — вывод и типы, поэтому хвост с проходом арены нужен всем;
+   в CH1 и CH34 уровень сам решается turtle-ходом */
+const withTail = tables.indexOf(TRUTH) > -1;
 /* в таблице TRUTH суть уровня — вывод и работа с типом, поэтому хвост с
    проходом арены нужен всем им; в CH1 уровень сам решается turtle-ходом */
 Object.keys(table).forEach(function (k) {
-  if (table[k].tail === undefined) table[k].tail = (which !== "all" ? which === "truthful" : k in TRUTH);
+  if (table[k].tail === undefined) table[k].tail = withTail && (k in TRUTH);
 });
 const ids = Object.keys(table).map(Number).sort((a, b) => a - b);
 
