@@ -33,7 +33,7 @@ cd android && gradlew.bat assembleDebug
 в сборке выставляется `$env:JAVA_HOME`. Android SDK — `C:\Android\Sdk`.
 
 Готовый файл: `android/app/build/outputs/apk/debug/app-debug.apk`,
-копия — `PyTactics.apk` в корне проекта. **Версия 1.7 (versionCode 8), 11,8 МБ.**
+копия — `PyTactics.apk` в корне проекта. **Версия 1.8 (versionCode 9), 11,7 МБ.**
 
 > `gradlew assembleDebug` **не копирует `www/` сам**. Без `npx cap sync android`
 > сборка получается успешной, но внутри APK лежит прошлый сайт: так ушёл APK
@@ -42,18 +42,27 @@ cd android && gradlew.bat assembleDebug
 > `android/app/src/main/assets/public/sw.js`: версия кэша должна совпадать с
 > `sw.js` в корне проекта.
 
-В `www/` не должно быть: служебных скриптов (`test-runner.html`,
-`patch-levels.js`, `get-pyodide.js`), учебника-PDF и копии `www/` внутри `www/`
-— всё это попадает в APK и раздувает его. Стоит появиться, если чистить вручную.
+В `www/` — только то, что реально отдаётся ученику: страницы, `css/`, `js/`,
+`icons/`, `vendor/`, `manifest.webmanifest`, `sw.js`. Всё остальное туда **не
+попадает**, а попало однажды целиком: `package.json`, `package-lock.json`,
+`capacitor.config.json` (Capacitor читает его из корня), `.github/` (воркер
+деплоя), `assets/` (свои иконки и заставка лежат в `android/app/src/main/res/`),
+`phaser.html` (недоделанный прототип), `manifest.json` (старый, с битыми путями
+`../icons/*.webp`), документация для разработчиков. Это 197 КБ, которые ученик
+получал на телефоне, и ни один из файлов сайт не цитирует.
+
+Там же не должно быть служебных скриптов (`test-runner.html`, `patch-levels.js`,
+`get-pyodide.js`), учебника-PDF и копии `www/` внутри `www/`.
 
 ## 🎮 Играть локально
 
 Открой `index.html` (вселенная) → выбери планету → попадёшь на арену `game.html?level=N`.
 Без интернета и без Supabase — тоже работает (гостевой локальный режим).
 
-## 🎮 Играть локально
-
 Просто открой `index.html` в браузере (двойной клик). Интернет не нужен.
+
+> Локально страницы лучше открывать через сервер с `Cache-Control: no-store`
+> (браузер иначе отдаёт старые `js` из своего кэша и правки не видно).
 
 ## 🚀 Деплой на GitHub Pages
 
