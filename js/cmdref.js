@@ -182,67 +182,97 @@ window.CmdRef = (function () {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
-  /* Подсказка для текущего уровня: всё знакомое + подсветка нового здесь. */
+  /* Один пункт: команда + пояснение серым. Пояснение короткое — длинные
+     съедали строку и рвали её по середине. */
+  function item(name, note, fresh) {
+    return '<span class="cmdref-item"><code' + (fresh ? ' class="fresh"' : "") + ">" + esc(name) + "</code>" +
+      (note ? ' <i class="cmdnote">' + esc(note) + "</i>" : "") + "</span>";
+  }
+
+  /* Список одной группы: заголовок на своей строке, команды — в свободном
+     потоке с отступом, чтобы группа читалась как блок, а не как строка. */
+  function group(title, items) {
+    if (!items.length) return "";
+    return '<div class="cmdref-group"><b>' + esc(title) + "</b>" + items.join("") + "</div>";
+  }
+
+  /* Подсказка для текущего уровня: что пригодится здесь — наверху открытым
+     текстом, весь накопленный запас — под «показать». На 76 уровне накопленных
+     команд 48 и конструкций 19: сплошной стеной это больше тысячи знаков,
+     и нужное в ней уже не видно. Пока команд мало (ранние уровни), список
+     раскрыт сам — учить удобнее, когда перед глазами. */
+  var AUTO_OPEN = 14;
+
   function render(levelId) {
     var box = document.getElementById("cmdRef");
     if (!box) return;
     var ix = build();
-    var level = (window.LEVELS || []).filter(function (l) { return l.id === levelId; })[0] || {};
     var here = ix.perLevel[levelId] || [];
     var hereCons = ix.constructsPerLevel[levelId] || {};
 
-    /* команды, известные на этом уровне, по группам */
+    /* Всё, что открыто к этому уровню: команда считается знакомой с того
+       уровня, где впервые понадобилась. Берём весь набор, а не только
+       решение текущего уровня — иначе из подсказки выпадают команды,
+       выученные раньше и сегодня не нужные. */
     var groups = {};
-    here.forEach(function (name) {
-      if (!ix.firstUse[name] || ix.firstUse[name] > levelId) return;
+    Object.keys(ix.firstUse).forEach(function (name) {
+      if (ix.firstUse[name] > levelId) return;
       var g = (DOC[name] || ["Прочее", ""])[0];
       (groups[g] = groups[g] || []).push(name);
     });
+    /* внутри группы — по порядку знакомства: так список читается как путь */
+    Object.keys(groups).forEach(function (g) {
+      groups[g].sort(function (a, b) { return ix.firstUse[a] - ix.firstUse[b]; });
+    });
 
     var order = ["Движение", "Действия", "Сенсоры", "Бой", "Python", "Модули", "Прочее"];
+    var total = 0;
     var html = "";
 
     html += '<div class="cmdref-head">🐍 <b>Команды, которые ты уже знаешь</b> · ' +
-      "уровень " + levelId + " из " + (window.LEVELS || []).length +
-      ' <i>(новые команды подсвечены)</i></div>';
+      "уровень " + levelId + " из " + (window.LEVELS || []).length + "</div>";
 
     if (here.length) {
-      html += '<div class="cmdref-new">🔦 <b>На этом уровне пригодится:</b> ' +
-        here.map(function (n) { return "<code>" + esc(n) + "</code>"; }).join(" ") + "</div>";
+      html += '<div class="cmdref-new"><b>🔦 Здесь пригодится:</b>' +
+        here.map(function (n) { return item(n, (DOC[n] || [])[1] || ""); }).join("") + "</div>";
     }
 
-    order.forEach(function (g) {
-      var names = groups[g];
-      if (!names || !names.length) return;
-      var fresh = names.filter(function (n) { return ix.firstUse[n] === levelId; });
-      html += "<b>" + esc(g) + ":</b> ";
-      html += names.map(function (n) {
-        var isNew = fresh.indexOf(n) >= 0;
-        var note = (DOC[n] || [])[1] || "";
-        return "<code" + (isNew ? ' class="fresh" title="новое на этом уровне"' : "") + ">" +
-          esc(n) + "</code>" + (note ? ' <i class="cmdnote">' + esc(note) + "</i>" : "");
-      }).join(" · ");
-      html += "<br>";
-    });
+    var body = order.map(function (g) {
+      var names = groups[g] || [];
+      total += names.length;
+      return group(g, names.map(function (n) {
+        return item(n, (DOC[n] || [])[1] || "", ix.firstUse[n] === levelId);
+      }));
+    }).join("");
 
-    /* конструкции Python — те же правила роста */
+    /* конструкции языка — те же правила роста, но отдельным блоком:
+       заголовок «Python» уже занят списком команд Python */
     var cons = [];
     for (var name in ix.constructFirst) {
       if (ix.constructFirst[name].level <= levelId) cons.push(name);
     }
     if (cons.length) {
-      html += "<b>Python:</b> ";
-      html += cons.map(function (c) {
-        var fresh = ix.constructFirst[c].level === levelId;
-        var note = hereCons[c] ? "" : ix.constructFirst[c].note;
-        return "<code" + (fresh ? ' class="fresh"' : "") + ">" + esc(c) + "</code>" +
-          (note ? ' <i class="cmdnote">' + esc(note) + "</i>" : "");
-      }).join(" · ");
-      html += "<br>";
+      cons.sort(function (a, b) { return ix.constructFirst[a].level - ix.constructFirst[b].level; });
+      total += cons.length;
+      body += group("Конструкции", cons.map(function (c) {
+        /* пояснение нужно ровно там, где конструкция появляется, дальше —
+           достаточно названия: стена пояснений съедала половину блока */
+        return item(c, hereCons[c] ? "" : ix.constructFirst[c].note, ix.constructFirst[c].level === levelId);
+      }));
     }
 
-    html += "<b>dir</b> — <code>\"up\"/\"down\"/\"left\"/\"right\"</code>, а <code>\"here\"</code> — клетка под роботом.<br>";
-    html += "<b>Поле:</b> " + FIELD.map(function (f) { return f[0] + " " + esc(f[1]); }).join(" · ");
+    if (total > AUTO_OPEN) {
+      html += '<details class="cmdref-all"' + (total <= AUTO_OPEN ? " open" : "") +
+        "><summary>Все открытые команды и конструкции — " + total + " · показать</summary>" +
+        body + "</details>";
+    } else {
+      html += body;
+    }
+
+    html += '<div class="cmdref-note"><b>dir</b> — <code>"up"/"down"/"left"/"right"</code>, ' +
+      'а <code>"here"</code> — клетка под роботом.</div>';
+    html += '<div class="cmdref-note"><b>Поле:</b> ' +
+      FIELD.map(function (f) { return f[0] + " " + esc(f[1]); }).join(" · ") + "</div>";
 
     box.innerHTML = html;
   }
