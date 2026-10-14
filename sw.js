@@ -44,9 +44,15 @@ self.addEventListener("fetch", function (e) {
       caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
       return res;
     }).catch(function () {
-      return caches.match(e.request).then(function (hit) {
-        return hit || (e.request.destination === "script" || e.request.destination === "style"
-          ? Response.error() : caches.match("./index.html"));
+      /* Сети нет — ищем в кэше без разбора адреса. Игра ходит по страницам
+         вида game.html?level=17, и офлайн открытый level=40 не находился:
+         в кэше лежит game.html с другим хвостом, и ученик вместо арены
+         получал главную страницу. Уровни лежат в js/levels.js (кэшируется
+         отдельно), поэтому подойдёт любой game.html. Для скриптов это тоже
+         верно: ?v=9 положит — отдаст любую закэшированную версию файла,
+         ведь лучше старая рабочая версия, чем никакой. */
+      return caches.match(e.request, { ignoreSearch: true }).then(function (any) {
+        return any || caches.match("./index.html");
       });
     }));
     return;
