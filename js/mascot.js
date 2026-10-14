@@ -2,7 +2,9 @@
 /* mascot.js — Наставник-призрак бродит по странице как живой:
    медленно плывёт, останавливается по своим делам (читает, кодит,
    смотрит звёзды, медитирует), бормочет перевёртыши. Клики не перехватывает.
-   Уважает prefers-reduced-motion: тогда сидит в углу. */
+   Уважает prefers-reduced-motion: тогда сидит в углу.
+   Призрака можно выключить крестиком — выбор запоминается, а в углу
+   остаётся маленькая кнопка, чтобы позвать его обратно. */
 (function () {
   "use strict";
   function $(id) { return document.getElementById(id); }
@@ -26,6 +28,13 @@
     + "#mascot .msay::before{content:'';position:absolute;left:-7px;top:10px;width:0;height:0;border:7px solid transparent;border-right-color:#1b2536;border-left:0}"
     + "#mascot .msay.left::before{left:auto;right:-7px;border-right:0;border-left:7px solid #1b2536}"
     + "#mascot.flip svg{transform:scaleX(-1)}"
+    /* крестик выключения — на самом призраке, чтобы не искать в меню */
+    + "#mascot .mclose{position:absolute;left:-6px;top:-8px;width:20px;height:20px;line-height:18px;text-align:center;border-radius:50%;background:#16202f;border:1px solid #2b3648;color:#8fa3ba;font-size:12px;cursor:pointer;opacity:.55;transition:opacity .2s;font-family:system-ui,sans-serif}"
+    + "#mascot .mclose:hover{opacity:1;color:#fff;background:#23334a}"
+    + "#mascot:hover .mclose{opacity:.9}"
+    /* возвращатель в углу: без него выключенного призрака не вернуть */
+    + "#mascotRecall{position:fixed;left:8px;bottom:8px;z-index:4;width:30px;height:30px;line-height:28px;text-align:center;border-radius:50%;background:rgba(16,24,38,.8);border:1px solid #2b3648;color:#8fa3ba;font-size:15px;cursor:pointer;opacity:.35;transition:opacity .2s;font-family:system-ui,sans-serif}"
+    + "#mascotRecall:hover{opacity:1;color:#fff}"
     + "@keyframes ghostfloat{50%{margin-top:-5px}}"
     + "@media(max-width:640px){#mascot{width:44px}#mascot .msay{width:150px;max-width:calc(100vw - 70px);font-size:11px;left:44px;right:auto}"
     + "#mascot .msay.left{left:auto;right:44px}#mascot .msay::before{left:-7px;border-right:7px solid #1b2536;border-left:0}"
@@ -49,17 +58,37 @@
 
   function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
 
+  /* Помнит выбор ученика между открытиями: призрак, которому мешает,
+     не должен снова появляться сам. */
+  var KEY = "pytactics.mascotOff";
+  function wasOff() {
+    try { return localStorage.getItem(KEY) === "1"; } catch (e) { return false; }
+  }
+  function rememberOff(off) {
+    try { if (off) localStorage.setItem(KEY, "1"); else localStorage.removeItem(KEY); } catch (e) {}
+  }
+
   function start() {
     var st = document.createElement("style");
     st.textContent = CSS;
     document.head.appendChild(st);
     var m = document.createElement("div");
     m.id = "mascot";
-    m.innerHTML = ghostArt() + "<div class='mact'></div><div class='msay'></div>";
+    m.innerHTML = ghostArt() + "<div class='mact'></div><div class='msay'></div>"
+      + "<button class='mclose' type='button' title='Спрятать наставника' aria-label='Спрятать наставника'>×</button>";
     document.body.appendChild(m);
-    var act = m.children[1], say = m.children[2];
+    var act = m.children[1], say = m.children[2], close = m.querySelector(".mclose");
 
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; // сидит в углу
+    var recall = document.createElement("button");
+    recall.id = "mascotRecall";
+    recall.type = "button";
+    recall.title = "Позвать наставника";
+    recall.setAttribute("aria-label", "Позвать наставника");
+    recall.textContent = "👻";
+    recall.style.display = "none";
+    document.body.appendChild(recall);
+
+    var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     var x = 12, y = window.innerHeight - 90;
     function place(nx, ny) {
@@ -134,9 +163,27 @@
     }
     m.addEventListener("pointerup", drop);
     m.addEventListener("pointercancel", drop);
+
+    /* Выключение: гасим таймеры через gen (их проверяет каждая цепочка
+       setTimeout), прячем призрака и оставляем кнопку возврата. */
+    function setOff(off) {
+      rememberOff(off);
+      m.style.display = off ? "none" : "";
+      recall.style.display = off ? "" : "none";
+      if (off) { gen++; dragging = false; m.classList.remove("drag"); }
+      else if (!calm) { place(12, window.innerHeight - 90); setTimeout(wander, 2500); }
+    }
+    close.addEventListener("click", function (e) {
+      e.stopPropagation();   // иначе начнётся перетаскивание призрака
+      setOff(true);
+    });
+    recall.addEventListener("click", function () { setOff(false); });
+
     place(x, y);
-    setTimeout(wander, 2500);
+    if (wasOff()) setOff(true);
+    else if (!calm) setTimeout(wander, 2500);   // при calm просто сидит в углу
     window.addEventListener("resize", function () {
+      if (m.style.display === "none") return;
       x = Math.min(x, window.innerWidth - 70);
       y = Math.min(y, window.innerHeight - 90);
       place(x, y);
