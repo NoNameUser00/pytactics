@@ -157,11 +157,16 @@ window.CmdRef = (function () {
     (window.LEVELS || []).forEach(function (l) {
       var a = (window.PyRunner || window.PyEngine).analyze(l.solution || "");
       var used = {};
+      /* В справку идут только описанные команды. Анализатор ловит любое
+         «имя(» — сюда попадают ключевое in из «for … in range», raise,
+         и функции, которые ученик сам пишет (def step, def greet). Учить их
+         нечему: одни — синтаксис Python, другие — результат упражнения. */
       (a.calls || []).forEach(function (n) {
+        if (!DOC[n]) return;
         if (seen[n]) return;               // уже знакома — не считаем новой
         seen[n] = true; firstUse[n] = l.id;
       });
-      (a.calls || []).forEach(function (n) { used[n] = 1; });
+      (a.calls || []).forEach(function (n) { if (DOC[n]) used[n] = 1; });
       perLevel[l.id] = Object.keys(used);
 
       var cons = {};
@@ -234,7 +239,8 @@ window.CmdRef = (function () {
 
     if (here.length) {
       html += '<div class="cmdref-new"><b>🔦 Здесь пригодится:</b>' +
-        here.map(function (n) { return item(n, (DOC[n] || [])[1] || ""); }).join("") + "</div>";
+        here.filter(function (n) { return !!DOC[n]; })
+          .map(function (n) { return item(n, DOC[n][1] || ""); }).join("") + "</div>";
     }
 
     var body = order.map(function (g) {
