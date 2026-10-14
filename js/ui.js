@@ -249,7 +249,10 @@
     var rbE = "🤖", rbN = "", rbId = "bolt";
     if (window.currentRobot) { var rb = window.currentRobot(); rbE = rb.emoji; rbN = rb.name; rbId = rb.id; }
     var par = window.Game.parseMap(sp.rows);
-    board.style.gridTemplateColumns = "repeat(" + par.w + ", 1fr)";
+    /* minmax(0, 1fr), а не 1fr: у 1fr минимальная ширина колонки берётся из
+       содержимого клетки, поэтому на широких картах (10 колонок) поле
+       вылезало за карточку на 40+ пикселей и его обрезало. */
+    board.style.gridTemplateColumns = "repeat(" + par.w + ", minmax(0, 1fr))";
     for (var y = 0; y < par.h; y++) {
       for (var x = 0; x < par.w; x++) {
         var ch = cellChar(l, x, y, snap);
