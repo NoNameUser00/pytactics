@@ -33,7 +33,7 @@ cd android && gradlew.bat assembleDebug
 в сборке выставляется `$env:JAVA_HOME`. Android SDK — `C:\Android\Sdk`.
 
 Готовый файл: `android/app/build/outputs/apk/debug/app-debug.apk`,
-копия — `PyTactics.apk` в корне проекта. **Версия 1.8 (versionCode 9), 11,7 МБ.**
+копия — `PyTactics.apk` в корне проекта. **Версия 1.9 (versionCode 10), 11,7 МБ.**
 
 > `gradlew assembleDebug` **не копирует `www/` сам**. Без `npx cap sync android`
 > сборка получается успешной, но внутри APK лежит прошлый сайт: так ушёл APK
