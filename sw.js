@@ -4,7 +4,7 @@
 /* Версию кэша поднимаем при каждом изменении списка SHELL: статика
    отдаётся из кэша (hit || net), и без нового имени кэша ученик долго
    получал бы старые скрипты. Имя кэша и есть версия. */
-var CACHE = "pytactics-v13";
+var CACHE = "pytactics-v14";
 var SHELL = [
   "./", "./index.html", "./map.html", "./galaxy.html", "./game.html", "./themes.html",
   "./manifest.webmanifest",
@@ -30,18 +30,28 @@ self.addEventListener("activate", function (e) {
 });
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
-  // HTML-документы: всегда свежая сеть (иначе деплой залипает), fallback — кэш
-  if (e.request.mode === "navigate" || e.request.destination === "document") {
+  /* Код (js/css) и документы — сначала сеть, кэш только запасным путём.
+     Раньше статика отдавалась из кэша, а список файлов внутри sw.js не меняется
+     при правке самих файлов: воркер не переустанавливается, кэш живёт старым
+     и ученик видит прошлую версию. Сеть-первым это снимает, офлайн не ломается.
+     Тяжёлое (ядро Python, картинки, шрифты) — наоборот, из кэша с тихим
+     обновлением: там важна скорость, а файл меняется редко. */
+  var fresh = e.request.mode === "navigate" || e.request.destination === "document"
+    || e.request.destination === "script" || e.request.destination === "style";
+  if (fresh) {
     e.respondWith(fetch(e.request).then(function (res) {
       var copy = res.clone();
       caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
       return res;
     }).catch(function () {
-      return caches.match(e.request).then(function (hit) { return hit || caches.match("./index.html"); });
+      return caches.match(e.request).then(function (hit) {
+        return hit || (e.request.destination === "script" || e.request.destination === "style"
+          ? Response.error() : caches.match("./index.html"));
+      });
     }));
     return;
   }
-  // статика (js/css): сразу из кэша + тихое обновление из сети
+  // тяжёлая статика: сразу из кэша + тихое обновление из сети
   e.respondWith(caches.match(e.request).then(function (hit) {
     var net = fetch(e.request).then(function (res) {
       var copy = res.clone();
