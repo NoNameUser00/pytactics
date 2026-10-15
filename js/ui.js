@@ -81,11 +81,28 @@
       paint();
     }
     $("btnNext").onclick = function () {
+      var gals = galaxies();
+      var gi = galaxyIndexOf(cur().id);
+      var g = gals && gi >= 0 ? gals[gi] : null;
+      /* на последнем уровне главы «Далее» уводит в следующую главу */
+      if (gals && g && lastOfGalaxy(g) === cur().id) {
+        var ng = gals[gi + 1];
+        if (!ng) { setStatus("🏁 Это финал. Владыка Баг повержен.", ""); return; }
+        var ni = galaxyFirstLevel(ng);
+        if (ni < 0) return;
+        loadLevel(ni);
+        if (!isOpenLevel(window.LEVELS[ni].id)) {
+          setStatus("🔒 «" + ng.name + "» пока закрыта: сначала пройди прошлую главу.", "err");
+        }
+        return;
+      }
       if (levelIdx >= window.LEVELS.length - 1) return;
       var nl = window.LEVELS[levelIdx + 1];
       if (!isOpenLevel(nl.id)) { setStatus("🔒 Дальше — закрытая планета. Пройди текущую хоть на 1 ★.", "err"); return; }
       loadLevel(levelIdx + 1);
     };
+    $("galPrev").onclick = function () { goGalaxy(-1); };
+    $("galNext").onclick = function () { goGalaxy(1); };
     $("btnPrev").onclick = function () { if (levelIdx > 0) loadLevel(levelIdx - 1); };
     $("btnClearSave").onclick = function () {
       localStorage.removeItem("pytactics_stars");
@@ -134,15 +151,27 @@
 
   function cur() { return window.LEVELS[levelIdx]; }
 
+  /* Пройденный уровень открыт всегда, даже если предыдущий вдруг обнулился
+     после сброса звёзд: иначе вкладка показывала «🔒 17 ★★★» — с тремя
+     звёздами и замком одновременно. */
   function isOpenLevel(id) {
     if (id === 1) return true;
+    if ((stars()[id] || 0) > 0) return true;
     return (stars()[id - 1] || 0) > 0;
   }
 
   function buildLevelTabs() {
     var bar = $("levelTabs"); bar.innerHTML = "";
     var st = stars();
-    window.LEVELS.forEach(function (l, i) {
+    var gi = galaxyIndexOf(cur().id);
+    var g = currentGalaxy();
+    /* Показываем планеты только своей галактики: все 76 в одну полосу —
+       это и была причина горизонтальной прокрутки. Соседние главы
+       переключаются стрелками над полосой. */
+    var list = (g && gi >= 0) ? g.levels : window.LEVELS.map(function (l) { return l.id; });
+    list.forEach(function (id) {
+      var l = levelById(id); if (!l) return;
+      var i = window.LEVELS.indexOf(l);
       var b = document.createElement("button");
       var open = isOpenLevel(l.id);
       b.className = "tab" + (st[l.id] ? " done" : "") + (open ? "" : " locked");
@@ -154,6 +183,91 @@
       };
       bar.appendChild(b);
     });
+  }
+
+  /* ---------- галактики (главы учебника) ---------- */
+  function galaxies() {
+    return (window.Galaxies && window.Galaxies()) || null;
+  }
+  function levelById(id) {
+    for (var i = 0; i < window.LEVELS.length; i++) if (window.LEVELS[i].id === id) return window.LEVELS[i];
+    return null;
+  }
+  function galaxyIndexOf(id) {
+    var gals = galaxies(); if (!gals) return -1;
+    for (var i = 0; i < gals.length; i++) if (gals[i].levels.indexOf(id) >= 0) return i;
+    return -1;
+  }
+  function currentGalaxy() {
+    var gals = galaxies(); if (!gals) return null;
+    var gi = galaxyIndexOf(cur().id);
+    return gi >= 0 ? gals[gi] : null;
+  }
+
+  /* Название главы + стрелки. Показываем и соседние главы, чтобы было
+     видно, куда ведёт переход (кнопки гаснут на краях списка). */
+  function buildGalaxyBar() {
+    var gals = galaxies();
+    var bar = $("galBar");
+    if (!gals || !bar) return;
+    var gi = galaxyIndexOf(cur().id);
+    bar.style.display = "";
+    if (gi < 0) { $("galName").textContent = "Уровни"; return; }
+    var g = gals[gi];
+    var st = stars();
+    var done = g.levels.filter(function (id) { return (st[id] || 0) > 0; }).length;
+    $("galName").innerHTML = g.icon + " <b>" + esc(g.name) + "</b> <span class='galcount'>" +
+      done + "/" + g.levels.length + "</span>";
+    $("galPrev").disabled = gi <= 0;
+    $("galNext").disabled = gi >= gals.length - 1;
+  }
+
+  /* Переключение главы вручную: можно листать любую, замок на уровнях внутри
+     остаётся. Если в главе ещё ничего не пройдено — встаём на первую
+     планету и говорим, что глава закрыта, а не молча ничего не делаем. */
+  function goGalaxy(delta) {
+    var gals = galaxies(); if (!gals) return;
+    var gi = galaxyIndexOf(cur().id);
+    if (gi < 0) return;
+    var target = gals[gi + delta];
+    if (!target) return;
+    var i = galaxyFirstLevel(target);
+    if (i < 0) return;
+    var id = window.LEVELS[i].id;
+    loadLevel(i);
+    if (!isOpenLevel(id)) setStatus("🔒 «" + target.name + "» пока закрыта: сначала пройди прошлую главу.", "err");
+  }
+
+  /* Первая открытая планета главы; если таких нет — первая вообще. */
+  function galaxyFirstLevel(g) {
+    var open = g.levels.find(function (id) { return isOpenLevel(id); });
+    var id = open || g.levels[0];
+    return window.LEVELS.indexOf(levelById(id));
+  }
+
+  /* Последний уровень галактики ведёт в следующую главу, а не дальше по
+     списку: иначе «Далее» незаметно перематывает главу целиком. */
+  function lastOfGalaxy(g) { return g && g.levels.length ? g.levels[g.levels.length - 1] : null; }
+
+  function updateNextButton() {
+    var btn = $("btnNext");
+    var gals = galaxies();
+    var gi = galaxyIndexOf(cur().id);
+    var g = gals && gi >= 0 ? gals[gi] : null;
+    var nextG = gals && gi >= 0 ? gals[gi + 1] : null;
+
+    if (nextG && lastOfGalaxy(g) === cur().id) {
+      btn.textContent = "К главе " + (gi + 2) + " →";
+      btn.title = nextG.name;
+      btn.disabled = false;
+      btn.classList.add("jump");
+      return;
+    }
+    btn.classList.remove("jump");
+    btn.title = "";
+    if (gi >= 0 && lastOfGalaxy(g) === cur().id) { btn.textContent = "Далее →"; btn.disabled = true; return; }
+    btn.textContent = "Далее →";
+    btn.disabled = (levelIdx >= window.LEVELS.length - 1);
   }
 
   function loadLevel(i) {
@@ -179,14 +293,19 @@
     var saved = localStorage.getItem(codeKey(l.id));
     setCode(saved !== null ? saved : l.starter);
     if (window.Sfx) window.Sfx.level();
-    $("btnNext").disabled = (i >= window.LEVELS.length - 1);
+    buildGalaxyBar();
+    updateNextButton();
     buildLevelTabs();
     renderStatic();
     updateStats();
     setStatus("Напиши код и нажми ▶ Запустить (или Ctrl+Enter).", "");
     // подсветка активного таба
     var tabs = $("levelTabs").children;
-    for (var k = 0; k < tabs.length; k++) tabs[k].classList.toggle("active", k === i);
+    var curLvl = cur().id;
+    for (var k = 0; k < tabs.length; k++) {
+      var num = parseInt((tabs[k].textContent.match(/\d+/) || [])[0], 10);
+      tabs[k].classList.toggle("active", num === curLvl);
+    }
   }
 
   function updateStats() {
